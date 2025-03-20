@@ -1,0 +1,192 @@
+{
+  "project": {
+    "project": "Projekt",
+    "description": "Opis projektu",
+    "projects": "Projekty",
+    "noProjects": "Brak dostępnych projektów.",
+    "notFound": "Nie znaleziono projektu.",
+    "actions": {
+      "create": "Utwórz projekt",
+      "delete": "Usuń projekt",
+      "deleteConfirm": "Czy na pewno chcesz usunąć projekt?",
+      "edit": "Edytuj projekt"
+    },
+    "placeholders": {
+      "name": "Mój nowy projekt",
+      "description": "To jest krótki opis projektu."
+    },
+    "null": {
+      "all": "Brak dostępnych projektów."
+    },
+    "validations": {
+      "name": {
+        "required": "Nazwa projektu jest wymagana."
+      }
+    }
+  },
+  "task": {
+    "task": "Zadanie",
+    "tasks": "Zadania",
+    "actions": {
+      "create": "Utwórz zadanie",
+      "edit": "Edytuj zadanie",
+      "delete": "Usuń zadanie",
+      "deleteConfirm": "Czy na pewno chcesz usunąć zadanie?",
+      "markAsCompleted": "Oznacz jako ukończone",
+      "markAsCompletedConfirm": "Czy na pewno chcesz oznaczyć zadanie jako ukończone?",
+      "assignUser": "Przypisz użytkownika"
+    },
+    "properties": {
+      "estimatedTime": "Szacowany czas",
+      "startedAt": "Rozpoczęto",
+      "completedAt": "Zakończono",
+      "status": {
+        "status": "Status",
+        "pending": "Oczekujące",
+        "inProgress": "W trakcie",
+        "completed": "Ukończone"
+      },
+      "priority": {
+        "priority": "Priorytet",
+        "low": "Niski",
+        "medium": "Średni",
+        "high": "Wysoki"
+      }
+    },
+    "null": {
+      "all": "Brak dostępnych zadań.",
+      "pending": "Brak oczekujących zadań.",
+      "inProgress": "Brak zadań w trakcie.",
+      "completed": "Brak ukończonych zadań."
+    },
+    "placeholders": {
+      "name": "Moje nowe zadanie",
+      "description": "To jest krótki opis zadania.",
+      "estimatedTime": "Wprowadź szacowany czas w godzinach"
+    },
+    "validations": {
+      "name": {
+        "required": "Nazwa zadania jest wymagana."
+      },
+      "priority": {
+        "required": "Priorytet zadania jest wymagany.",
+        "invalid": "Nieprawidłowy priorytet."
+      },
+      "status": {
+        "required": "Status zadania jest wymagany.",
+        "invalid": "Nieprawidłowy status."
+      },
+      "estimatedTime": {
+        "invalid": "Szacowany czas musi być liczbą dodatnią!"
+      }
+    }
+  },
+  "userStory": {
+    "userStories": "Historie użytkownika",
+    "userStory": "Historia użytkownika",
+    "actions": {
+      "create": "Utwórz historię użytkownika",
+      "edit": "Edytuj historię użytkownika",
+      "delete": "Usuń historię użytkownika",
+      "deleteConfirm": "Czy na pewno chcesz usunąć historię użytkownika?"
+    },
+    "properties": {
+      "status": {
+        "status": "Status",
+        "pending": "Oczekujące",
+        "inProgress": "W trakcie",
+        "completed": "Ukończone"
+      },
+      "priority": {
+        "priority": "Priorytet",
+        "low": "Niski",
+        "medium": "Średni",
+        "high": "Wysoki"
+      }
+    },
+    "null": {
+      "all": "Brak dostępnych historii użytkownika.",
+      "pending": "Brak oczekujących historii użytkownika.",
+      "inProgress": "Brak historii użytkownika w trakcie.",
+      "completed": "Brak ukończonych historii użytkownika."
+    },
+    "placeholders": {
+      "name": "Moja nowa historia użytkownika",
+      "description": "To jest krótki opis historii użytkownika."
+    },
+    "validations": {
+      "name": {
+        "required": "Nazwa historii użytkownika jest wymagana."
+      },
+      "priority": {
+        "required": "Priorytet historii użytkownika jest wymagany.",
+        "invalid": "Nieprawidłowy priorytet."
+      },
+      "status": {
+        "required": "Status historii użytkownika jest wymagany.",
+        "invalid": "Nieprawidłowy status."
+      }
+    }
+  },
+  "user": {
+    "users": "Użytkownicy",
+    "user": "Użytkownik",
+    "signUp": "Zarejestruj się",
+    "signIn": "Zaloguj się",
+    "signOut": "Wyloguj się",
+    "profile": "Profil",
+    "email": "Email",
+    "password": "Hasło",
+    "emailPlaceholder": "Wprowadź swój email",
+    "passwordPlaceholder": "Wprowadź swoje hasło",
+    "displayName": "Nazwa wyświetlana",
+    "photoURL": "URL zdjęcia profilowego",
+    "confirmPassword": "Potwierdź hasło",
+    "displayNamePlaceholder": "Wprowadź swoją nazwę wyświetlaną",
+    "photoURLPlaceholder": "Wprowadź URL do swojego zdjęcia profilowego",
+    "confirmPasswordPlaceholder": "Potwierdź swoje hasło",
+    "notFound": "Nie znaleziono użytkownika",
+    "profileUpdated": "Profil został zaktualizowany pomyślnie",
+    "createAccount": "Utwórz konto",
+    "emailNotVerified": "Email nie został zweryfikowany. Zweryfikuj klikając w link wysłany na adres",
+    "verificationEmailSent": "Email weryfikacyjny został wysłany!",
+    "verificationEmailError": "Nie udało się wysłać emaila weryfikacyjnego",
+    "resendVerification": "Wyślij ponownie email weryfikacyjny",
+    "goToSignIn": "Przejdź do logowania",
+    "validations": {
+      "email": {
+        "required": "Email nie może być pusty!"
+      },
+      "password": {
+        "required": "Hasło nie może być puste!",
+        "mismatch": "Hasła nie są takie same!"
+      },
+      "confirmPassword": {
+        "required": "Potwierdzenie hasła nie może być puste!"
+      },
+      "displayName": {
+        "minLength": "Nazwa wyświetlana musi mieć co najmniej 2 znaki."
+      },
+      "photoURL": {
+        "invalidUrl": "Proszę podać prawidłowy URL dla zdjęcia profilowego."
+      }
+    }
+  },
+  "common": {
+    "no": "Nie",
+    "yes": "Tak",
+    "home": "Witaj w Zenith - aplikacji do zarządzania projektami.",
+    "back": "Powrót",
+    "submit": "Zatwierdź",
+    "hours": "godziny",
+    "properties": {
+      "name": "Nazwa",
+      "description": "Opis",
+      "createdAt": "Utworzono",
+      "updatedAt": "Zaktualizowano"
+    },
+    "select": "Kliknij aby wybrać",
+    "loading": "Ładowanie...",
+    "changeLanguage": "Change language"
+  }
+}

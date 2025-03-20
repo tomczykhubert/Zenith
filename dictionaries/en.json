@@ -1,0 +1,192 @@
+{
+  "project": {
+    "project": "Project",
+    "description": "Project description",
+    "projects": "Projects",
+    "noProjects": "No projects available.",
+    "notFound": "Project not found.",
+    "actions": {
+      "create": "Create project",
+      "delete": "Delete project",
+      "deleteConfirm": "Are you sure you want to delete project?",
+      "edit": "Edit project"
+    },
+    "placeholders": {
+      "name": "My new project",
+      "description": "This is very brief description of a project."
+    },
+    "null": {
+      "all": "No projects available."
+    },
+    "validations": {
+      "name": {
+        "required": "Project name is required."
+      }
+    }
+  },
+  "task": {
+    "task": "Task",
+    "tasks": "Tasks",
+    "actions": {
+      "create": "Create task",
+      "edit": "Edit task",
+      "delete": "Delete task",
+      "deleteConfirm": "Are you sure you want to delete task?",
+      "markAsCompleted": "Mark as completed",
+      "markAsCompletedConfirm": "Are you sure you want to mark task as completed?",
+      "assignUser": "Assign user"
+    },
+    "properties": {
+      "estimatedTime": "Estimated Time",
+      "startedAt": "Started At",
+      "completedAt": "Completed At",
+      "status": {
+        "status": "Status",
+        "pending": "Pending",
+        "inProgress": "In progress",
+        "completed": "Completed"
+      },
+      "priority": {
+        "priority": "Priority",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      }
+    },
+    "null": {
+      "all": "No tasks available.",
+      "pending": "No pending tasks.",
+      "inProgress": "No in-progress tasks.",
+      "completed": "No completed tasks."
+    },
+    "placeholders": {
+      "name": "My new task",
+      "description": "This is a brief description of the task.",
+      "estimatedTime": "Enter estimated time in hours"
+    },
+    "validations": {
+      "name": {
+        "required": "Task name is required."
+      },
+      "priority": {
+        "required": "Task priority is required.",
+        "invalid": "Invalid priority."
+      },
+      "status": {
+        "required": "Task status is required.",
+        "invalid": "Invalid status."
+      },
+      "estimatedTime": {
+        "invalid": "Estimated time must be a positive number!"
+      }
+    }
+  },
+  "userStory": {
+    "userStories": "User stories",
+    "userStory": "User story",
+    "actions": {
+      "create": "Create user story",
+      "edit": "Edit user story",
+      "delete": "Delete user story",
+      "deleteConfirm": "Are you sure you want to delete user story?"
+    },
+    "properties": {
+      "status": {
+        "status": "Status",
+        "pending": "Pending",
+        "inProgress": "In progress",
+        "completed": "Completed"
+      },
+      "priority": {
+        "priority": "Priority",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      }
+    },
+    "null": {
+      "all": "No user stories available.",
+      "pending": "No pending user stories.",
+      "inProgress": "No in-progress user stories.",
+      "completed": "No completed user stories."
+    },
+    "placeholders": {
+      "name": "My new user story",
+      "description": "This is a brief description of the user story."
+    },
+    "validations": {
+      "name": {
+        "required": "User story name is required."
+      },
+      "priority": {
+        "required": "User story priority is required.",
+        "invalid": "Invalid priority."
+      },
+      "status": {
+        "required": "User story status is required.",
+        "invalid": "Invalid status."
+      }
+    }
+  },
+  "user": {
+    "users": "Users",
+    "user": "User",
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "profile": "Profile",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "displayName": "Display Name",
+    "photoURL": "Profile Image URL",
+    "confirmPassword": "Confirm Password",
+    "displayNamePlaceholder": "Enter your display name",
+    "photoURLPlaceholder": "Enter URL to your profile image",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "notFound": "User not found",
+    "profileUpdated": "Profile updated successfully",
+    "createAccount": "Create an account",
+    "emailNotVerified": "Email not verified. Verify by clicking on the link sent to your address",
+    "verificationEmailSent": "Verification email sent!",
+    "verificationEmailError": "Failed to send verification email",
+    "resendVerification": "Resend Verification Email",
+    "goToSignIn": "Go to Sign In",
+    "validations": {
+      "email": {
+        "required": "Email cannot be empty!"
+      },
+      "password": {
+        "required": "Password cannot be empty!",
+        "mismatch": "Passwords do not match!"
+      },
+      "confirmPassword": {
+        "required": "Confirm Password cannot be empty!"
+      },
+      "displayName": {
+        "minLength": "Display name must be at least 2 characters."
+      },
+      "photoURL": {
+        "invalidUrl": "Please enter a valid URL for the profile image."
+      }
+    }
+  },
+  "common": {
+    "no": "No",
+    "yes": "Yes",
+    "home": "Welcome to Zenith - project managment application.",
+    "back": "Back",
+    "submit": "Submit",
+    "hours": "hours",
+    "properties": {
+      "name": "Name",
+      "description": "Description",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+    "select": "Click to select",
+    "loading": "Loading...",
+    "changeLanguage": "Change language"
+  }
+}
