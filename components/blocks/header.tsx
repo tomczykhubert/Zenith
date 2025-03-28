@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { LuCircleUser, LuLogIn, LuLogOut, LuUserPlus } from "react-icons/lu";
-import { routes, useLocalizedRoute } from "@/utils/routes";
+import { routes } from "@/lib/routes/routes";
+import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import ActionIcon from "../ui/actionIcon";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import { useUserStore } from "@/providers/userProvider";
-import { User } from "@/types/user";
+import { useAuthStore } from "@/providers/authProvider";
 import LangSwitcher from "../ui/langSwitcher";
 
 const Header = () => {
-  const user: User | null = useUserStore((state) => state.currentUser);
+  const user = useAuthStore((state) => state.user);
   const { t } = useDictionary();
   return (
     <header className="flex justify-between px-6 py-3 bg-gray-700 shadow-md">
@@ -23,7 +23,7 @@ const Header = () => {
           <ul className="flex space-x-4 text-lg">
             <li>
               <Link
-                href={useLocalizedRoute(routes.projects)}
+                href={useLocalizedRoute(routes.projects.list)}
                 className="text-slate-100 hover:text-slate-400 transition-colors"
               >
                 {t("project.projects")}
@@ -37,13 +37,13 @@ const Header = () => {
         {!user ? (
           <>
             <ActionIcon
-              href={routes.userSignIn}
+              href={routes.user.signIn}
               text={t("user.signIn")}
               Icon={LuLogIn}
               variant="slate"
             />
             <ActionIcon
-              href={routes.userRegister}
+              href={routes.user.register}
               text={t("user.signUp")}
               Icon={LuUserPlus}
               variant="blue"
@@ -58,12 +58,12 @@ const Header = () => {
               Hello, {user.displayName ?? user.email}
             </div>
             <ActionIcon
-              href={routes.userProfile}
+              href={routes.user.profile}
               text={t("user.profile")}
               Icon={LuCircleUser}
             />
             <ActionIcon
-              href={routes.userSignOut}
+              href={routes.user.signOut}
               text={t("user.signOut")}
               Icon={LuLogOut}
               variant="blue"

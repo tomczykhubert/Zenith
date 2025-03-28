@@ -148,11 +148,6 @@
     "notFound": "User not found",
     "profileUpdated": "Profile updated successfully",
     "createAccount": "Create an account",
-    "emailNotVerified": "Email not verified. Verify by clicking on the link sent to your address",
-    "verificationEmailSent": "Verification email sent!",
-    "verificationEmailError": "Failed to send verification email",
-    "resendVerification": "Resend Verification Email",
-    "goToSignIn": "Go to Sign In",
     "validations": {
       "email": {
         "required": "Email cannot be empty!"

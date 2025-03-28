@@ -1,5 +1,5 @@
 interface GridColumnProps {
-  items: { uid: string }[];
+  items: { id: string }[];
   header: string;
   emptyMessage: string;
   Element: React.ElementType;
@@ -17,7 +17,7 @@ export default function GridColumn({
       {items.length > 0 ? (
         <div className="grid grid-cols-1 gap-6">
           {items.map((item) => (
-            <Element key={item.uid} {...item} />
+            <Element key={item.id} {...item} />
           ))}
         </div>
       ) : (

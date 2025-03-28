@@ -14,18 +14,14 @@ import {
 import { Input } from "@/components/ui/forms/input";
 import { Textarea } from "@/components/ui/forms/textarea";
 import { useForm } from "react-hook-form";
-import {
-  TaskPriority,
-  TaskStatus,
-  useTaskSelectPriorities,
-  useTaskSelectStatuses,
-} from "@/types/task";
+import { useTaskSelectPriorities, useTaskSelectStatuses } from "@/types/task";
 import { Select } from "@/components/ui/forms/select";
 import { useProjectsStore } from "@/providers/projectsProvider";
 import { useUserStoriesStore } from "@/providers/userStoriesProvider";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { mapUsersToSelect } from "@/types/user";
-import { useUserStore } from "@/providers/userProvider";
+import { TaskPriority, TaskStatus } from "@prisma/client";
+import { useUsers } from "@/providers/usersProvider";
 
 const formSchema = z.object({
   name: z.coerce.string().nonempty({
@@ -62,18 +58,14 @@ export default function TaskForm({ initialValues, onSubmit }: TaskFormProps) {
 
   const projects = useProjectsStore((state) => state.projects);
   const projectOptions = projects.map((project) => ({
-    value: project.uid,
+    value: project.id,
     label: project.name,
   }));
 
-  // const userStories = filterBySpecification(
-  //   useUserStoriesStore((state) => state.userStories),
-  //   { projectId: initialValues?.projectId }
-  // );
   const userStories = useUserStoriesStore((state) => state.userStories);
 
   const userStoriesOptions = userStories.map((userStory) => ({
-    value: userStory.uid,
+    value: userStory.id,
     label: userStory.name,
   }));
 
@@ -81,9 +73,8 @@ export default function TaskForm({ initialValues, onSubmit }: TaskFormProps) {
 
   const priorityOptions = useTaskSelectPriorities();
 
-  const users = useUserStore((state) => state.users);
+  const users = useUsers((state) => state.users);
   const userOptions = mapUsersToSelect(users);
-
   return (
     <>
       <Form {...form}>

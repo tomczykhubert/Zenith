@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-import { useLocalizedRoute } from "@/utils/routes";
+import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { Tooltip } from "react-tooltip";
 
 const variantStyles = {

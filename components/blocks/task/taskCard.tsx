@@ -4,15 +4,16 @@ import { useState } from "react";
 import FormModal from "@/components/ui/modals/formModal";
 import UpdateTaskForm from "./forms/updateTaskForm";
 import ConfirmModal from "@/components/ui/modals/confirmModal";
-import Task, { TaskStatus } from "@/types/task";
+import Task from "@/types/task";
 import ActionIcon from "@/components/ui/actionIcon";
 import { useUserStoriesStore } from "@/providers/userStoriesProvider";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { MdDone } from "react-icons/md";
 import { FaUserClock } from "react-icons/fa";
 import AssignUserForm from "./forms/assignUserForm";
-import { useUserStore } from "@/providers/userProvider";
 import { getEnumTranslationKey } from "@/lib/utils";
+import { TaskStatus } from "@prisma/client";
+import { useUsers } from "@/providers/usersProvider";
 export default function TaskCard(task: Task) {
   const { t } = useDictionary();
   const deleteTask = useTasksStore((state) => state.deleteTask);
@@ -24,7 +25,7 @@ export default function TaskCard(task: Task) {
   const [isAssignUserModalOpen, setIsAssignUserModalOpen] = useState(false);
 
   const handleDelete = () => {
-    deleteTask(task.uid);
+    deleteTask(task.id);
     setIsDeleteModalOpen(false);
   };
 
@@ -36,12 +37,15 @@ export default function TaskCard(task: Task) {
     updateTask({
       ...task,
       status: TaskStatus.COMPLETED,
-      completedAt: Date.now(),
+      completedAt: new Date(),
     });
     setIsMarkAsCompletedModalOpen(false);
   };
 
-  const taskUser = useUserStore((state) => state.getUserById(task.userId));
+  const { users } = useUsers((state) => ({
+    users: state.users,
+  }));
+  const taskUser = users.find((user) => user.id === task.userId);
   return (
     <>
       <div className="relative bg-slate-700 border border-slate-700 shadow-md rounded-md p-4 min-h-[200px]">

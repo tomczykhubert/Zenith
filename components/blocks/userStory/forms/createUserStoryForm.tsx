@@ -3,9 +3,7 @@
 import { useUserStoriesStore } from "@/providers/userStoriesProvider";
 import { z } from "zod";
 import { formSchema, UserStoryForm } from "./userStoryForm";
-import { UserStoryPriority, UserStoryStatus } from "@/types/userStory";
-import { collection, doc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { UserStoryPriority, UserStoryStatus } from "@prisma/client";
 
 interface CreateUserStoryFormProps {
   onClose: () => void;
@@ -27,15 +25,12 @@ export default function CreateUserStoryForm({
     const status = values.status;
 
     addUserStory({
-      uid: doc(collection(db, "projects")).id,
       name,
       description,
       priority,
       status,
       projectId,
       userId,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
     });
 
     onClose();

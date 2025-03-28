@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import "./styles.css";
-import { UserStoreProvider } from "@/providers/userProvider";
 const jakartaSans = localFont({
   src: [
     {
@@ -26,9 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <body className={`${jakartaSans.className}`}>
-        <UserStoreProvider>{children}</UserStoreProvider>
-      </body>
+      <body className={`${jakartaSans.className}`}>{children}</body>
     </html>
   );
 }

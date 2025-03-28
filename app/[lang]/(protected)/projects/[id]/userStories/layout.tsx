@@ -1,7 +1,6 @@
 "use client";
-
+import { Direction } from "@/prisma/base";
 import { UserStoriesStoreProvider } from "@/providers/userStoriesProvider";
-import { QuerySpecification } from "@/repositories/baseRepository";
 import { useParams } from "next/navigation";
 
 export default function UserStoriesLayout({
@@ -10,15 +9,16 @@ export default function UserStoriesLayout({
   children: React.ReactNode;
 }>) {
   const { id } = useParams();
-  const specification: QuerySpecification[] = [
-    {
-      field: "projectId",
-      operator: "==",
-      value: id,
-    },
-  ];
+
+  const specification = {
+    projectId: id as string,
+  };
+
+  const order = {
+    createdAt: Direction.DESC,
+  };
   return (
-    <UserStoriesStoreProvider specification={specification}>
+    <UserStoriesStoreProvider specification={specification} order={order}>
       {children}
     </UserStoriesStoreProvider>
   );

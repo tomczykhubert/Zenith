@@ -1,7 +1,8 @@
-import Task, { TaskStatus } from "@/types/task";
+import Task from "@/types/task";
 import TaskCard from "./taskCard";
 import GridColumn from "../gridColumn";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import { TaskStatus } from "@prisma/client";
 
 export default function TasksGrid({ tasks }: { tasks: Task[] | null }) {
   const { t } = useDictionary();

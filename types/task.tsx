@@ -1,16 +1,6 @@
 import { useMapEnumToSelect } from "@/lib/utils";
-
-enum TaskPriority {
-  LOW = "LOW",
-  MEDIUM = "MEDIUM",
-  HIGH = "HIGH",
-}
-
-enum TaskStatus {
-  PENDING = "PENDING",
-  IN_PROGRESS = "IN_PROGRESS",
-  COMPLETED = "COMPLETED",
-}
+import { BaseDto } from "./base";
+import { TaskPriority, TaskStatus } from "@prisma/client";
 
 export const useTaskSelectPriorities = (): ReturnType<
   typeof useMapEnumToSelect
@@ -20,8 +10,7 @@ export const useTaskSelectStatuses = (): ReturnType<
   typeof useMapEnumToSelect
 > => useMapEnumToSelect(TaskStatus, "task.properties.status");
 
-export default interface Task {
-  uid: string;
+export default interface Task extends BaseDto {
   name: string;
   description: string;
   priority: TaskPriority;
@@ -30,10 +19,6 @@ export default interface Task {
   projectId: string;
   userId: string;
   userStoryId: string;
-  createdAt: number;
-  updatedAt: number | null;
-  startedAt: number | null;
-  completedAt: number | null;
+  startedAt: Date | null;
+  completedAt: Date | null;
 }
-
-export { TaskPriority, TaskStatus };

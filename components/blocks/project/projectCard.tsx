@@ -5,10 +5,10 @@ import FormModal from "@/components/ui/modals/formModal";
 import UpdateProjectForm from "./forms/updateProjectForm";
 import ConfirmModal from "@/components/ui/modals/confirmModal";
 import Project from "@/types/project";
-import { routes } from "@/utils/routes";
+import { routes } from "@/lib/routes/routes";
 import ActionIcon from "@/components/ui/actionIcon";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import { HoverCard } from "radix-ui";
+
 export default function ProjectCard(project: Project) {
   const { t } = useDictionary();
   const deleteProject = useProjectsStore((state) => state.deleteProject);
@@ -17,10 +17,9 @@ export default function ProjectCard(project: Project) {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   const handleDelete = () => {
-    deleteProject(project.uid);
+    deleteProject(project.id);
     setIsDeleteModalOpen(false);
   };
-
   return (
     <div>
       <div className="bg-slate-700 border border-slate-700 shadow-md rounded-md p-4 min-h-[200px]">
@@ -30,13 +29,13 @@ export default function ProjectCard(project: Project) {
           </h2>
           <div className="flex space-x-2">
             <ActionIcon
-              href={routes.projectTasks(project.uid)}
+              href={routes.projects.tasks.list(project.id)}
               Icon={FaTasks}
               text={t("task.tasks")}
             />
             <ActionIcon
               variant="green"
-              href={routes.projectUserStories(project.uid)}
+              href={routes.projects.UserStories.list(project.id)}
               Icon={FaBook}
               text={t("userStory.userStories")}
             />

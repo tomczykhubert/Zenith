@@ -8,12 +8,11 @@ import { useDictionary } from "@/providers/dictionaryProvider";
 import { useProjectsStore } from "@/providers/projectsProvider";
 import { useTasksStore } from "@/providers/tasksProvider";
 import Project from "@/types/project";
-import Task from "@/types/task";
-import { routes } from "@/utils/routes";
+import { routes } from "@/lib/routes/routes";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { MdAssignmentAdd } from "react-icons/md";
-
+import Task from "@/types/task";
 export default function Tasks() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { id } = useParams();
@@ -21,8 +20,8 @@ export default function Tasks() {
   const project: Project | null = useProjectsStore((state) =>
     state.getProjectById(id?.toString() || "")
   );
+  const tasks: Task[] | null = useTasksStore((state) => state.tasks);
 
-  const tasks: Task[] = useTasksStore((state) => state.tasks);
   if (!project) {
     return <p className="text-center mt-5">{t("project.notFound")}</p>;
   }
@@ -33,7 +32,7 @@ export default function Tasks() {
         <Title
           title={t("task.tasks")}
           subtitle={project.name}
-          backUrl={routes.projects}
+          backUrl={routes.projects.list}
         />
         <ActionIcon
           Icon={MdAssignmentAdd}

@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  type ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useStore } from "zustand";
 
 import {
@@ -14,9 +8,10 @@ import {
   ProjectsState,
   ProjectsStore,
 } from "@/stores/projectsStore";
-import { ProjectsRepository } from "@/repositories/projectsRepository";
 import Spinner from "@/components/blocks/spinner";
-import { QuerySpecification } from "@/repositories/baseRepository";
+import { ProviderProps } from "./base";
+import Project from "@/types/project";
+import { apiRoutes } from "@/lib/routes/apiRoutes";
 
 export type ProjectsStoreApi = ReturnType<typeof createProjectsStore>;
 
@@ -24,15 +19,11 @@ export const ProjectsStoreContext = createContext<ProjectsStoreApi | undefined>(
   undefined
 );
 
-export interface ProjectsStoreProviderProps {
-  children: ReactNode;
-  specification?: QuerySpecification[];
-}
-
 export const ProjectsStoreProvider = ({
   children,
   specification,
-}: ProjectsStoreProviderProps) => {
+  order,
+}: ProviderProps<Project>) => {
   const [initialState, setInitialState] = useState<ProjectsState>({
     projects: [],
   });
@@ -41,18 +32,35 @@ export const ProjectsStoreProvider = ({
   useEffect(() => {
     const fetchInitialState = async () => {
       try {
-        const projectsManager = new ProjectsRepository();
-        const projects = specification
-          ? await projectsManager.getBySpecification(specification)
-          : await projectsManager.get();
+        const params = new URLSearchParams();
+        if (specification) {
+          params.append("specification", JSON.stringify(specification));
+        }
+        if (order) {
+          params.append("order", JSON.stringify(order));
+        }
+
+        const queryString = params.toString();
+        const url = `${apiRoutes.projects.base}${
+          queryString ? `?${queryString}` : ""
+        }`;
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch projects");
+        }
+        const projects = await response.json();
         setInitialState({ projects });
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+        setInitialState({ projects: [] });
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchInitialState();
-  }, [specification]);
+  }, [specification, order]);
 
   if (isLoading) {
     return <Spinner />;

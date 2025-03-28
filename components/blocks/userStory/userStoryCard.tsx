@@ -16,7 +16,7 @@ export default function UserStoryCard(userStory: UserStory) {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   const handleDelete = () => {
-    deleteUserStory(userStory.uid);
+    deleteUserStory(userStory.id);
     setIsDeleteModalOpen(false);
   };
 
@@ -75,7 +75,9 @@ export default function UserStoryCard(userStory: UserStory) {
         </p>
         <p className="text-muted-foreground mb-3">
           <strong>{t("common.properties.updatedAt")}:</strong>{" "}
-          {new Date(userStory.updatedAt).toLocaleString()}
+          {new Date(
+            userStory.updatedAt ? userStory.updatedAt : "now"
+          ).toLocaleString()}
         </p>
       </div>
       <ConfirmModal

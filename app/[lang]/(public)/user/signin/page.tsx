@@ -1,121 +1,113 @@
 "use client";
 
-import {
-  signInWithEmailAndPassword,
-  setPersistence,
-  browserSessionPersistence,
-} from "firebase/auth";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, redirect } from "next/navigation";
 import { useState } from "react";
 import { Input } from "@/components/ui/forms/input";
 import { Button } from "@/components/ui/forms/button";
 import {
   Form,
   FormControl,
+  FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/forms/form";
 import { Error } from "@/components/blocks/error";
-import { auth } from "@/lib/firebase";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { FirebaseError } from "firebase/app";
-import { useUserStore } from "@/providers/userProvider";
-import { routes, useLocalizedRoute } from "@/utils/routes";
+import { routes } from "@/lib/routes/routes";
+import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import { useAuthStore } from "@/providers/authProvider";
 
 const formSchema = z.object({
-  email: z.coerce.string().nonempty({
-    message: "user.validations.email",
+  email: z.string().email({
+    message: "user.validations.email.invalid",
   }),
-  password: z.coerce.string().nonempty({
-    message: "user.validations.password",
+  password: z.string().min(1, {
+    message: "user.validations.password.required",
   }),
 });
 
+type SignInFormData = z.infer<typeof formSchema>;
+
 export default function SignInForm() {
   const { t } = useDictionary();
-  const [error, setError] = useState<{ code?: string; message: string } | null>(
-    null
-  );
-  const user = useUserStore((state) => state.currentUser);
+  const [error, setError] = useState<string | null>(null);
   const params = useSearchParams();
   const router = useRouter();
-  const returnUrl = params.get("returnUrl");
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const login = useAuthStore((state) => state.login);
+  const user = useAuthStore((state) => state.user);
+
+  const form = useForm<SignInFormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
+  const returnUrl = params.get("returnUrl");
   const home = useLocalizedRoute(routes.home);
-  const verify = useLocalizedRoute(routes.userVerify);
 
   if (user) {
-    return null;
+    redirect(returnUrl || home);
   }
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const email = form["email"].value;
-    const password = form["password"].value;
-
+  const onSubmit = async (data: SignInFormData) => {
     try {
-      await setPersistence(auth, browserSessionPersistence);
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      if (returnUrl) {
-        router.push(returnUrl);
-      } else {
-        router.push(home);
-      }
-      if (!userCredential.user.emailVerified) {
-        router.push(verify);
-      }
-    } catch (error) {
-      const firebaseError = error as FirebaseError;
-      setError({ code: firebaseError.code, message: firebaseError.message });
+      await login(data.email, data.password);
+      router.push(returnUrl || home);
+    } catch {
+      setError(t("user.invalidCredentials"));
     }
   };
 
   return (
     <div className="mt-5 max-w-[525px] mx-auto">
       <h1 className="text-3xl mb-5">{t("user.signIn")}</h1>
-      {error ? <Error error={error} /> : null}
+      {error && <Error error={{ message: error }} />}
       <Form {...form}>
-        <form onSubmit={onSubmit} className="">
-          <FormItem className="mb-4">
-            <FormLabel>{t("user.email")}</FormLabel>
-            <FormControl>
-              <Input
-                type="email"
-                name="email"
-                placeholder={t("user.emailPlaceholder")}
-                required
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-          <FormItem className="mb-4">
-            <FormLabel>{t("user.password")}</FormLabel>
-            <FormControl>
-              <Input
-                type="password"
-                name="password"
-                placeholder={t("user.passwordPlaceholder")}
-                required
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-          <div>
-            <Button type="submit">{t("user.signIn")}</Button>
-          </div>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("user.email")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder={t("user.emailPlaceholder")}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("user.password")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder={t("user.passwordPlaceholder")}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full">
+            {t("user.signIn")}
+          </Button>
         </form>
       </Form>
     </div>

@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  type ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useStore } from "zustand";
 
 import {
@@ -14,9 +8,10 @@ import {
   UserStoriesStore,
   createUserStoriesStore,
 } from "@/stores/userStoriesStore";
-import { UserStoriesRepository } from "@/repositories/userStoriesRepository";
 import Spinner from "@/components/blocks/spinner";
-import { QuerySpecification } from "@/repositories/baseRepository";
+import { ProviderProps } from "./base";
+import UserStory from "@/types/userStory";
+import { apiRoutes } from "@/lib/routes/apiRoutes";
 
 export type UserStoriesStoreApi = ReturnType<typeof createUserStoriesStore>;
 
@@ -24,15 +19,11 @@ export const UserStoriesStoreContext = createContext<
   UserStoriesStoreApi | undefined
 >(undefined);
 
-export interface UserStoriesStoreProviderProps {
-  children: ReactNode;
-  specification?: QuerySpecification[];
-}
-
 export const UserStoriesStoreProvider = ({
   children,
   specification,
-}: UserStoriesStoreProviderProps) => {
+  order,
+}: ProviderProps<UserStory>) => {
   const [initialState, setInitialState] = useState<UserStoriesState>({
     userStories: [],
   });
@@ -41,18 +32,35 @@ export const UserStoriesStoreProvider = ({
   useEffect(() => {
     const fetchInitialState = async () => {
       try {
-        const userStoriesRepository = new UserStoriesRepository();
-        const userStories = specification
-          ? await userStoriesRepository.getBySpecification(specification)
-          : await userStoriesRepository.get();
+        const params = new URLSearchParams();
+        if (specification) {
+          params.append("specification", JSON.stringify(specification));
+        }
+        if (order) {
+          params.append("order", JSON.stringify(order));
+        }
+
+        const queryString = params.toString();
+        const url = `${apiRoutes.userStories.base}${
+          queryString ? `?${queryString}` : ""
+        }`;
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user stories");
+        }
+        const userStories = await response.json();
         setInitialState({ userStories });
+      } catch (error) {
+        console.error("Error fetching user stories:", error);
+        setInitialState({ userStories: [] });
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchInitialState();
-  }, [specification]);
+  }, [specification, order]);
 
   if (isLoading) {
     return <Spinner />;

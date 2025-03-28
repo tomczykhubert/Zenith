@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/components/blocks/header";
+import { AuthStoreProvider } from "@/providers/authProvider";
 import { DictionaryProvider } from "@/providers/dictionaryProvider";
 
 export default function ProjectsLayout({
@@ -10,8 +11,10 @@ export default function ProjectsLayout({
 }>) {
   return (
     <DictionaryProvider>
-      <Header />
-      {children}
+      <AuthStoreProvider>
+        <Header />
+        {children}
+      </AuthStoreProvider>
     </DictionaryProvider>
   );
 }

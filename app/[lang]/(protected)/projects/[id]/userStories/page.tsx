@@ -9,7 +9,7 @@ import { useProjectsStore } from "@/providers/projectsProvider";
 import { useUserStoriesStore } from "@/providers/userStoriesProvider";
 import Project from "@/types/project";
 import UserStory from "@/types/userStory";
-import { routes } from "@/utils/routes";
+import { routes } from "@/lib/routes/routes";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { GiNotebook } from "react-icons/gi";
@@ -36,7 +36,7 @@ export default function UserStories() {
         <Title
           title={t("userStory.userStories")}
           subtitle={project.name}
-          backUrl={routes.projects}
+          backUrl={routes.projects.list}
         />
         <ActionIcon
           Icon={GiNotebook}

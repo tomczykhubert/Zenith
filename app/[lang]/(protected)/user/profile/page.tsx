@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useUserStore } from "@/providers/userProvider";
-import { auth } from "@/lib/firebase";
-import { updateProfile } from "firebase/auth";
 import { Button } from "@/components/ui/forms/button";
 import {
   Form,
@@ -18,9 +15,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import { Error } from "@/components/blocks/error";
-import { FirebaseError } from "firebase/app";
+import { Error as ErrorComponent } from "@/components/blocks/error";
 import Image from "next/image";
+import { useUsers } from "@/providers/usersProvider";
+import { useAuthStore } from "@/providers/authProvider";
 
 const formSchema = z.object({
   displayName: z.string().min(2, {
@@ -38,9 +36,9 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function Profile() {
   const { t } = useDictionary();
-  const user = useUserStore((state) => state.currentUser);
-  const updateUser = useUserStore((state) => state.updateUser);
-  const [error, setError] = useState<FirebaseError | null>(null);
+  const user = useAuthStore((state) => state.user);
+  const updateUser = useUsers((state) => state.updateUser);
+  const [error, setError] = useState<{ message: string } | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
   const form = useForm<FormData>({
@@ -53,12 +51,7 @@ export default function Profile() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      if (!auth.currentUser || !user) return;
-
-      await updateProfile(auth.currentUser, {
-        displayName: data.displayName,
-        photoURL: data.photoURL || null,
-      });
+      if (!user) return;
 
       const updatedUser = {
         ...user,
@@ -70,11 +63,9 @@ export default function Profile() {
       setSuccess(true);
       setError(null);
     } catch (err) {
-      const firebaseError = err as FirebaseError;
       setError({
-        code: firebaseError.code || "unknown-error",
-        message: firebaseError.message || "Failed to update profile",
-        name: firebaseError.name || "FirebaseError",
+        message:
+          err instanceof Error ? err.message : "Failed to update profile",
       });
       setSuccess(false);
     }
@@ -100,7 +91,7 @@ export default function Profile() {
           </div>
         )}
       </h1>
-      {error && <Error error={error} />}
+      {error && <ErrorComponent error={error} />}
       {success && (
         <div className="text-green-500 mb-4">{t("user.profileUpdated")}</div>
       )}

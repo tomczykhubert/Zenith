@@ -148,11 +148,6 @@
     "notFound": "Nie znaleziono użytkownika",
     "profileUpdated": "Profil został zaktualizowany pomyślnie",
     "createAccount": "Utwórz konto",
-    "emailNotVerified": "Email nie został zweryfikowany. Zweryfikuj klikając w link wysłany na adres",
-    "verificationEmailSent": "Email weryfikacyjny został wysłany!",
-    "verificationEmailError": "Nie udało się wysłać emaila weryfikacyjnego",
-    "resendVerification": "Wyślij ponownie email weryfikacyjny",
-    "goToSignIn": "Przejdź do logowania",
     "validations": {
       "email": {
         "required": "Email nie może być pusty!"

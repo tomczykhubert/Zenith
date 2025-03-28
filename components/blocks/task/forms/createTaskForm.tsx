@@ -3,9 +3,7 @@
 import { useTasksStore } from "@/providers/tasksProvider";
 import { z } from "zod";
 import { formSchema, TaskForm } from "./taskForm";
-import { TaskPriority, TaskStatus } from "@/types/task";
-import { collection, doc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { TaskPriority, TaskStatus } from "@prisma/client";
 
 interface CreateTaskFormProps {
   onClose: () => void;
@@ -26,10 +24,10 @@ export default function CreateTaskForm({
     const priority = values.priority;
     const status = values.status;
     const estimatedTime = values.estimatedTime;
+    const projectId = values.projectId;
+    const userId = values.userId;
     const userStoryId = values.userStoryId;
-
     addTask({
-      uid: doc(collection(db, "projects")).id,
       name,
       description,
       priority,
@@ -38,10 +36,6 @@ export default function CreateTaskForm({
       projectId,
       userId,
       userStoryId,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      startedAt: null,
-      completedAt: null,
     });
 
     onClose();

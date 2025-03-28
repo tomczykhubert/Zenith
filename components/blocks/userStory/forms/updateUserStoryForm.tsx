@@ -23,7 +23,6 @@ export default function UpdateUserStoryForm({
       description: values.description,
       priority: values.priority,
       status: values.status,
-      updatedAt: Date.now(),
     });
     onClose();
   };

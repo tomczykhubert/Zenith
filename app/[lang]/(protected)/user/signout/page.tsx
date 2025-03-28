@@ -1,16 +1,18 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { auth } from "@/lib/firebase";
 import { useEffect } from "react";
-import { routes } from "@/utils/routes";
-import { useLocalizedRoute } from "@/utils/routes";
+import { routes } from "@/lib/routes/routes";
+import { useAuthStore } from "@/providers/authProvider";
+import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 export default function SignOut() {
   const router = useRouter();
   const localizedRoute = useLocalizedRoute(routes.home);
+  const logout = useAuthStore((state) => state.logout);
+
   useEffect(() => {
     const signOut = async () => {
       try {
-        await auth.signOut();
+        await logout();
         router.push(localizedRoute);
       } catch (error) {
         console.error("Error signing out:", error);
@@ -18,7 +20,7 @@ export default function SignOut() {
       }
     };
     signOut();
-  }, [router, localizedRoute]);
+  }, [router, localizedRoute, logout]);
 
   return null;
 }

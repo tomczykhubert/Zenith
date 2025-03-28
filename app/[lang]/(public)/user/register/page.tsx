@@ -1,15 +1,10 @@
 "use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
-import { auth } from "@/lib/firebase";
 import {
   Form,
   FormControl,
+  FormField,
   FormItem,
   FormLabel,
   FormMessage,
@@ -20,130 +15,122 @@ import { Error } from "@/components/blocks/error";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useUserStore } from "@/providers/userProvider";
-import { User, UserRole } from "@/types/user";
-import { routes, useLocalizedRoute } from "@/utils/routes";
+import { routes } from "@/lib/routes/routes";
+import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import { useAuthStore } from "@/providers/authProvider";
+import { UserRole } from "@prisma/client";
 
-const formSchema = z.object({
-  email: z.coerce.string().nonempty({
-    message: "user.validations.email.required",
-  }),
-  password: z.coerce.string().nonempty({
-    message: "user.validations.password.required",
-  }),
-  confirmPassword: z.coerce.string().nonempty({
-    message: "user.validations.confirmPassword.required",
-  }),
-});
-
-interface FormData {
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
-interface FirebaseError {
-  code: string;
-  message: string;
-}
-
-export default function RegisterForm() {
-  const [error, setError] = useState<FirebaseError | null>(null);
-  const addUser = useUserStore((store) => store.addUser);
-  const { t } = useDictionary();
-  const user = useUserStore((state) => state.currentUser);
-  const router = useRouter();
-
-  const redirect = useLocalizedRoute(routes.userVerify);
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+const formSchema = z
+  .object({
+    email: z.string().email({
+      message: "user.validations.email.invalid",
+    }),
+    password: z.string().min(6, {
+      message: "user.validations.password.tooShort",
+    }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "user.validations.password.mismatch",
+    path: ["confirmPassword"],
   });
 
-  if (user) {
-    return null;
-  }
+type FormData = z.infer<typeof formSchema>;
+
+export default function RegisterForm() {
+  const [error, setError] = useState<string | null>(null);
+  const { t } = useDictionary();
+  const router = useRouter();
+  const redirect = useLocalizedRoute(routes.user.signIn);
+
+  const register = useAuthStore((state) => state.register);
+  const user = useAuthStore((state) => state.user);
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  useEffect(() => {
+    if (user) {
+      router.push(redirect);
+    }
+  }, [user, router, redirect]);
 
   const onSubmit = async (data: FormData) => {
-    const { email, password, confirmPassword } = data;
-
-    if (password !== confirmPassword) {
-      setError({
-        code: "password-mismatch",
-        message: t("user.validations.password.mismatch"),
-      });
-      return;
-    }
     try {
-      const credential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      const user: User = {
-        uid: credential.user.uid,
-        email: credential.user.email,
-        displayName: "",
-        role: UserRole.DEVELOPER,
-        photoURL: "",
-      };
-
-      addUser(user);
-      await sendEmailVerification(auth.currentUser!);
+      setError(null);
+      await register(data.email, data.password, "", UserRole.ADMIN);
       router.push(redirect);
-    } catch (error) {
-      const firebaseError = error as FirebaseError;
-      setError({ code: firebaseError.code, message: firebaseError.message });
+    } catch {
+      setError(t("user.registrationFailed"));
     }
   };
 
   return (
     <div className="mt-5 max-w-[525px] mx-auto">
       <h1 className="text-3xl mb-5">{t("user.createAccount")}</h1>
-      {error ? <Error error={error} /> : null}
+      {error && <Error error={{ message: error }} />}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="">
-          <FormItem className="mb-4">
-            <FormLabel>Email</FormLabel>
-            <FormControl>
-              <Input
-                type="email"
-                {...form.register("email")}
-                placeholder="Email"
-                required
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-          <FormItem className="mb-4">
-            <FormLabel>{t("user.password")}</FormLabel>
-            <FormControl>
-              <Input
-                type="password"
-                {...form.register("password")}
-                placeholder={t("user.password")}
-                required
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-          <FormItem className="mb-4">
-            <FormLabel>{t("user.confirmPassword")}</FormLabel>
-            <FormControl>
-              <Input
-                type="password"
-                {...form.register("confirmPassword")}
-                placeholder={t("user.confirmPassword")}
-                required
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-          <div className="mb-10">
-            <Button type="submit">{t("user.signUp")}</Button>
-          </div>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("user.email")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder={t("user.emailPlaceholder")}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("user.password")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder={t("user.passwordPlaceholder")}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("user.confirmPassword")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder={t("user.confirmPasswordPlaceholder")}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full">
+            {t("user.signUp")}
+          </Button>
         </form>
       </Form>
     </div>

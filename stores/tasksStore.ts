@@ -1,5 +1,5 @@
+import { apiRoutes } from "@/lib/routes/apiRoutes";
 import Task from "@/types/task";
-import { TasksRepository } from "@/repositories/tasksRepository";
 import { createStore } from "zustand/vanilla";
 
 export type TaskSpecification = Partial<Task>;
@@ -9,10 +9,16 @@ export type TasksState = {
 };
 
 export type TasksActions = {
-  addTask: (task: Task) => void;
-  updateTask: (task: Task) => void;
-  deleteTask: (id: string) => void;
+  addTask: (
+    task: Omit<
+      Task,
+      "id" | "createdAt" | "updatedAt" | "startedAt" | "completedAt"
+    >
+  ) => Promise<void>;
+  updateTask: (task: Task) => Promise<void>;
+  deleteTask: (id: string) => Promise<void>;
   getTaskById: (id: string) => Task | null;
+  fetchTasks: () => Promise<void>;
 };
 
 export type TasksStore = TasksState & TasksActions;
@@ -22,35 +28,56 @@ export const defaultInitState: TasksState = {
 };
 
 export const createTasksStore = (initState: TasksState = defaultInitState) => {
-  const tasksRepository = new TasksRepository();
   return createStore<TasksState & TasksActions>((set, get) => ({
     ...initState,
-    addTask: (task: Task) => {
-      tasksRepository.create(task);
-      set((state) => {
-        return {
-          tasks: [...state.tasks, task],
-        };
-      });
+    fetchTasks: async () => {
+      const response = await fetch(apiRoutes.tasks.base);
+      if (!response.ok) throw new Error("Failed to fetch tasks");
+      const tasks = await response.json();
+      set({ tasks });
     },
-    updateTask: (updatedTask: Task) => {
-      tasksRepository.update(updatedTask);
-      set((state) => {
-        const updatedTasks = state.tasks?.map((task) =>
-          task.uid === updatedTask.uid ? updatedTask : task
-        );
-        return { ...state, tasks: updatedTasks };
+    addTask: async (
+      task: Omit<
+        Task,
+        "id" | "createdAt" | "updatedAt" | "startedAt" | "completedAt"
+      >
+    ) => {
+      const response = await fetch(apiRoutes.tasks.base, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(task),
       });
+      if (!response.ok) throw new Error("Failed to create task");
+      const newTask = await response.json();
+      set((state) => ({
+        tasks: [...state.tasks, newTask],
+      }));
     },
-    deleteTask: (uid: string) => {
-      tasksRepository.delete(uid);
-      set((state) => {
-        const updatedTasks = state.tasks?.filter((task) => task.uid !== uid);
-        return { ...state, tasks: updatedTasks };
+    updateTask: async (updatedTask: Task) => {
+      const response = await fetch(apiRoutes.tasks.byId(updatedTask.id), {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedTask),
       });
+      if (!response.ok) throw new Error("Failed to update task");
+      const updated = await response.json();
+      set((state) => ({
+        tasks: state.tasks.map((task) =>
+          task.id === updatedTask.id ? updated : task
+        ),
+      }));
     },
-    getTaskById: (uid: string) => {
-      return get().tasks.find((task) => task.uid === uid) ?? null;
+    deleteTask: async (id: string) => {
+      const response = await fetch(apiRoutes.tasks.byId(id), {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Failed to delete task");
+      set((state) => ({
+        tasks: state.tasks.filter((task) => task.id !== id),
+      }));
+    },
+    getTaskById: (id: string) => {
+      return get().tasks.find((task) => task.id === id) ?? null;
     },
   }));
 };

@@ -15,8 +15,6 @@ import { Input } from "@/components/ui/forms/input";
 import { Textarea } from "@/components/ui/forms/textarea";
 import { useForm } from "react-hook-form";
 import {
-  UserStoryPriority,
-  UserStoryStatus,
   useUserStorySelectPriorities,
   useUserStorySelectStatuses,
 } from "@/types/userStory";
@@ -25,7 +23,8 @@ import { useProjectsStore } from "@/providers/projectsProvider";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { mapUsersToSelect } from "@/types/user";
 import { mapProjectsToSelect } from "@/types/project";
-import { useUserStore } from "@/providers/userProvider";
+import { useUsers } from "@/providers/usersProvider";
+import { UserStoryPriority, UserStoryStatus } from "@prisma/client";
 
 const formSchema = z.object({
   name: z.coerce.string().nonempty({
@@ -41,6 +40,7 @@ const formSchema = z.object({
     message: "userStory.validations.status.invalid",
   }),
   projectId: z.string(),
+  userId: z.string(),
 });
 
 interface UserStoryFormProps {
@@ -58,11 +58,11 @@ function UserStoryForm({ initialValues, onSubmit }: UserStoryFormProps) {
   const projects = useProjectsStore((state) => state.projects);
   const projectOptions = mapProjectsToSelect(projects);
 
-  const users = useUserStore((state) => state.users);
-
+  const users = useUsers((state) => state.users);
   const userOptions = mapUsersToSelect(users);
   const priorityOptions = useUserStorySelectPriorities();
   const statusOptions = useUserStorySelectStatuses();
+
   return (
     <>
       <Form {...form}>
@@ -129,6 +129,7 @@ function UserStoryForm({ initialValues, onSubmit }: UserStoryFormProps) {
                 </FormLabel>
                 <FormControl>
                   <Select
+                    {...field}
                     options={priorityOptions}
                     selected={field.value}
                     onValueChange={field.onChange}
@@ -146,6 +147,7 @@ function UserStoryForm({ initialValues, onSubmit }: UserStoryFormProps) {
                 <FormLabel>{t("userStory.properties.status.status")}</FormLabel>
                 <FormControl>
                   <Select
+                    {...field}
                     options={statusOptions}
                     selected={field.value}
                     onValueChange={field.onChange}
@@ -157,12 +159,13 @@ function UserStoryForm({ initialValues, onSubmit }: UserStoryFormProps) {
           />
           <FormField
             control={form.control}
-            name="status"
+            name="userId"
             render={({ field }) => (
               <FormItem className="mb-4">
                 <FormLabel>{t("user.user")}</FormLabel>
                 <FormControl>
                   <Select
+                    {...field}
                     options={userOptions}
                     selected={field.value}
                     onValueChange={field.onChange}

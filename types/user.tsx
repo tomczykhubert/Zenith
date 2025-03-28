@@ -1,20 +1,16 @@
-export enum UserRole {
-  ADMIN = "ADMIN",
-  DEVOPS = "DEVOPS",
-  DEVELOPER = "DEVELOPER",
-}
+import { UserRole } from "@prisma/client";
+import { BaseDto } from "./base";
 
-export interface User {
-  uid: string;
+export default interface User extends BaseDto {
   email: string | null;
   displayName: string | null;
   role: UserRole;
-  photoURL?: string | null;
+  photoURL: string | null;
 }
 
 export const mapUsersToSelect = (users: User[]) => {
   return users.map((user) => ({
-    label: user.displayName || user.email || user.uid,
-    value: user.uid,
+    label: user.displayName || user.email || user.id,
+    value: user.id,
   }));
 };

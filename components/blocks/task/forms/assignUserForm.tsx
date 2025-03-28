@@ -12,12 +12,13 @@ import {
   FormMessage,
 } from "@/components/ui/forms/form";
 import { useForm } from "react-hook-form";
-import Task, { TaskStatus } from "@/types/task";
+import Task from "@/types/task";
 import { Select } from "@/components/ui/forms/select";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { mapUsersToSelect } from "@/types/user";
 import { useTasksStore } from "@/providers/tasksProvider";
-import { useUserStore } from "@/providers/userProvider";
+import { TaskStatus } from "@prisma/client";
+import { useUsers } from "@/providers/usersProvider";
 
 const formSchema = z.object({
   userId: z.string().nonempty({
@@ -46,12 +47,14 @@ export default function AssignUserForm({ task, onClose }: AssignUserFormProps) {
         task.status == TaskStatus.PENDING
           ? TaskStatus.IN_PROGRESS
           : task.status,
-      startedAt: task.startedAt ?? Date.now(),
+      startedAt: task.startedAt ?? new Date(),
     });
     onClose();
   };
 
-  const users = useUserStore((state) => state.users);
+  const { users } = useUsers((state) => ({
+    users: state.users,
+  }));
   const usersOptions = mapUsersToSelect(users);
 
   return (

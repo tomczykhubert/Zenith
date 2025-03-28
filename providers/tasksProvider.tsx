@@ -1,18 +1,13 @@
 "use client";
 
-import {
-  type ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useStore } from "zustand";
 
 import { createTasksStore, TasksStore, TasksState } from "@/stores/tasksStore";
 import Spinner from "@/components/blocks/spinner";
-import { TasksRepository } from "@/repositories/tasksRepository";
-import { QuerySpecification } from "@/repositories/baseRepository";
+import { ProviderProps } from "./base";
+import Task from "@/types/task";
+import { apiRoutes } from "@/lib/routes/apiRoutes";
 
 export type TasksStoreApi = ReturnType<typeof createTasksStore>;
 
@@ -20,16 +15,12 @@ export const TasksStoreContext = createContext<TasksStoreApi | undefined>(
   undefined
 );
 
-export interface TasksStoreProviderProps {
-  children: ReactNode;
-  specification?: QuerySpecification[];
-}
-
 export const TasksStoreProvider = ({
   children,
   specification,
-}: TasksStoreProviderProps) => {
-  const [initialTasks, setInitialTasks] = useState<TasksState>({
+  order,
+}: ProviderProps<Task>) => {
+  const [initialState, setInitialState] = useState<TasksState>({
     tasks: [],
   });
   const [isLoading, setIsLoading] = useState(true);
@@ -37,25 +28,41 @@ export const TasksStoreProvider = ({
   useEffect(() => {
     const fetchInitialState = async () => {
       try {
-        const tasksRepository = new TasksRepository();
-        const tasks = specification
-          ? await tasksRepository.getBySpecification(specification)
-          : await tasksRepository.get();
-        setInitialTasks({ tasks: tasks });
+        const params = new URLSearchParams();
+        if (specification) {
+          params.append("specification", JSON.stringify(specification));
+        }
+        if (order) {
+          params.append("order", JSON.stringify(order));
+        }
+
+        const queryString = params.toString();
+        const url = `${apiRoutes.tasks.base}${
+          queryString ? `?${queryString}` : ""
+        }`;
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch tasks");
+        }
+        const tasks = await response.json();
+        setInitialState({ tasks });
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+        setInitialState({ tasks: [] });
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchInitialState();
-  }, [specification]);
+  }, [specification, order]);
 
   if (isLoading) {
     return <Spinner />;
   }
-
   return (
-    <TasksStoreContext.Provider value={createTasksStore(initialTasks)}>
+    <TasksStoreContext.Provider value={createTasksStore(initialState)}>
       {children}
     </TasksStoreContext.Provider>
   );

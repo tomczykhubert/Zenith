@@ -22,7 +22,6 @@ export default function UpdateTaskForm({ onClose, task }: UpdateTaskFormProps) {
       estimatedTime: values.estimatedTime,
       userId: values.userId,
       userStoryId: values.userStoryId,
-      updatedAt: Date.now(),
     });
     onClose();
   };
