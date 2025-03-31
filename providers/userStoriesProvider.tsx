@@ -75,14 +75,14 @@ export const UserStoriesStoreProvider = ({
   );
 };
 
-export const useUserStoriesStore = <T,>(
+export const useUsersStoretoriesStore = <T,>(
   selector: (store: UserStoriesStore) => T
 ): T => {
   const userStoriesStoreContext = useContext(UserStoriesStoreContext);
 
   if (!userStoriesStoreContext) {
     throw new Error(
-      `useUserStoriesStore must be used within UserStoriesStoreProvider`
+      `useUsersStoretoriesStore must be used within UserStoriesStoreProvider`
     );
   }
 

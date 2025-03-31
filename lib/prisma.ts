@@ -8,32 +8,7 @@ declare global {
 }
 
 const createPrismaClient = () => {
-  const client = new PrismaClient().$extends({
-    query: {
-      $allModels: {
-        async create({ args, query }) {
-          if (args.data) {
-            for (const key in args.data) {
-              if (args.data[key] === "") {
-                args.data[key] = null;
-              }
-            }
-          }
-          return query(args);
-        },
-        async update({ args, query }) {
-          if (args.data) {
-            for (const key in args.data) {
-              if (args.data[key] === "") {
-                args.data[key] = null;
-              }
-            }
-          }
-          return query(args);
-        },
-      },
-    },
-  });
+  const client = new PrismaClient();
 
   return client;
 };

@@ -1,11 +1,13 @@
 import { UserRole } from "@prisma/client";
-import { BaseDto } from "./base";
+import { Base } from "./base";
+import ID from "./id";
 
-export default interface User extends BaseDto {
-  email: string | null;
+export default interface User extends Base {
+  email: string;
   displayName: string | null;
   role: UserRole;
   photoURL: string | null;
+  activeProjectId: ID | null;
 }
 
 export const mapUsersToSelect = (users: User[]) => {

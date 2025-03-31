@@ -1,0 +1,18 @@
+{
+  "common": {
+    "no": "No",
+    "yes": "Yes",
+    "home": "Welcome to Zenith - project managment application.",
+    "back": "Back",
+    "submit": "Submit",
+    "hours": "hours",
+    "properties": {
+      "name": "Name",
+      "description": "Description",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At"
+    },
+    "select": "Click to select",
+    "changeLanguage": "Change language"
+  }
+}

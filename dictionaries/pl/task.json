@@ -1,0 +1,85 @@
+{
+  "task": {
+    "task": "Zadanie",
+    "tasks": "Zadania",
+    "actions": {
+      "create": "Utwórz zadanie",
+      "edit": "Edytuj zadanie",
+      "delete": "Usuń zadanie",
+      "deleteConfirm": "Czy na pewno chcesz usunąć zadanie?",
+      "markAsCompleted": "Oznacz jako ukończone",
+      "markAsCompletedConfirm": "Czy na pewno chcesz oznaczyć zadanie jako ukończone?",
+      "assignUser": "Przypisz użytkownika"
+    },
+    "properties": {
+      "estimatedTime": "Szacowany czas",
+      "startedAt": "Rozpoczęto",
+      "completedAt": "Zakończono",
+      "status": {
+        "status": "Status",
+        "pending": "Oczekujące",
+        "inProgress": "W trakcie",
+        "completed": "Ukończone"
+      },
+      "priority": {
+        "priority": "Priorytet",
+        "low": "Niski",
+        "medium": "Średni",
+        "high": "Wysoki"
+      },
+      "assignedUser": "Przypisany użytkownik"
+    },
+    "null": {
+      "all": "Brak dostępnych zadań.",
+      "pending": "Brak oczekujących zadań.",
+      "inProgress": "Brak zadań w trakcie.",
+      "completed": "Brak ukończonych zadań."
+    },
+    "placeholders": {
+      "name": "Moje nowe zadanie",
+      "description": "To jest krótki opis zadania.",
+      "estimatedTime": "Wprowadź szacowany czas w godzinach"
+    },
+    "validations": {
+      "name": {
+        "required": "Nazwa zadania jest wymagana."
+      },
+      "priority": {
+        "required": "Priorytet zadania jest wymagany.",
+        "invalid": "Nieprawidłowy priorytet."
+      },
+      "status": {
+        "required": "Status zadania jest wymagany.",
+        "invalid": "Nieprawidłowy status."
+      },
+      "estimatedTime": {
+        "invalid": "Szacowany czas musi być liczbą dodatnią!"
+      },
+      "description": {
+        "required": "Opis zadania jest wymagany."
+      }
+    },
+    "toast": {
+      "create": {
+        "success": "Zadanie zostało utworzone.",
+        "failed": "Nie udało się utworzyć zadania."
+      },
+      "delete": {
+        "success": "Zadanie zostało usunięte.",
+        "failed": "Nie udało się usunąć zadania."
+      },
+      "update": {
+        "success": "Zadanie zostało zaktualizowane.",
+        "failed": "Nie udało się zaktualizować zadania."
+      },
+      "assignUser": {
+        "success": "Użytkownik został przypisany do zadania.",
+        "failed": "Nie udało się przypisać użytkownika do zadania."
+      },
+      "markAsCompleted": {
+        "success": "Zadanie zostało oznaczone jako ukończone.",
+        "failed": "Nie udało się oznaczyć zadania jako ukończone."
+      }
+    }
+  }
+}

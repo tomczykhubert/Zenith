@@ -36,11 +36,14 @@ export default function ActionIcon({
   text,
 }: ActionIconProps) {
   const localizedHref = useLocalizedRoute(href || "/");
-  const tooltipId = `tooltip-${Math.random().toString(36).substring(2, 9)}`;
+  const generateId = (prefix: string, key: string) => {
+    return `${prefix}-${key.replace(/[^a-zA-Z0-9]/g, "")}`;
+  };
+  const tooltipId = generateId("tooltip", text);
 
   const commonProps = {
     className: cn(
-      `px-6 py-3 rounded-md text-slate-700 cursor-pointer transition-colors ${variantStyles[variant]}`,
+      `px-6 py-3 rounded-md text-slate-700 transition-colors cursor-pointer ${variantStyles[variant]}`,
       className
     ),
     ...(Icon

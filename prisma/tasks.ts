@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { Task } from "@prisma/client";
 import { Order, Specification } from "./base";
+import ID from "@/types/id";
 
 export async function createTask(task: Task): Promise<Task> {
   const createdTask = await prisma.task.create({
@@ -28,19 +29,16 @@ export async function getTasksBySpecification(
     where: specification,
     include: includeRelations
       ? {
-          project: true,
-          user: true,
+          assignedUser: true,
           userStory: true,
         }
       : undefined,
   });
+  console.log(tasks);
   return tasks;
 }
 
-export async function updateTask(
-  id: string,
-  data: Partial<Task>
-): Promise<Task> {
+export async function updateTask(id: ID, data: Partial<Task>): Promise<Task> {
   const updatedTask = await prisma.task.update({
     where: { id },
     data,
@@ -48,7 +46,7 @@ export async function updateTask(
   return updatedTask;
 }
 
-export async function deleteTask(id: string): Promise<void> {
+export async function deleteTask(id: ID): Promise<void> {
   await prisma.task.delete({
     where: { id },
   });

@@ -1,22 +1,33 @@
-import { useUserStoriesStore } from "@/providers/userStoriesProvider";
+import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
 import { useState } from "react";
 import FormModal from "@/components/ui/modals/formModal";
 import UpdateUserStoryForm from "./forms/updateUserStoryForm";
 import ConfirmModal from "@/components/ui/modals/confirmModal";
 import UserStory from "@/types/userStory";
 import ActionIcon from "@/components/ui/actionIcon";
-import { FaTrash, FaEdit } from "react-icons/fa";
+import { FaTrash, FaEdit, FaTasks } from "react-icons/fa";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { getEnumTranslationKey } from "@/lib/utils";
+import { toast } from "react-toastify";
+import { useUsersStore } from "@/providers/usersProvider";
+import { routes } from "@/lib/routes/routes";
 
 export default function UserStoryCard(userStory: UserStory) {
-  const deleteUserStory = useUserStoriesStore((state) => state.deleteUserStory);
-
+  const deleteUserStory = useUsersStoretoriesStore(
+    (state) => state.deleteUserStory
+  );
+  const owner = useUsersStore((state) => state.getUserById(userStory.ownerId));
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   const handleDelete = () => {
-    deleteUserStory(userStory.id);
+    try {
+      deleteUserStory(userStory.id);
+      toast.success(t("userStory.toast.delete.success"));
+    } catch {
+      toast.error(t("userStory.toast.delete.failed"));
+    }
+
     setIsDeleteModalOpen(false);
   };
 
@@ -25,7 +36,7 @@ export default function UserStoryCard(userStory: UserStory) {
   return (
     <>
       <div
-        className="relative bg-slate-700 border border-slate-700 shadow-md rounded-md p-4 min-h-[200px] drop-shadow-3xl
+        className="bg-slate-700 border border-slate-700 shadow-md rounded-md p-4 min-h-[200px] drop-shadow-3xl
       "
       >
         <div className="flex justify-between items-center mb-3">
@@ -33,6 +44,12 @@ export default function UserStoryCard(userStory: UserStory) {
             {userStory.name}
           </h2>
           <div className="flex space-x-2">
+            <ActionIcon
+              variant="lime"
+              href={routes.userStories.tasks.list(userStory.id)}
+              Icon={FaTasks}
+              text={t("task.tasks")}
+            />
             <ActionIcon
               onClick={() => setIsUpdateModalOpen(true)}
               Icon={FaEdit}
@@ -48,7 +65,7 @@ export default function UserStoryCard(userStory: UserStory) {
           </div>
         </div>
         <p className="text-muted-foreground mb-3">{userStory.description}</p>
-        <p className="text-muted-foreground mb-3">
+        {/* <p className="text-muted-foreground mb-3">
           <strong>{t("userStory.properties.status.status")}:</strong>{" "}
           {t(
             getEnumTranslationKey(
@@ -56,7 +73,7 @@ export default function UserStoryCard(userStory: UserStory) {
               "userStory.properties.status"
             )
           )}
-        </p>
+        </p> */}
         <p className="text-muted-foreground mb-3">
           <strong>{t("userStory.properties.priority.priority")}:</strong>{" "}
           {t(
@@ -67,7 +84,8 @@ export default function UserStoryCard(userStory: UserStory) {
           )}
         </p>
         <p className="text-muted-foreground mb-3">
-          <strong>{t("user.user")}:</strong> {userStory.userId}
+          <strong>{t("userStory.properties.owner")}:</strong>{" "}
+          {owner ? owner.displayName || owner.email : "N/A"}
         </p>
         <p className="text-muted-foreground mb-3">
           <strong>{t("common.properties.createdAt")}:</strong>{" "}

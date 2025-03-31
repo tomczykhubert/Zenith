@@ -4,39 +4,33 @@ import CreateUserStoryForm from "@/components/blocks/userStory/forms/createUserS
 import UserStoriesGrid from "@/components/blocks/userStory/userStoriesGrid";
 import ActionIcon from "@/components/ui/actionIcon";
 import FormModal from "@/components/ui/modals/formModal";
+import { useAuthStore } from "@/providers/authProvider";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { useProjectsStore } from "@/providers/projectsProvider";
-import { useUserStoriesStore } from "@/providers/userStoriesProvider";
-import Project from "@/types/project";
+import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
 import UserStory from "@/types/userStory";
-import { routes } from "@/lib/routes/routes";
-import { useParams } from "next/navigation";
 import { useState } from "react";
 import { GiNotebook } from "react-icons/gi";
 
 export default function UserStories() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { id } = useParams();
   const { t } = useDictionary();
-  const project: Project | null = useProjectsStore((state) =>
-    state.getProjectById(id?.toString() || "")
-  );
 
-  const userStories: UserStory[] = useUserStoriesStore(
+  const user = useAuthStore((state) => state.user);
+  const userStories: UserStory[] = useUsersStoretoriesStore(
     (state) => state.userStories
   );
+  const activeProject = useProjectsStore((state) =>
+    state.getProjectById(user!.activeProjectId!)
+  );
 
-  if (!project) {
-    return <p className="text-center mt-5">Project not found.</p>;
-  }
-
+  if (!activeProject) return;
   return (
     <>
       <div className="flex justify-between items-center">
         <Title
           title={t("userStory.userStories")}
-          subtitle={project.name}
-          backUrl={routes.projects.list}
+          subtitle={activeProject.name}
         />
         <ActionIcon
           Icon={GiNotebook}
@@ -51,8 +45,8 @@ export default function UserStories() {
         header={t("userStory.actions.create")}
       >
         <CreateUserStoryForm
-          projectId={id?.toString() || ""}
-          userId=""
+          projectId={activeProject.id}
+          ownerId={user!.id}
           onClose={() => setIsModalOpen(false)}
         />
       </FormModal>

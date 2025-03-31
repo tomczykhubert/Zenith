@@ -4,40 +4,42 @@ import { useTasksStore } from "@/providers/tasksProvider";
 import { z } from "zod";
 import { formSchema, TaskForm } from "./taskForm";
 import { TaskPriority, TaskStatus } from "@prisma/client";
+import ID from "@/types/id";
+import { toast } from "react-toastify";
+import { useDictionary } from "@/providers/dictionaryProvider";
 
 interface CreateTaskFormProps {
   onClose: () => void;
-  projectId: string;
-  userId: string;
+  userStoryId: ID;
 }
 
 export default function CreateTaskForm({
   onClose,
-  projectId,
-  userId,
+  userStoryId,
 }: CreateTaskFormProps) {
   const addTask = useTasksStore((state) => state.addTask);
+  const { t } = useDictionary();
 
-  const handleCreate = (values: z.infer<typeof formSchema>) => {
+  const handleCreate = async (values: z.infer<typeof formSchema>) => {
     const name = values.name;
     const description = values.description;
     const priority = values.priority;
-    const status = values.status;
+    const status = TaskStatus.PENDING;
     const estimatedTime = values.estimatedTime;
-    const projectId = values.projectId;
-    const userId = values.userId;
-    const userStoryId = values.userStoryId;
-    addTask({
-      name,
-      description,
-      priority,
-      status,
-      estimatedTime,
-      projectId,
-      userId,
-      userStoryId,
-    });
+    try {
+      await addTask({
+        name,
+        description,
+        priority,
+        status,
+        estimatedTime,
+        userStoryId,
+      });
 
+      toast.success(t("task.toast.create.success"));
+    } catch {
+      toast.error(t("task.toast.create.failed"));
+    }
     onClose();
   };
 
@@ -48,11 +50,7 @@ export default function CreateTaskForm({
           name: "",
           description: "",
           priority: TaskPriority.LOW,
-          status: TaskStatus.PENDING,
           estimatedTime: 0,
-          projectId: projectId,
-          userId: userId,
-          userStoryId: "",
         }}
         onSubmit={handleCreate}
       />

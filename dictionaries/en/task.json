@@ -1,0 +1,85 @@
+{
+  "task": {
+    "task": "Task",
+    "tasks": "Tasks",
+    "actions": {
+      "create": "Create task",
+      "edit": "Edit task",
+      "delete": "Delete task",
+      "deleteConfirm": "Are you sure you want to delete task?",
+      "markAsCompleted": "Mark as completed",
+      "markAsCompletedConfirm": "Are you sure you want to mark task as completed?",
+      "assignUser": "Assign user"
+    },
+    "properties": {
+      "estimatedTime": "Estimated Time",
+      "startedAt": "Started At",
+      "completedAt": "Completed At",
+      "status": {
+        "status": "Status",
+        "pending": "Pending",
+        "inProgress": "In progress",
+        "completed": "Completed"
+      },
+      "priority": {
+        "priority": "Priority",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "assignedUser": "Assigned user"
+    },
+    "null": {
+      "all": "No tasks available.",
+      "pending": "No pending tasks.",
+      "inProgress": "No in-progress tasks.",
+      "completed": "No completed tasks."
+    },
+    "placeholders": {
+      "name": "My new task",
+      "description": "This is a brief description of the task.",
+      "estimatedTime": "Enter estimated time in hours"
+    },
+    "validations": {
+      "name": {
+        "required": "Task name is required."
+      },
+      "priority": {
+        "required": "Task priority is required.",
+        "invalid": "Invalid priority."
+      },
+      "status": {
+        "required": "Task status is required.",
+        "invalid": "Invalid status."
+      },
+      "estimatedTime": {
+        "invalid": "Estimated time must be a positive number!"
+      },
+      "description": {
+        "required": "Task description is required."
+      }
+    },
+    "toast": {
+      "create": {
+        "success": "Task has been created.",
+        "failed": "Failed to create task."
+      },
+      "delete": {
+        "success": "Task has been deleted.",
+        "failed": "Failed to delete task."
+      },
+      "update": {
+        "success": "Task has been edited.",
+        "failed": "Failed to edit task."
+      },
+      "assignUser": {
+        "success": "User has been assigned to task.",
+        "failed": "Failed to assign user to task."
+      },
+      "markAsCompleted": {
+        "success": "Task has been marked as completed.",
+        "failed": "Failed to mark task as completed."
+      }
+    }
+  }
+}

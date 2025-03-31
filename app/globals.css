@@ -15,3 +15,7 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}

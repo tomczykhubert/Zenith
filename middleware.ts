@@ -47,14 +47,7 @@ async function handleAuth(request: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
 
-      const result = await response.json();
       const newResponse = NextResponse.next();
-
-      newResponse.cookies.set(AUTH_CONFIG.accessToken.name, result.token, {
-        ...AUTH_CONFIG.cookies,
-        maxAge: AUTH_CONFIG.accessToken.maxAge,
-      });
-
       return newResponse;
     } catch {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

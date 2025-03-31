@@ -16,6 +16,7 @@ interface AuthActions {
     displayName: string,
     role: UserRole
   ) => Promise<void>;
+  updateCurrentUser: (updatedUser: Partial<User>) => Promise<void>;
 }
 
 export type AuthStore = AuthState & AuthActions;
@@ -25,7 +26,7 @@ export const defaultInitState: AuthState = {
 };
 
 export const createAuthStore = (initState: AuthState = defaultInitState) => {
-  return createStore<AuthState & AuthActions>((set) => ({
+  return createStore<AuthState & AuthActions>((set, get) => ({
     ...initState,
     login: async (email, password) => {
       try {
@@ -66,6 +67,11 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
       } catch (error) {
         throw error;
       }
+    },
+    updateCurrentUser: async (updatedUser) => {
+      const currentUser = get().user;
+      if (!currentUser) throw new Error("No authenticated user");
+      set({ user: { ...currentUser, ...updatedUser } });
     },
   }));
 };

@@ -1,5 +1,7 @@
+import ID from "@/types/id";
+
 interface GridColumnProps {
-  items: { id: string }[];
+  items: { id: ID }[];
   header: string;
   emptyMessage: string;
   Element: React.ElementType;

@@ -1,4 +1,5 @@
 import { apiRoutes } from "@/lib/routes/apiRoutes";
+import ID from "@/types/id";
 import User from "@/types/user";
 import { createStore } from "zustand/vanilla";
 
@@ -7,26 +8,21 @@ export type UsersState = {
 };
 
 export type UsersActions = {
-  fetchUsers: () => Promise<void>;
   addUser: (user: User) => Promise<void>;
   updateUser: (user: User) => Promise<void>;
-  deleteUser: (id: string) => Promise<void>;
-  getUserById: (id: string) => User | null;
+  deleteUser: (id: ID) => Promise<void>;
+  getUserById: (id: ID) => User | null;
 };
 
 export type UsersStore = UsersState & UsersActions;
 
-export const createUsersStore = (initState: UsersState = { users: [] }) => {
+export const defaultInitState: UsersState = {
+  users: [],
+};
+
+export const createUsersStore = (initState: UsersState = defaultInitState) => {
   return createStore<UsersStore>((set, get) => ({
-    users: initState.users,
-
-    fetchUsers: async () => {
-      const response = await fetch(apiRoutes.users.base);
-      if (!response.ok) throw new Error("Failed to fetch users");
-      const users = await response.json();
-      set({ users });
-    },
-
+    ...initState,
     addUser: async (user: User) => {
       const response = await fetch(apiRoutes.users.base, {
         method: "POST",
@@ -45,6 +41,7 @@ export const createUsersStore = (initState: UsersState = { users: [] }) => {
         body: JSON.stringify({
           displayName: user.displayName,
           photoURL: user.photoURL,
+          activeProjectId: user.activeProjectId,
         }),
       });
 
@@ -59,7 +56,7 @@ export const createUsersStore = (initState: UsersState = { users: [] }) => {
       }));
     },
 
-    deleteUser: async (id: string) => {
+    deleteUser: async (id: ID) => {
       const response = await fetch(apiRoutes.users.byId(id), {
         method: "DELETE",
       });
@@ -69,7 +66,7 @@ export const createUsersStore = (initState: UsersState = { users: [] }) => {
       }));
     },
 
-    getUserById: (id: string) => {
+    getUserById: (id: ID) => {
       return get().users.find((u) => u.id === id) || null;
     },
   }));

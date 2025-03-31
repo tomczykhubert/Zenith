@@ -4,11 +4,9 @@ import {
   updateProject,
   deleteProject,
 } from "@/prisma/projects";
+import ID from "@/types/id";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request, { params }: { params: { id: ID } }) {
   const { id } = await params;
   try {
     const project = await getProjectWithRelations(id);
@@ -24,10 +22,7 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: Request, { params }: { params: { id: ID } }) {
   const { id } = await params;
   try {
     const data = await req.json();
@@ -45,10 +40,7 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: Request, { params }: { params: { id: ID } }) {
   const { id } = await params;
   try {
     await deleteProject(id);

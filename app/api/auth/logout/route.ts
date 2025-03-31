@@ -3,13 +3,9 @@ import { NextResponse } from "next/server";
 
 export async function POST() {
   try {
-    const response = NextResponse.json({ message: "Logged out successfully" });
-    response.cookies.delete("token");
-    response.cookies.delete("refreshToken");
-
-    await clearAuthCookies();
-
-    return response;
+    console.log("Clearing cookies...");
+    clearAuthCookies();
+    return NextResponse.json({ message: "Logged out successfully" });
   } catch (error) {
     return NextResponse.json(
       { error: `Logout failed: ${error}` },

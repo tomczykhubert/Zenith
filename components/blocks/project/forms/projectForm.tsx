@@ -20,7 +20,9 @@ const formSchema = z.object({
   name: z.coerce.string().nonempty({
     message: "project.validations.name.required",
   }),
-  description: z.coerce.string(),
+  description: z.coerce.string().nonempty({
+    message: "project.validations.description.required",
+  }),
 });
 
 interface ProjectFormProps {

@@ -14,34 +14,25 @@ import {
 import { Input } from "@/components/ui/forms/input";
 import { Textarea } from "@/components/ui/forms/textarea";
 import { useForm } from "react-hook-form";
-import { useTaskSelectPriorities, useTaskSelectStatuses } from "@/types/task";
+import { useTaskSelectPriorities } from "@/types/task";
 import { Select } from "@/components/ui/forms/select";
-import { useProjectsStore } from "@/providers/projectsProvider";
-import { useUserStoriesStore } from "@/providers/userStoriesProvider";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import { mapUsersToSelect } from "@/types/user";
-import { TaskPriority, TaskStatus } from "@prisma/client";
-import { useUsers } from "@/providers/usersProvider";
+import { TaskPriority } from "@prisma/client";
 
 const formSchema = z.object({
   name: z.coerce.string().nonempty({
     message: "task.validations.name.required",
   }),
-  description: z.coerce.string(),
+  description: z.coerce.string().nonempty({
+    message: "task.validations.description.required",
+  }),
   priority: z.nativeEnum(TaskPriority, {
     required_error: "task.validations.priority.required!",
     message: "task.validations.priority.invalid",
   }),
-  status: z.nativeEnum(TaskStatus, {
-    required_error: "task.validations.status.required!",
-    message: "task.validations.status.invalid",
-  }),
   estimatedTime: z.coerce.number().positive({
     message: "task.validations.estimatedTime.invalid",
   }),
-  projectId: z.string(),
-  userId: z.string(),
-  userStoryId: z.string(),
 });
 
 interface TaskFormProps {
@@ -56,25 +47,7 @@ export default function TaskForm({ initialValues, onSubmit }: TaskFormProps) {
     defaultValues: initialValues,
   });
 
-  const projects = useProjectsStore((state) => state.projects);
-  const projectOptions = projects.map((project) => ({
-    value: project.id,
-    label: project.name,
-  }));
-
-  const userStories = useUserStoriesStore((state) => state.userStories);
-
-  const userStoriesOptions = userStories.map((userStory) => ({
-    value: userStory.id,
-    label: userStory.name,
-  }));
-
-  const statusOptions = useTaskSelectStatuses();
-
   const priorityOptions = useTaskSelectPriorities();
-
-  const users = useUsers((state) => state.users);
-  const userOptions = mapUsersToSelect(users);
   return (
     <>
       <Form {...form}>
@@ -119,29 +92,11 @@ export default function TaskForm({ initialValues, onSubmit }: TaskFormProps) {
             name="priority"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("task.properties.status.status")}</FormLabel>
+                <FormLabel>{t("task.properties.priority.priority")}</FormLabel>
                 <FormControl>
                   <Select
                     {...field}
                     options={priorityOptions}
-                    selected={field.value}
-                    onValueChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("task.properties.status.status")}</FormLabel>
-                <FormControl>
-                  <Select
-                    {...field}
-                    options={statusOptions}
                     selected={field.value}
                     onValueChange={field.onChange}
                   />
@@ -161,60 +116,6 @@ export default function TaskForm({ initialValues, onSubmit }: TaskFormProps) {
                     type="number"
                     placeholder={t("task.placeholders.estimatedTime")}
                     {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="projectId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("project.project")}</FormLabel>
-                <FormControl>
-                  <Select
-                    {...field}
-                    options={projectOptions}
-                    selected={field.value}
-                    onValueChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="userId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("user.user")}</FormLabel>
-                <FormControl>
-                  <Select
-                    {...field}
-                    options={userOptions}
-                    selected={field.value}
-                    onValueChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="userStoryId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("userStory.userStory")}</FormLabel>
-                <FormControl>
-                  <Select
-                    {...field}
-                    options={userStoriesOptions}
-                    selected={field.value}
-                    onValueChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />

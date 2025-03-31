@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams, useRouter, redirect } from "next/navigation";
-import { useState } from "react";
 import { Input } from "@/components/ui/forms/input";
 import { Button } from "@/components/ui/forms/button";
 import {
@@ -12,7 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/forms/form";
-import { Error } from "@/components/blocks/error";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -20,6 +18,7 @@ import { routes } from "@/lib/routes/routes";
 import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { useAuthStore } from "@/providers/authProvider";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -34,7 +33,6 @@ type SignInFormData = z.infer<typeof formSchema>;
 
 export default function SignInForm() {
   const { t } = useDictionary();
-  const [error, setError] = useState<string | null>(null);
   const params = useSearchParams();
   const router = useRouter();
 
@@ -60,15 +58,15 @@ export default function SignInForm() {
     try {
       await login(data.email, data.password);
       router.push(returnUrl || home);
+      toast.success(t("user.toast.signIn.success"));
     } catch {
-      setError(t("user.invalidCredentials"));
+      toast.error(t("user.toast.signIn.failed"));
     }
   };
 
   return (
     <div className="mt-5 max-w-[525px] mx-auto">
       <h1 className="text-3xl mb-5">{t("user.signIn")}</h1>
-      {error && <Error error={{ message: error }} />}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

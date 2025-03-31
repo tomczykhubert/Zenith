@@ -61,6 +61,7 @@ export const TasksStoreProvider = ({
   if (isLoading) {
     return <Spinner />;
   }
+
   return (
     <TasksStoreContext.Provider value={createTasksStore(initialState)}>
       {children}

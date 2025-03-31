@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/forms/button";
 import {
   Form,
@@ -15,10 +14,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import { Error as ErrorComponent } from "@/components/blocks/error";
 import Image from "next/image";
-import { useUsers } from "@/providers/usersProvider";
+import { useUsersStore } from "@/providers/usersProvider";
 import { useAuthStore } from "@/providers/authProvider";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   displayName: z.string().min(2, {
@@ -37,10 +36,8 @@ type FormData = z.infer<typeof formSchema>;
 export default function Profile() {
   const { t } = useDictionary();
   const user = useAuthStore((state) => state.user);
-  const updateUser = useUsers((state) => state.updateUser);
-  const [error, setError] = useState<{ message: string } | null>(null);
-  const [success, setSuccess] = useState<boolean>(false);
-
+  const updateUser = useUsersStore((state) => state.updateUser);
+  const updateCurrentUser = useAuthStore((state) => state.updateCurrentUser);
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,23 +48,17 @@ export default function Profile() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      if (!user) return;
-
       const updatedUser = {
-        ...user,
+        ...user!,
         displayName: data.displayName,
         photoURL: data.photoURL || null,
       };
 
       await updateUser(updatedUser);
-      setSuccess(true);
-      setError(null);
-    } catch (err) {
-      setError({
-        message:
-          err instanceof Error ? err.message : "Failed to update profile",
-      });
-      setSuccess(false);
+      updateCurrentUser(updatedUser);
+      toast.success(t("user.toast.profileUpdate.success"));
+    } catch {
+      toast.error(t("user.toast.profileUpdate.failed"));
     }
   };
 
@@ -86,15 +77,11 @@ export default function Profile() {
               height={75}
               src={user.photoURL}
               alt={user.displayName || "Profile"}
-              className="rounded-full object-cover"
+              className="rounded-full aspect-square object-cover"
             />
           </div>
         )}
       </h1>
-      {error && <ErrorComponent error={error} />}
-      {success && (
-        <div className="text-green-500 mb-4">{t("user.profileUpdated")}</div>
-      )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

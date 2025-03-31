@@ -5,6 +5,7 @@ import { AuthState, AuthStore, createAuthStore } from "@/stores/authStore";
 import { useStore } from "zustand";
 import Spinner from "@/components/blocks/spinner";
 import { apiRoutes } from "@/lib/routes/apiRoutes";
+import { AUTH_CONFIG } from "@/lib/auth/config";
 
 export type AuthStoreApi = ReturnType<typeof createAuthStore>;
 export const AuthStoreContext = createContext<AuthStoreApi | undefined>(
@@ -20,9 +21,11 @@ export function AuthStoreProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch(apiRoutes.auth.me, {
-          method: "GET",
+        await fetch(apiRoutes.auth.refresh, {
+          method: "POST",
         });
+
+        const response = await fetch(apiRoutes.auth.me);
         if (response.ok) {
           const userData = await response.json();
           setInitialState({ user: userData });
@@ -37,12 +40,10 @@ export function AuthStoreProvider({ children }: { children: React.ReactNode }) {
 
     checkAuth();
 
-    const intervalId = setInterval(async () => {
-      const response = await fetch(apiRoutes.auth.refresh, { method: "POST" });
-      if (!response.ok) {
-        setInitialState({ user: null });
-      }
-    }, 14 * 60 * 1000);
+    const intervalId = setInterval(
+      checkAuth,
+      (AUTH_CONFIG.accessToken.maxAge - 60) * 1000
+    );
 
     return () => clearInterval(intervalId);
   }, []);

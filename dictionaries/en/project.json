@@ -1,0 +1,57 @@
+{
+  "project": {
+    "project": "Project",
+    "description": "Project description",
+    "projects": "Projects",
+    "noProjects": "No projects available.",
+    "notFound": "Project not found.",
+    "actions": {
+      "create": "Create project",
+      "delete": "Delete project",
+      "deleteConfirm": "Are you sure you want to delete project?",
+      "edit": "Edit project",
+      "setActive": "Set project as active",
+      "setActiveConfirm": "Are you sure you want to set this project as active?",
+      "unsetActive": "Clear active project setting",
+      "unsetActiveConfirm": "Are you sure you want to clear your active project setting?"
+    },
+    "placeholders": {
+      "name": "My new project",
+      "description": "This is very brief description of a project."
+    },
+    "null": {
+      "all": "No projects available."
+    },
+    "validations": {
+      "name": {
+        "required": "Project name is required."
+      },
+      "description": {
+        "required": "Project description is required."
+      }
+    },
+    "toast": {
+      "create": {
+        "success": "Project has been created.",
+        "failed": "Failed to create project."
+      },
+      "delete": {
+        "success": "Project has been deleted.",
+        "failed": "Failed to delete project."
+      },
+      "update": {
+        "success": "Project has been edited.",
+        "failed": "Failed to edit project."
+      },
+      "setActive": {
+        "success": "Project has been set as active.",
+        "failed": "Failed to set project as active."
+      },
+      "unsetActive": {
+        "success": "Active project setting has been cleared.",
+        "failed": "Failed to clear active project setting."
+      },
+      "needToSelectActiveProject": "You have to select active project first!"
+    }
+  }
+}

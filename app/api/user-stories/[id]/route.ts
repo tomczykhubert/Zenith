@@ -4,8 +4,9 @@ import {
   updateUserStory,
   deleteUserStory,
 } from "@/prisma/userStories";
+import ID from "@/types/id";
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET({ params }: { params: { id: ID } }) {
   try {
     const userStories = await getUserStoriesBySpecification(
       { id: params.id },
@@ -32,7 +33,7 @@ export async function GET({ params }: { params: { id: string } }) {
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: ID } }
 ) {
   try {
     const data = await request.json();
@@ -52,7 +53,7 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: ID } }
 ) {
   try {
     await deleteUserStory(params.id);

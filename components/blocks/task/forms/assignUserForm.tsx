@@ -18,10 +18,12 @@ import { useDictionary } from "@/providers/dictionaryProvider";
 import { mapUsersToSelect } from "@/types/user";
 import { useTasksStore } from "@/providers/tasksProvider";
 import { TaskStatus } from "@prisma/client";
-import { useUsers } from "@/providers/usersProvider";
+import { useUsersStore } from "@/providers/usersProvider";
+import ID from "@/types/id";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
-  userId: z.string().nonempty({
+  assignedUserId: z.string().uuid({
     message: "task.validations.userId.required",
   }),
 });
@@ -36,25 +38,29 @@ export default function AssignUserForm({ task, onClose }: AssignUserFormProps) {
   const updateTask = useTasksStore((state) => state.updateTask);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { userId: task.userId },
+    defaultValues: { assignedUserId: task.assignedUserId as ID },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    updateTask({
-      ...task,
-      userId: data.userId,
-      status:
-        task.status == TaskStatus.PENDING
-          ? TaskStatus.IN_PROGRESS
-          : task.status,
-      startedAt: task.startedAt ?? new Date(),
-    });
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const assignedUserId = data.assignedUserId as ID;
+    try {
+      await updateTask({
+        ...task,
+        assignedUserId,
+        status:
+          task.status == TaskStatus.PENDING
+            ? TaskStatus.IN_PROGRESS
+            : task.status,
+        startedAt: task.startedAt ?? new Date(),
+      });
+      toast.success(t("task.toast.assignUser.success"));
+    } catch {
+      toast.error(t("task.toast.assignUser.failed"));
+    }
     onClose();
   };
 
-  const { users } = useUsers((state) => ({
-    users: state.users,
-  }));
+  const users = useUsersStore((state) => state.users);
   const usersOptions = mapUsersToSelect(users);
 
   return (
@@ -63,7 +69,7 @@ export default function AssignUserForm({ task, onClose }: AssignUserFormProps) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
-            name="userId"
+            name="assignedUserId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("user.user")}</FormLabel>

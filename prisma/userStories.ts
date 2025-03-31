@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { UserStory } from "@prisma/client";
 import { Order, Specification } from "./base";
+import ID from "@/types/id";
 
 export async function createUserStory(
   userStory: UserStory
@@ -31,7 +32,7 @@ export async function getUserStoriesBySpecification(
     include: includeRelations
       ? {
           project: true,
-          user: true,
+          owner: true,
           tasks: true,
         }
       : undefined,
@@ -40,7 +41,7 @@ export async function getUserStoriesBySpecification(
 }
 
 export async function updateUserStory(
-  id: string,
+  id: ID,
   data: Partial<UserStory>
 ): Promise<UserStory> {
   const updatedUserStory = await prisma.userStory.update({
@@ -50,7 +51,7 @@ export async function updateUserStory(
   return updatedUserStory;
 }
 
-export async function deleteUserStory(id: string): Promise<void> {
+export async function deleteUserStory(id: ID): Promise<void> {
   await prisma.userStory.delete({
     where: { id },
   });

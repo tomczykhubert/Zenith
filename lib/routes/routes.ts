@@ -1,3 +1,5 @@
+import ID from "@/types/id";
+
 export const routes = {
   home: "/",
   user: {
@@ -10,14 +12,13 @@ export const routes = {
   projects: {
     list: "/projects",
     create: "/projects/create",
+  },
+  userStories: {
+    list: `/userStories`,
+    create: `/userStories/create`,
     tasks: {
-      list: (projectId: string) => `/projects/${projectId}/tasks`,
-      create: (projectId: string) => `/projects/${projectId}/tasks/create`,
-    },
-    UserStories: {
-      list: (projectId: string) => `/projects/${projectId}/userStories`,
-      create: (projectId: string) =>
-        `/projects/${projectId}/userStories/create`,
+      list: (userStoryId: ID) => `/userStories/${userStoryId}/tasks`,
+      create: (userStoryId: ID) => `/userStories/${userStoryId}/tasks/create`,
     },
   },
 } as const;

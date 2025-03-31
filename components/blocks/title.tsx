@@ -1,5 +1,6 @@
 import { FaArrowLeft } from "react-icons/fa";
 import ActionIcon from "../ui/actionIcon";
+import { useDictionary } from "@/providers/dictionaryProvider";
 interface TitleProps {
   title: string;
   subtitle?: string;
@@ -7,13 +8,14 @@ interface TitleProps {
 }
 
 export default function Title({ title, subtitle, backUrl }: TitleProps) {
+  const { t } = useDictionary();
   return (
     <div className="flex items-center mb-3">
       {backUrl && (
         <ActionIcon
           href={backUrl}
           Icon={FaArrowLeft}
-          text="Back"
+          text={t("common.back")}
           className="me-3"
         />
       )}

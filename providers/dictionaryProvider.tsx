@@ -28,6 +28,25 @@ interface DictionaryProviderProps {
 
 const DictionaryContext = createContext<DictionaryContextType | null>(null);
 
+const loadTranslationFiles = async (locale: string) => {
+  const modules = [
+    import(`@/dictionaries/${locale}/project.json`),
+    import(`@/dictionaries/${locale}/task.json`),
+    import(`@/dictionaries/${locale}/userStory.json`),
+    import(`@/dictionaries/${locale}/user.json`),
+    import(`@/dictionaries/${locale}/common.json`),
+  ];
+
+  const translations = await Promise.all(modules);
+  return translations.reduce(
+    (acc, module) => ({
+      ...acc,
+      ...module.default,
+    }),
+    {}
+  );
+};
+
 export function DictionaryProvider({ children }: DictionaryProviderProps) {
   const [dictionary, setDictionary] = useState<DictionaryType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -41,8 +60,8 @@ export function DictionaryProvider({ children }: DictionaryProviderProps) {
       }
 
       try {
-        const result = await import(`@/dictionaries/${locale}.json`);
-        setDictionary(result.default);
+        const result = await loadTranslationFiles(locale);
+        setDictionary(result);
       } catch (error) {
         console.error(`Failed to load dictionary for locale: ${locale}`, error);
         setDictionary(null);

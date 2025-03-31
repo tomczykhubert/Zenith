@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { User } from "@prisma/client";
 import { Order, Specification } from "./base";
+import ID from "@/types/id";
 
 export async function createUser(user: User): Promise<User> {
   const createdUser = await prisma.user.create({
@@ -36,10 +37,7 @@ export async function getUsersBySpecification(
   return users;
 }
 
-export async function updateUser(
-  id: string,
-  data: Partial<User>
-): Promise<User> {
+export async function updateUser(id: ID, data: Partial<User>): Promise<User> {
   const updatedUser = await prisma.user.update({
     where: { id },
     data,
@@ -47,7 +45,7 @@ export async function updateUser(
   return updatedUser;
 }
 
-export async function deleteUser(id: string): Promise<void> {
+export async function deleteUser(id: ID): Promise<void> {
   await prisma.user.delete({
     where: { id },
   });

@@ -1,8 +1,7 @@
 import { apiRoutes } from "@/lib/routes/apiRoutes";
+import ID from "@/types/id";
 import Project from "@/types/project";
 import { createStore } from "zustand/vanilla";
-
-export type ProjectSpecification = Partial<Project>;
 
 export type ProjectsState = {
   projects: Project[];
@@ -13,9 +12,8 @@ export type ProjectsActions = {
     project: Omit<Project, "id" | "createdAt" | "updatedAt">
   ) => Promise<void>;
   updateProject: (project: Project) => Promise<void>;
-  deleteProject: (id: string) => Promise<void>;
-  getProjectById: (id: string) => Project | null;
-  fetchProjects: () => Promise<void>;
+  deleteProject: (id: ID) => Promise<void>;
+  getProjectById: (id: ID) => Project | null;
 };
 
 export type ProjectsStore = ProjectsState & ProjectsActions;
@@ -29,12 +27,6 @@ export const createProjectsStore = (
 ) => {
   return createStore<ProjectsState & ProjectsActions>((set, get) => ({
     ...initState,
-    fetchProjects: async () => {
-      const response = await fetch(apiRoutes.projects.base);
-      if (!response.ok) throw new Error("Failed to fetch projects");
-      const projects = await response.json();
-      set({ projects });
-    },
     addProject: async (
       project: Omit<Project, "id" | "createdAt" | "updatedAt">
     ) => {
@@ -46,7 +38,7 @@ export const createProjectsStore = (
       if (!response.ok) throw new Error("Failed to create project");
       const newProject = await response.json();
       set((state) => ({
-        projects: [...state.projects, newProject],
+        projects: [newProject, ...state.projects],
       }));
     },
     updateProject: async (updatedProject: Project) => {
@@ -55,6 +47,7 @@ export const createProjectsStore = (
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedProject),
       });
+      console.log(updatedProject);
       if (!response.ok) throw new Error("Failed to update project");
       const updated = await response.json();
       set((state) => ({
@@ -63,7 +56,7 @@ export const createProjectsStore = (
         ),
       }));
     },
-    deleteProject: async (id: string) => {
+    deleteProject: async (id: ID) => {
       const response = await fetch(apiRoutes.projects.byId(id), {
         method: "DELETE",
       });
@@ -72,7 +65,7 @@ export const createProjectsStore = (
         projects: state.projects.filter((project) => project.id !== id),
       }));
     },
-    getProjectById: (id: string) => {
+    getProjectById: (id: ID) => {
       return get().projects.find((project) => project.id === id) ?? null;
     },
   }));

@@ -7,11 +7,11 @@ import { UserStoryStatus } from "@prisma/client";
 export default function UserStoriesGrid({
   userStories,
 }: {
-  userStories: UserStory[] | null;
+  userStories: UserStory[];
 }) {
   const { t } = useDictionary();
 
-  if (!userStories || userStories.length === 0) {
+  if (userStories.length === 0) {
     return <p className="text-center mt-5">{t("userStory.null.all")}</p>;
   }
 

@@ -1,44 +1,112 @@
 import { useProjectsStore } from "@/providers/projectsProvider";
-import { FaTrash, FaTasks, FaEdit, FaBook } from "react-icons/fa";
+import {
+  FaTrash,
+  FaEdit,
+  FaRegCheckSquare,
+  FaCheckSquare,
+} from "react-icons/fa";
 import { useState } from "react";
 import FormModal from "@/components/ui/modals/formModal";
 import UpdateProjectForm from "./forms/updateProjectForm";
 import ConfirmModal from "@/components/ui/modals/confirmModal";
 import Project from "@/types/project";
-import { routes } from "@/lib/routes/routes";
 import ActionIcon from "@/components/ui/actionIcon";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import { useAuthStore } from "@/providers/authProvider";
+import { useUsersStore } from "@/providers/usersProvider";
+import { toast } from "react-toastify";
 
 export default function ProjectCard(project: Project) {
   const { t } = useDictionary();
   const deleteProject = useProjectsStore((state) => state.deleteProject);
+  const user = useAuthStore((state) => state.user);
+  const updateUser = useUsersStore((state) => state.updateUser);
+  const updateAuthUser = useAuthStore((state) => state.updateCurrentUser);
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [confirmModal, setConfirmModal] = useState({
+    open: false,
+    header: "",
+    message: "",
+    action: () => {},
+  });
 
-  const handleDelete = () => {
-    deleteProject(project.id);
-    setIsDeleteModalOpen(false);
+  if (!user) throw new Error("Not authenticated");
+
+  const handleDelete = async () => {
+    try {
+      await deleteProject(project.id);
+      toast.success(t("project.toast.delete.success"));
+    } catch {
+      toast.error(t("project.toast.delete.failed"));
+    }
+    setConfirmModal({ ...confirmModal, open: false });
+  };
+
+  const handleSetActiveProject = async () => {
+    const updatedUser = {
+      ...user,
+      activeProjectId: project.id,
+    };
+    try {
+      await updateUser(updatedUser);
+      updateAuthUser(updatedUser);
+      toast.success(t("project.toast.setActive.success"));
+    } catch {
+      toast.error(t("project.toast.setActive.failed"));
+    }
+    setConfirmModal({ ...confirmModal, open: false });
+  };
+
+  const handleUnsetActiveProject = async () => {
+    const updatedUser = {
+      ...user,
+      activeProjectId: null,
+    };
+    try {
+      await updateUser(updatedUser);
+      updateAuthUser(updatedUser);
+      toast.success(t("project.toast.unsetActive.success"));
+    } catch {
+      toast.error(t("project.toast.unsetActive.failed"));
+    }
+    setConfirmModal({ ...confirmModal, open: false });
   };
   return (
     <div>
       <div className="bg-slate-700 border border-slate-700 shadow-md rounded-md p-4 min-h-[200px]">
         <div className="flex justify-between items-center mb-3">
-          <h2 className="text-xl font-bold text-foreground truncate">
-            {project.name}
-          </h2>
+          <h2 className="text-xl font-bold text-foreground">{project.name}</h2>
           <div className="flex space-x-2">
-            <ActionIcon
-              href={routes.projects.tasks.list(project.id)}
-              Icon={FaTasks}
-              text={t("task.tasks")}
-            />
-            <ActionIcon
-              variant="green"
-              href={routes.projects.UserStories.list(project.id)}
-              Icon={FaBook}
-              text={t("userStory.userStories")}
-            />
+            {user.activeProjectId == project.id ? (
+              <ActionIcon
+                variant="lime"
+                Icon={FaCheckSquare}
+                onClick={() =>
+                  setConfirmModal({
+                    header: "project.actions.unsetActive",
+                    message: "project.actions.unsetActiveConfirm",
+                    open: true,
+                    action: handleUnsetActiveProject,
+                  })
+                }
+                text={t("project.actions.unsetActive")}
+              />
+            ) : (
+              <ActionIcon
+                variant="lime"
+                Icon={FaRegCheckSquare}
+                onClick={() =>
+                  setConfirmModal({
+                    header: "project.actions.setActive",
+                    message: "project.actions.setActiveConfirm",
+                    open: true,
+                    action: handleSetActiveProject,
+                  })
+                }
+                text={t("project.actions.setActive")}
+              />
+            )}
             <ActionIcon
               variant="blue"
               Icon={FaEdit}
@@ -48,24 +116,31 @@ export default function ProjectCard(project: Project) {
             <ActionIcon
               variant="danger"
               Icon={FaTrash}
-              onClick={() => setIsDeleteModalOpen(true)}
+              onClick={() =>
+                setConfirmModal({
+                  header: "project.actions.delete",
+                  message: "project.actions.deleteConfirm",
+                  open: true,
+                  action: handleDelete,
+                })
+              }
               text={t("project.actions.delete")}
             />
           </div>
         </div>
         <p
-          className="text-muted-foreground truncate
+          className="text-muted-foreground
 "
         >
           {project.description}
         </p>
       </div>
       <ConfirmModal
-        header={t("project.actions.delete")}
-        message={t("project.actions.deleteConfirm")}
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onConfirm={handleDelete}
+        header={t(confirmModal.header)}
+        message={t(confirmModal.message)}
+        isOpen={confirmModal.open}
+        onClose={() => setConfirmModal({ ...confirmModal, open: false })}
+        onConfirm={confirmModal.action}
       />
       <FormModal
         isOpen={isUpdateModalOpen}

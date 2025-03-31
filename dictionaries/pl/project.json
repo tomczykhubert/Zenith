@@ -1,0 +1,57 @@
+{
+  "project": {
+    "project": "Projekt",
+    "description": "Opis projektu",
+    "projects": "Projekty",
+    "noProjects": "Brak dostępnych projektów.",
+    "notFound": "Nie znaleziono projektu.",
+    "actions": {
+      "create": "Utwórz projekt",
+      "delete": "Usuń projekt",
+      "deleteConfirm": "Czy na pewno chcesz usunąć projekt?",
+      "edit": "Edytuj projekt",
+      "setActive": "Ustaw jako aktywny projekt",
+      "setActiveConfirm": "Czy na pewno chcesz ustawić ten projekt jako aktywny?",
+      "unsetActive": "Wyczyść ustawienie aktywnego projekt",
+      "unsetActiveConfirm": "Czy na pewno chcesz wyczyścić ustawienie aktywnego projektu?"
+    },
+    "placeholders": {
+      "name": "Mój nowy projekt",
+      "description": "To jest krótki opis projektu."
+    },
+    "null": {
+      "all": "Brak dostępnych projektów."
+    },
+    "validations": {
+      "name": {
+        "required": "Nazwa projektu jest wymagana."
+      },
+      "description": {
+        "required": "Opis projektu jest wymagany."
+      }
+    },
+    "toast": {
+      "create": {
+        "success": "Projekt został utworzony.",
+        "failed": "Nie udało się utworzyć projektu."
+      },
+      "delete": {
+        "success": "Projekt został usunięty.",
+        "failed": "Nie udało się usunąć projektu."
+      },
+      "update": {
+        "success": "Projekt został zaktualizowany.",
+        "failed": "Nie udało się zaktualizować projektu."
+      },
+      "setActive": {
+        "success": "Projekt został ustawiony jako aktywny.",
+        "failed": "Nie udało się ustawić projektu jako aktywnego."
+      },
+      "unsetActive": {
+        "success": "Ten projekt nie jest już ustawiony jako aktywny.",
+        "failed": "Nie udało się wyczyścić ustawienia aktywnego projektu."
+      },
+      "needToSelectActiveProject": "Najpierw musisz wybrać aktywny projekt!"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "common": {
+    "no": "Nie",
+    "yes": "Tak",
+    "home": "Witaj w Zenith - aplikacji do zarządzania projektami.",
+    "back": "Powrót",
+    "submit": "Zatwierdź",
+    "hours": "godziny",
+    "properties": {
+      "name": "Nazwa",
+      "description": "Opis",
+      "createdAt": "Utworzono",
+      "updatedAt": "Zaktualizowano"
+    },
+    "select": "Kliknij aby wybrać",
+    "changeLanguage": "Zmień język"
+  }
+}

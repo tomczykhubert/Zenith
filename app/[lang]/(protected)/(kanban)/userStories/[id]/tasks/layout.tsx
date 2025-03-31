@@ -2,8 +2,7 @@
 
 import { Direction } from "@/prisma/base";
 import { TasksStoreProvider } from "@/providers/tasksProvider";
-
-import { UserStoriesStoreProvider } from "@/providers/userStoriesProvider";
+import ID from "@/types/id";
 import { useParams } from "next/navigation";
 
 export default function TasksLayout({
@@ -14,7 +13,7 @@ export default function TasksLayout({
   const { id } = useParams();
 
   const specification = {
-    projectId: id as string,
+    userStoryId: id as ID,
   };
 
   const order = {
@@ -23,9 +22,7 @@ export default function TasksLayout({
 
   return (
     <TasksStoreProvider specification={specification} order={order}>
-      <UserStoriesStoreProvider specification={specification} order={order}>
-        {children}
-      </UserStoriesStoreProvider>
+      {children}
     </TasksStoreProvider>
   );
 }

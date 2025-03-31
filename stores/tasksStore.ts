@@ -1,24 +1,17 @@
 import { apiRoutes } from "@/lib/routes/apiRoutes";
+import ID from "@/types/id";
 import Task from "@/types/task";
 import { createStore } from "zustand/vanilla";
-
-export type TaskSpecification = Partial<Task>;
 
 export type TasksState = {
   tasks: Task[];
 };
 
 export type TasksActions = {
-  addTask: (
-    task: Omit<
-      Task,
-      "id" | "createdAt" | "updatedAt" | "startedAt" | "completedAt"
-    >
-  ) => Promise<void>;
+  addTask: (task: Partial<Task>) => Promise<void>;
   updateTask: (task: Task) => Promise<void>;
-  deleteTask: (id: string) => Promise<void>;
-  getTaskById: (id: string) => Task | null;
-  fetchTasks: () => Promise<void>;
+  deleteTask: (id: ID) => Promise<void>;
+  getTaskById: (id: ID) => Task | null;
 };
 
 export type TasksStore = TasksState & TasksActions;
@@ -30,18 +23,7 @@ export const defaultInitState: TasksState = {
 export const createTasksStore = (initState: TasksState = defaultInitState) => {
   return createStore<TasksState & TasksActions>((set, get) => ({
     ...initState,
-    fetchTasks: async () => {
-      const response = await fetch(apiRoutes.tasks.base);
-      if (!response.ok) throw new Error("Failed to fetch tasks");
-      const tasks = await response.json();
-      set({ tasks });
-    },
-    addTask: async (
-      task: Omit<
-        Task,
-        "id" | "createdAt" | "updatedAt" | "startedAt" | "completedAt"
-      >
-    ) => {
+    addTask: async (task: Partial<Task>) => {
       const response = await fetch(apiRoutes.tasks.base, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -67,7 +49,7 @@ export const createTasksStore = (initState: TasksState = defaultInitState) => {
         ),
       }));
     },
-    deleteTask: async (id: string) => {
+    deleteTask: async (id: ID) => {
       const response = await fetch(apiRoutes.tasks.byId(id), {
         method: "DELETE",
       });
@@ -76,7 +58,7 @@ export const createTasksStore = (initState: TasksState = defaultInitState) => {
         tasks: state.tasks.filter((task) => task.id !== id),
       }));
     },
-    getTaskById: (id: string) => {
+    getTaskById: (id: ID) => {
       return get().tasks.find((task) => task.id === id) ?? null;
     },
   }));

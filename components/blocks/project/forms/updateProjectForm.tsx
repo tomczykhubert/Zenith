@@ -4,6 +4,8 @@ import { useProjectsStore } from "@/providers/projectsProvider";
 import { z } from "zod";
 import { ProjectForm, formSchema } from "./projectForm";
 import Project from "@/types/project";
+import { toast } from "react-toastify";
+import { useDictionary } from "@/providers/dictionaryProvider";
 
 interface UpdateProjectFormProps {
   project: Project;
@@ -14,14 +16,20 @@ export default function UpdateProjectForm({
   project,
   onClose,
 }: UpdateProjectFormProps) {
+  const { t } = useDictionary();
   const updateProject = useProjectsStore((state) => state.updateProject);
 
-  const handleUpdate = (values: z.infer<typeof formSchema>) => {
-    updateProject({
-      ...project,
-      name: values.name,
-      description: values.description,
-    });
+  const handleUpdate = async (values: z.infer<typeof formSchema>) => {
+    try {
+      await updateProject({
+        ...project,
+        name: values.name,
+        description: values.description,
+      });
+      toast.success(t("project.toast.update.success"));
+    } catch {
+      toast.error(t("project.toast.update.failed"));
+    }
     onClose();
   };
 

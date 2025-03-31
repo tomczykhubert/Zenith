@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Form,
@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/forms/form";
 import { Input } from "@/components/ui/forms/input";
 import { Button } from "@/components/ui/forms/button";
-import { Error } from "@/components/blocks/error";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -20,6 +19,7 @@ import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { useAuthStore } from "@/providers/authProvider";
 import { UserRole } from "@prisma/client";
+import { toast } from "react-toastify";
 
 const formSchema = z
   .object({
@@ -39,7 +39,6 @@ const formSchema = z
 type FormData = z.infer<typeof formSchema>;
 
 export default function RegisterForm() {
-  const [error, setError] = useState<string | null>(null);
   const { t } = useDictionary();
   const router = useRouter();
   const redirect = useLocalizedRoute(routes.user.signIn);
@@ -63,18 +62,17 @@ export default function RegisterForm() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      setError(null);
       await register(data.email, data.password, "", UserRole.ADMIN);
       router.push(redirect);
+      toast.success(t("user.toast.signUp.success"));
     } catch {
-      setError(t("user.registrationFailed"));
+      toast.error(t("user.toast.signUp.failed"));
     }
   };
 
   return (
     <div className="mt-5 max-w-[525px] mx-auto">
       <h1 className="text-3xl mb-5">{t("user.createAccount")}</h1>
-      {error && <Error error={{ message: error }} />}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

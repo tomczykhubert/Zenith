@@ -1,21 +1,17 @@
 import { apiRoutes } from "@/lib/routes/apiRoutes";
+import ID from "@/types/id";
 import UserStory from "@/types/userStory";
 import { createStore } from "zustand/vanilla";
-
-export type UserStorySpecification = Partial<UserStory>;
 
 export type UserStoriesState = {
   userStories: UserStory[];
 };
 
 export type UserStoriesActions = {
-  addUserStory: (
-    userStory: Omit<UserStory, "id" | "createdAt" | "updatedAt">
-  ) => Promise<void>;
+  addUserStory: (userStory: Partial<UserStory>) => Promise<void>;
   updateUserStory: (userStory: UserStory) => Promise<void>;
-  deleteUserStory: (id: string) => Promise<void>;
-  getUserStoryById: (id: string) => UserStory | null;
-  fetchUserStories: () => Promise<void>;
+  deleteUserStory: (id: ID) => Promise<void>;
+  getUserStoryById: (id: ID) => UserStory | null;
 };
 
 export type UserStoriesStore = UserStoriesState & UserStoriesActions;
@@ -29,20 +25,14 @@ export const createUserStoriesStore = (
 ) => {
   return createStore<UserStoriesState & UserStoriesActions>((set, get) => ({
     ...initState,
-    fetchUserStories: async () => {
-      const response = await fetch(apiRoutes.userStories.base);
-      if (!response.ok) throw new Error("Failed to fetch user stories");
-      const userStories = await response.json();
-      set({ userStories });
-    },
-    addUserStory: async (
-      userStory: Omit<UserStory, "id" | "createdAt" | "updatedAt">
-    ) => {
+    addUserStory: async (userStory: Partial<UserStory>) => {
+      console.log(userStory);
       const response = await fetch(apiRoutes.userStories.base, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userStory),
       });
+      console.log(response);
       if (!response.ok) throw new Error("Failed to create user story");
       const newUserStory = await response.json();
       set((state) => ({
@@ -66,7 +56,7 @@ export const createUserStoriesStore = (
         ),
       }));
     },
-    deleteUserStory: async (id: string) => {
+    deleteUserStory: async (id: ID) => {
       const response = await fetch(apiRoutes.userStories.byId(id), {
         method: "DELETE",
       });
@@ -77,7 +67,7 @@ export const createUserStoriesStore = (
         ),
       }));
     },
-    getUserStoryById: (id: string) => {
+    getUserStoryById: (id: ID) => {
       return get().userStories.find((userStory) => userStory.id === id) ?? null;
     },
   }));

@@ -15,22 +15,20 @@ import { Input } from "@/components/ui/forms/input";
 import { Textarea } from "@/components/ui/forms/textarea";
 import { useForm } from "react-hook-form";
 import {
-  useUserStorySelectPriorities,
-  useUserStorySelectStatuses,
+  useUsersStoretorySelectPriorities,
+  useUsersStoretorySelectStatuses,
 } from "@/types/userStory";
 import { Select } from "@/components/ui/forms/select";
-import { useProjectsStore } from "@/providers/projectsProvider";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import { mapUsersToSelect } from "@/types/user";
-import { mapProjectsToSelect } from "@/types/project";
-import { useUsers } from "@/providers/usersProvider";
 import { UserStoryPriority, UserStoryStatus } from "@prisma/client";
 
 const formSchema = z.object({
   name: z.coerce.string().nonempty({
     message: "userStory.validations.name.required",
   }),
-  description: z.coerce.string(),
+  description: z.coerce.string().nonempty({
+    message: "userStory.validations.description.required",
+  }),
   priority: z.nativeEnum(UserStoryPriority, {
     required_error: "userStory.validations.priority.required",
     message: "userStory.validations.priority.invalid",
@@ -39,8 +37,6 @@ const formSchema = z.object({
     required_error: "userStory.validations.status.required",
     message: "userStory.validations.status.invalid",
   }),
-  projectId: z.string(),
-  userId: z.string(),
 });
 
 interface UserStoryFormProps {
@@ -55,13 +51,8 @@ function UserStoryForm({ initialValues, onSubmit }: UserStoryFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: initialValues,
   });
-  const projects = useProjectsStore((state) => state.projects);
-  const projectOptions = mapProjectsToSelect(projects);
-
-  const users = useUsers((state) => state.users);
-  const userOptions = mapUsersToSelect(users);
-  const priorityOptions = useUserStorySelectPriorities();
-  const statusOptions = useUserStorySelectStatuses();
+  const priorityOptions = useUsersStoretorySelectPriorities();
+  const statusOptions = useUsersStoretorySelectStatuses();
 
   return (
     <>
@@ -104,23 +95,6 @@ function UserStoryForm({ initialValues, onSubmit }: UserStoryFormProps) {
           />
           <FormField
             control={form.control}
-            name="projectId"
-            render={({ field }) => (
-              <FormItem className="mb-4">
-                <FormLabel>{t("project.project")}</FormLabel>
-                <FormControl>
-                  <Select
-                    options={projectOptions}
-                    selected={field.value}
-                    onValueChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="priority"
             render={({ field }) => (
               <FormItem className="mb-4">
@@ -149,24 +123,6 @@ function UserStoryForm({ initialValues, onSubmit }: UserStoryFormProps) {
                   <Select
                     {...field}
                     options={statusOptions}
-                    selected={field.value}
-                    onValueChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="userId"
-            render={({ field }) => (
-              <FormItem className="mb-4">
-                <FormLabel>{t("user.user")}</FormLabel>
-                <FormControl>
-                  <Select
-                    {...field}
-                    options={userOptions}
                     selected={field.value}
                     onValueChange={field.onChange}
                   />

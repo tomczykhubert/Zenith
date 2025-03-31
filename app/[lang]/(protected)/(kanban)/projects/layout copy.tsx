@@ -7,9 +7,5 @@ export default function ProjectsLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <ProjectsStoreProvider>
-      <div className="mx-5 mt-5 mb-5">{children}</div>
-    </ProjectsStoreProvider>
-  );
+  return <ProjectsStoreProvider>{children}</ProjectsStoreProvider>;
 }

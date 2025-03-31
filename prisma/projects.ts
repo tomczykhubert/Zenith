@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { Project } from "@prisma/client";
 import { Order, Specification } from "./base";
+import ID from "@/types/id";
 
 export async function createProject(project: Project): Promise<Project> {
   const createdProject = await prisma.project.create({
@@ -28,7 +29,6 @@ export async function getProjectsBySpecification(
     orderBy: order,
     include: includeRelations
       ? {
-          tasks: true,
           userStories: true,
         }
       : undefined,
@@ -37,7 +37,7 @@ export async function getProjectsBySpecification(
 }
 
 export async function updateProject(
-  id: string,
+  id: ID,
   data: Partial<Project>
 ): Promise<Project> {
   const updatedProject = await prisma.project.update({
@@ -49,7 +49,7 @@ export async function updateProject(
   return updatedProject;
 }
 
-export async function deleteProject(id: string): Promise<void> {
+export async function deleteProject(id: ID): Promise<void> {
   await prisma.project.delete({
     where: {
       id,
@@ -57,13 +57,12 @@ export async function deleteProject(id: string): Promise<void> {
   });
 }
 
-export async function getProjectWithRelations(id: string) {
+export async function getProjectWithRelations(id: ID) {
   const project = await prisma.project.findUnique({
     where: {
       id,
     },
     include: {
-      tasks: true,
       userStories: true,
     },
   });

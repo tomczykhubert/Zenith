@@ -1,0 +1,59 @@
+{
+  "user": {
+    "users": "Users",
+    "user": "User",
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "profile": "Profile",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "displayName": "Display Name",
+    "photoURL": "Profile Image URL",
+    "confirmPassword": "Confirm Password",
+    "displayNamePlaceholder": "Enter your display name",
+    "photoURLPlaceholder": "Enter URL to your profile image",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "notFound": "User not found",
+    "profileUpdated": "Profile updated successfully",
+    "createAccount": "Create an account",
+    "validations": {
+      "email": {
+        "required": "Email cannot be empty!"
+      },
+      "password": {
+        "required": "Password cannot be empty!",
+        "mismatch": "Passwords do not match!"
+      },
+      "confirmPassword": {
+        "required": "Confirm Password cannot be empty!"
+      },
+      "displayName": {
+        "minLength": "Display name must be at least 2 characters."
+      },
+      "photoURL": {
+        "invalidUrl": "Please enter a valid URL for the profile image."
+      }
+    },
+    "toast": {
+      "signIn": {
+        "success": "You have been signed in.",
+        "error": "Failed to sign in."
+      },
+      "signUp": {
+        "success": "Account has been created.",
+        "error": "Failed to create an account."
+      },
+      "signOut": {
+        "success": "You have been signed out.",
+        "error": "Failed to sign out."
+      },
+      "profileUpdate": {
+        "success": "Profile has been updated.",
+        "error": "Failed to update profile."
+      }
+    }
+  }
+}

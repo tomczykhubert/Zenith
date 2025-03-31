@@ -1,38 +1,46 @@
 "use client";
 
-import { useUserStoriesStore } from "@/providers/userStoriesProvider";
+import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
 import { z } from "zod";
 import { formSchema, UserStoryForm } from "./userStoryForm";
 import { UserStoryPriority, UserStoryStatus } from "@prisma/client";
+import ID from "@/types/id";
+import { toast } from "react-toastify";
+import { useDictionary } from "@/providers/dictionaryProvider";
 
 interface CreateUserStoryFormProps {
+  ownerId: ID;
+  projectId: ID;
   onClose: () => void;
-  projectId: string;
-  userId: string;
 }
 
 export default function CreateUserStoryForm({
-  onClose,
+  ownerId,
   projectId,
-  userId,
+  onClose,
 }: CreateUserStoryFormProps) {
-  const addUserStory = useUserStoriesStore((state) => state.addUserStory);
+  const addUserStory = useUsersStoretoriesStore((state) => state.addUserStory);
+  const { t } = useDictionary();
 
-  const handleCreate = (values: z.infer<typeof formSchema>) => {
+  const handleCreate = async (values: z.infer<typeof formSchema>) => {
     const name = values.name;
     const description = values.description;
     const priority = values.priority;
     const status = values.status;
 
-    addUserStory({
-      name,
-      description,
-      priority,
-      status,
-      projectId,
-      userId,
-    });
-
+    try {
+      await addUserStory({
+        name,
+        description,
+        priority,
+        status,
+        projectId,
+        ownerId,
+      });
+      toast.success(t("userStory.toast.create.success"));
+    } catch {
+      toast.error(t("userStory.toast.create.failed"));
+    }
     onClose();
   };
   return (
@@ -43,7 +51,6 @@ export default function CreateUserStoryForm({
           description: "",
           priority: UserStoryPriority.LOW,
           status: UserStoryStatus.PENDING,
-          projectId,
         }}
         onSubmit={handleCreate}
       />

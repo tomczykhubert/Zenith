@@ -68,11 +68,11 @@ export const UsersProvider = ({
   );
 };
 
-export const useUsers = <T,>(selector: (store: UsersStore) => T): T => {
+export const useUsersStore = <T,>(selector: (store: UsersStore) => T): T => {
   const usersStoreContext = useContext(UsersStoreContext);
 
   if (!usersStoreContext) {
-    throw new Error(`useUsers must be used within UsersProvider`);
+    throw new Error(`useUsersStore must be used within UsersProvider`);
   }
 
   return useStore(usersStoreContext, selector);

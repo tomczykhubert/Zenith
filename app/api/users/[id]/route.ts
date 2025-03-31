@@ -4,8 +4,9 @@ import {
   updateUser,
   deleteUser,
 } from "@/prisma/users";
+import ID from "@/types/id";
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET({ params }: { params: { id: ID } }) {
   try {
     const users = await getUsersBySpecification({ id: params.id }, {}, true);
     const user = users[0];
@@ -25,16 +26,16 @@ export async function GET({ params }: { params: { id: string } }) {
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: ID } }
 ) {
   try {
     const data = await request.json();
     const updateData = {
       displayName: data.displayName,
       photoURL: data.photoURL,
+      activeProjectId: data.activeProjectId,
       updatedAt: new Date(),
     };
-
     const { id } = await params;
     const user = await updateUser(id, updateData);
     return NextResponse.json(user);
@@ -48,7 +49,7 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: ID } }
 ) {
   try {
     await deleteUser(params.id);

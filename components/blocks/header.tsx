@@ -29,6 +29,14 @@ const Header = () => {
                 {t("project.projects")}
               </Link>
             </li>
+            <li>
+              <Link
+                href={useLocalizedRoute(routes.userStories.list)}
+                className="text-slate-100 hover:text-slate-400 transition-colors"
+              >
+                {t("userStory.userStories")}
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>

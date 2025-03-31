@@ -3,6 +3,7 @@ import { sign, verify } from "jsonwebtoken";
 import prisma from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { setAuthCookies } from "@/lib/auth/utils";
+import ID from "@/types/id";
 
 export async function POST() {
   try {
@@ -16,7 +17,7 @@ export async function POST() {
     const decoded = verify(
       refreshToken.value,
       process.env.JWT_REFRESH_SECRET!
-    ) as { userId: string };
+    ) as { userId: ID };
 
     const storedToken = await prisma.refreshToken.findFirst({
       where: {
@@ -33,9 +34,7 @@ export async function POST() {
       );
     }
 
-    const newToken = sign({ userId: decoded.userId }, process.env.JWT_SECRET!, {
-      expiresIn: "15m",
-    });
+    const newToken = sign({ userId: decoded.userId }, process.env.JWT_SECRET!);
 
     return await setAuthCookies(newToken, refreshToken.value);
   } catch (error) {

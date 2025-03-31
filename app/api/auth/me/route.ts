@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { verify } from "jsonwebtoken";
-import User from "@/types/user";
 import { cookies } from "next/headers";
 import { AUTH_CONFIG } from "@/lib/auth/config";
+import ID from "@/types/id";
 
 export async function GET() {
   try {
@@ -15,7 +15,7 @@ export async function GET() {
     }
 
     const decoded = verify(token.value, process.env.JWT_SECRET!) as {
-      userId: string;
+      userId: ID;
     };
 
     const user = await prisma.user.findUnique({
@@ -25,8 +25,8 @@ export async function GET() {
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
-
-    const result = user as Omit<User, "password">;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...result } = user;
     return NextResponse.json(result);
   } catch (error) {
     return NextResponse.json(

@@ -2,14 +2,10 @@ import Project from "@/types/project";
 import ProjectCard from "./projectCard";
 import { useDictionary } from "@/providers/dictionaryProvider";
 
-export default function ProjectsGrid({
-  projects,
-}: {
-  projects: Project[] | null;
-}) {
+export default function ProjectsGrid({ projects }: { projects: Project[] }) {
   const { t } = useDictionary();
 
-  if (!projects) {
+  if (projects.length === 0) {
     return <p className="text-center mt-5">{t("project.noProjects")}</p>;
   }
 

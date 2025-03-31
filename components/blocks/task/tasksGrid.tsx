@@ -4,10 +4,10 @@ import GridColumn from "../gridColumn";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { TaskStatus } from "@prisma/client";
 
-export default function TasksGrid({ tasks }: { tasks: Task[] | null }) {
+export default function TasksGrid({ tasks }: { tasks: Task[] }) {
   const { t } = useDictionary();
 
-  if (!tasks || tasks.length === 0) {
+  if (tasks.length === 0) {
     return <p className="text-center mt-5">{t("task.null.all")}</p>;
   }
 
