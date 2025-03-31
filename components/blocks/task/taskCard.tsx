@@ -37,10 +37,6 @@ export default function TaskCard(task: Task) {
     setIsDeleteModalOpen(false);
   };
 
-  // const userStory = useUsersStoretoriesStore((state) =>
-  //   state.getUserStoryById(task.userStoryId)
-  // );
-
   const handleMarkAsCompleted = async () => {
     try {
       await updateTask({
