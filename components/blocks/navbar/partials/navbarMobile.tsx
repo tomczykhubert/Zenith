@@ -5,11 +5,13 @@ import { NavbarBaseProps } from "../navbar";
 import ActionIcon from "@/components/ui/actionIcon";
 import UserActions from "./userActions";
 import Image from "next/image";
+import { useDictionary } from "@/providers/dictionaryProvider";
 
 type NavbarMobileProps = NavbarBaseProps;
 
 const NavbarMobile = ({ links, user }: NavbarMobileProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useDictionary();
 
   return (
     <div className="flex md:hidden">
@@ -38,7 +40,9 @@ const NavbarMobile = ({ links, user }: NavbarMobileProps) => {
           <nav className="h-full flex flex-col p-6">
             {user && (
               <div className="flex items-center gap-3">
-                <p>Hello, {user.displayName || user.email}</p>
+                <p>
+                  {t("common.hello")}, {user.displayName || user.email}
+                </p>
                 {user.photoURL && (
                   <div>
                     <Image

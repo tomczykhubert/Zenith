@@ -13,6 +13,7 @@
       "updatedAt": "Updated At"
     },
     "select": "Click to select",
-    "changeLanguage": "Change language"
+    "changeLanguage": "Change language",
+    "hello": "Hello"
   }
 }

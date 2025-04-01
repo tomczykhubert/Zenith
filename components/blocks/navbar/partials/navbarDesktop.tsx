@@ -2,10 +2,12 @@ import Link from "next/link";
 import { NavbarBaseProps } from "../navbar";
 import UserActions from "./userActions";
 import Image from "next/image";
+import { useDictionary } from "@/providers/dictionaryProvider";
 
 type NavbarDesktopProps = NavbarBaseProps;
 
 const NavbarDesktop = ({ links, user }: NavbarDesktopProps) => {
+  const { t } = useDictionary();
   return (
     <div className="hidden md:flex justify-between items-center w-full">
       <nav>
@@ -25,7 +27,9 @@ const NavbarDesktop = ({ links, user }: NavbarDesktopProps) => {
       <div className="flex items-center gap-3">
         {user && (
           <>
-            <p>Hello, {user.displayName || user.email}</p>
+            <p>
+              {t("common.hello")}, {user.displayName || user.email}
+            </p>
             {user.photoURL && (
               <div>
                 <Image

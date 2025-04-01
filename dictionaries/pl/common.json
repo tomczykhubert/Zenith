@@ -13,6 +13,7 @@
       "updatedAt": "Zaktualizowano"
     },
     "select": "Kliknij aby wybrać",
-    "changeLanguage": "Zmień język"
+    "changeLanguage": "Zmień język",
+    "hello": "Witaj"
   }
 }
