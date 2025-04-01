@@ -125,7 +125,7 @@ export default function TaskCard(task: Task) {
   );
 
   return (
-    <BaseCard
+    <BaseCard<Task>
       item={task}
       onDelete={handleDelete}
       t={t}

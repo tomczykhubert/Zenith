@@ -54,7 +54,7 @@ export default function UserStoryCard(userStory: UserStory) {
   );
 
   return (
-    <BaseCard
+    <BaseCard<UserStory>
       item={userStory}
       onDelete={handleDelete}
       t={t}

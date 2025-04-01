@@ -108,7 +108,7 @@ export default function ProjectCard(project: Project) {
   );
 
   return (
-    <BaseCard
+    <BaseCard<Project>
       item={project}
       onDelete={handleDelete}
       t={t}
