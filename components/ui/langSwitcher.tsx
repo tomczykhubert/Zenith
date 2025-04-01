@@ -36,28 +36,30 @@ export default function LangSwitcher() {
   };
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          className="px-6 py-3 rounded-md text-slate-700 cursor-pointer transition-colors bg-green-300 hover:bg-green-500"
-          data-tooltip-content={t("common.changeLanguage")}
-          data-tooltip-id="lang-switcher"
-        >
-          <LuLanguages size={16} />
-          <Tooltip id="lang-switcher" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {languages.map((lang) => (
-          <DropdownMenuItem
-            key={lang.code}
-            onClick={() => switchLanguage(lang.code)}
-            className={currentLang === lang.code ? "bg-accent" : ""}
+    <div>
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            className="px-5 py-3 rounded-md text-slate-700 cursor-pointer transition-colors bg-green-300 hover:bg-green-500"
+            data-tooltip-content={t("common.changeLanguage")}
+            data-tooltip-id="lang-switcher"
           >
-            {lang.label}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+            <LuLanguages size={16} />
+            <Tooltip id="lang-switcher" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          {languages.map((lang) => (
+            <DropdownMenuItem
+              key={lang.code}
+              onClick={() => switchLanguage(lang.code)}
+              className={currentLang === lang.code ? "bg-accent" : ""}
+            >
+              {lang.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }

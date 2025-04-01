@@ -43,7 +43,7 @@ export default function ActionIcon({
 
   const commonProps = {
     className: cn(
-      `px-6 py-3 rounded-md text-slate-700 transition-colors cursor-pointer ${variantStyles[variant]}`,
+      `px-5 py-3 rounded-md text-slate-700 transition-colors cursor-pointer ${variantStyles[variant]}`,
       className
     ),
     ...(Icon
