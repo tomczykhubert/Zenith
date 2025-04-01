@@ -1,67 +1,65 @@
 {
-  "userStory": {
-    "userStories": "Historie użytkownika",
-    "userStory": "Historia użytkownika",
-    "actions": {
-      "create": "Utwórz historię użytkownika",
-      "edit": "Edytuj historię użytkownika",
-      "delete": "Usuń historię użytkownika",
-      "deleteConfirm": "Czy na pewno chcesz usunąć historię użytkownika?"
+  "userStories": "Historie użytkownika",
+  "userStory": "Historia użytkownika",
+  "actions": {
+    "create": "Utwórz historię użytkownika",
+    "edit": "Edytuj historię użytkownika",
+    "delete": "Usuń historię użytkownika",
+    "deleteConfirm": "Czy na pewno chcesz usunąć historię użytkownika?"
+  },
+  "properties": {
+    "status": {
+      "status": "Status",
+      "pending": "Oczekujące",
+      "inProgress": "W trakcie",
+      "completed": "Ukończone"
     },
-    "properties": {
-      "status": {
-        "status": "Status",
-        "pending": "Oczekujące",
-        "inProgress": "W trakcie",
-        "completed": "Ukończone"
-      },
-      "priority": {
-        "priority": "Priorytet",
-        "low": "Niski",
-        "medium": "Średni",
-        "high": "Wysoki"
-      },
-      "owner": "Właściciel"
+    "priority": {
+      "priority": "Priorytet",
+      "low": "Niski",
+      "medium": "Średni",
+      "high": "Wysoki"
     },
-    "null": {
-      "all": "Brak dostępnych historii użytkownika.",
-      "pending": "Brak oczekujących historii użytkownika.",
-      "inProgress": "Brak historii użytkownika w trakcie.",
-      "completed": "Brak ukończonych historii użytkownika."
+    "owner": "Właściciel"
+  },
+  "null": {
+    "all": "Brak dostępnych historii użytkownika.",
+    "pending": "Brak oczekujących historii użytkownika.",
+    "inProgress": "Brak historii użytkownika w trakcie.",
+    "completed": "Brak ukończonych historii użytkownika."
+  },
+  "placeholders": {
+    "name": "Moja nowa historia użytkownika",
+    "description": "To jest krótki opis historii użytkownika."
+  },
+  "validations": {
+    "name": {
+      "required": "Nazwa historii użytkownika jest wymagana."
     },
-    "placeholders": {
-      "name": "Moja nowa historia użytkownika",
-      "description": "To jest krótki opis historii użytkownika."
+    "priority": {
+      "required": "Priorytet historii użytkownika jest wymagany.",
+      "invalid": "Nieprawidłowy priorytet."
     },
-    "validations": {
-      "name": {
-        "required": "Nazwa historii użytkownika jest wymagana."
-      },
-      "priority": {
-        "required": "Priorytet historii użytkownika jest wymagany.",
-        "invalid": "Nieprawidłowy priorytet."
-      },
-      "status": {
-        "required": "Status historii użytkownika jest wymagany.",
-        "invalid": "Nieprawidłowy status."
-      },
-      "description": {
-        "required": "Opis historii użytkownika jest wymagany."
-      }
+    "status": {
+      "required": "Status historii użytkownika jest wymagany.",
+      "invalid": "Nieprawidłowy status."
     },
-    "toast": {
-      "create": {
-        "success": "Historia użytkownika została utworzona.",
-        "failed": "Nie udało się utworzyć historii użytkownika."
-      },
-      "delete": {
-        "success": "Historia użytkownika została usunięta.",
-        "failed": "Nie udało się usunąć historii użytkownika."
-      },
-      "update": {
-        "success": "Historia użytkownika została zaktualizowana.",
-        "failed": "Nie udało się zaktualizować historii użytkownika."
-      }
+    "description": {
+      "required": "Opis historii użytkownika jest wymagany."
+    }
+  },
+  "toast": {
+    "create": {
+      "success": "Historia użytkownika została utworzona.",
+      "failed": "Nie udało się utworzyć historii użytkownika."
+    },
+    "delete": {
+      "success": "Historia użytkownika została usunięta.",
+      "failed": "Nie udało się usunąć historii użytkownika."
+    },
+    "update": {
+      "success": "Historia użytkownika została zaktualizowana.",
+      "failed": "Nie udało się zaktualizować historii użytkownika."
     }
   }
 }

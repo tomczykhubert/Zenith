@@ -29,22 +29,13 @@ interface DictionaryProviderProps {
 const DictionaryContext = createContext<DictionaryContextType | null>(null);
 
 const loadTranslationFiles = async (locale: string) => {
-  const modules = [
-    import(`@/dictionaries/${locale}/project.json`),
-    import(`@/dictionaries/${locale}/task.json`),
-    import(`@/dictionaries/${locale}/userStory.json`),
-    import(`@/dictionaries/${locale}/user.json`),
-    import(`@/dictionaries/${locale}/common.json`),
-  ];
-
-  const translations = await Promise.all(modules);
-  return translations.reduce(
-    (acc, module) => ({
-      ...acc,
-      ...module.default,
-    }),
-    {}
-  );
+  try {
+    const translations = await import(`@/dictionaries/${locale}/index`);
+    return translations.default;
+  } catch (error) {
+    console.error(`Failed to load translations for locale: ${locale}`, error);
+    return {};
+  }
 };
 
 export function DictionaryProvider({ children }: DictionaryProviderProps) {

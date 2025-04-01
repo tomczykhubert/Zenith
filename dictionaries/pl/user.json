@@ -1,59 +1,57 @@
 {
-  "user": {
-    "users": "Użytkownicy",
-    "user": "Użytkownik",
-    "signUp": "Zarejestruj się",
-    "signIn": "Zaloguj się",
-    "signOut": "Wyloguj się",
-    "profile": "Profil",
-    "email": "Email",
-    "password": "Hasło",
-    "emailPlaceholder": "Wprowadź swój email",
-    "passwordPlaceholder": "Wprowadź swoje hasło",
-    "displayName": "Nazwa wyświetlana",
-    "photoURL": "URL zdjęcia profilowego",
-    "confirmPassword": "Potwierdź hasło",
-    "displayNamePlaceholder": "Wprowadź swoją nazwę wyświetlaną",
-    "photoURLPlaceholder": "Wprowadź URL do swojego zdjęcia profilowego",
-    "confirmPasswordPlaceholder": "Potwierdź swoje hasło",
-    "notFound": "Nie znaleziono użytkownika",
-    "profileUpdated": "Profil został zaktualizowany pomyślnie",
-    "createAccount": "Utwórz konto",
-    "validations": {
-      "email": {
-        "required": "Email nie może być pusty!"
-      },
-      "password": {
-        "required": "Hasło nie może być puste!",
-        "mismatch": "Hasła nie są takie same!"
-      },
-      "confirmPassword": {
-        "required": "Potwierdzenie hasła nie może być puste!"
-      },
-      "displayName": {
-        "minLength": "Nazwa wyświetlana musi mieć co najmniej 2 znaki."
-      },
-      "photoURL": {
-        "invalidUrl": "Proszę podać prawidłowy URL dla zdjęcia profilowego."
-      }
+  "users": "Użytkownicy",
+  "user": "Użytkownik",
+  "signUp": "Zarejestruj się",
+  "signIn": "Zaloguj się",
+  "signOut": "Wyloguj się",
+  "profile": "Profil",
+  "email": "Email",
+  "password": "Hasło",
+  "emailPlaceholder": "Wprowadź swój email",
+  "passwordPlaceholder": "Wprowadź swoje hasło",
+  "displayName": "Nazwa wyświetlana",
+  "photoURL": "URL zdjęcia profilowego",
+  "confirmPassword": "Potwierdź hasło",
+  "displayNamePlaceholder": "Wprowadź swoją nazwę wyświetlaną",
+  "photoURLPlaceholder": "Wprowadź URL do swojego zdjęcia profilowego",
+  "confirmPasswordPlaceholder": "Potwierdź swoje hasło",
+  "notFound": "Nie znaleziono użytkownika",
+  "profileUpdated": "Profil został zaktualizowany pomyślnie",
+  "createAccount": "Utwórz konto",
+  "validations": {
+    "email": {
+      "required": "Email nie może być pusty!"
     },
-    "toast": {
-      "signIn": {
-        "success": "Zostałeś zalogowany.",
-        "error": "Nie udało się zalogować."
-      },
-      "signUp": {
-        "success": "Konto zostało utworzone.",
-        "error": "Nie udało się utworzyć konta."
-      },
-      "signOut": {
-        "success": "Zostałeś wylogowany.",
-        "error": "Nie udało się wylogować."
-      },
-      "profileUpdate": {
-        "success": "Profil został zaktualizowany.",
-        "error": "Nie udało się zaktualizować profilu."
-      }
+    "password": {
+      "required": "Hasło nie może być puste!",
+      "mismatch": "Hasła nie są takie same!"
+    },
+    "confirmPassword": {
+      "required": "Potwierdzenie hasła nie może być puste!"
+    },
+    "displayName": {
+      "minLength": "Nazwa wyświetlana musi mieć co najmniej 2 znaki."
+    },
+    "photoURL": {
+      "invalidUrl": "Proszę podać prawidłowy URL dla zdjęcia profilowego."
+    }
+  },
+  "toast": {
+    "signIn": {
+      "success": "Zostałeś zalogowany.",
+      "error": "Nie udało się zalogować."
+    },
+    "signUp": {
+      "success": "Konto zostało utworzone.",
+      "error": "Nie udało się utworzyć konta."
+    },
+    "signOut": {
+      "success": "Zostałeś wylogowany.",
+      "error": "Nie udało się wylogować."
+    },
+    "profileUpdate": {
+      "success": "Profil został zaktualizowany.",
+      "error": "Nie udało się zaktualizować profilu."
     }
   }
 }

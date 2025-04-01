@@ -1,67 +1,65 @@
 {
-  "userStory": {
-    "userStories": "User stories",
-    "userStory": "User story",
-    "actions": {
-      "create": "Create user story",
-      "edit": "Edit user story",
-      "delete": "Delete user story",
-      "deleteConfirm": "Are you sure you want to delete user story?"
+  "userStories": "User stories",
+  "userStory": "User story",
+  "actions": {
+    "create": "Create user story",
+    "edit": "Edit user story",
+    "delete": "Delete user story",
+    "deleteConfirm": "Are you sure you want to delete user story?"
+  },
+  "properties": {
+    "status": {
+      "status": "Status",
+      "pending": "Pending",
+      "inProgress": "In progress",
+      "completed": "Completed"
     },
-    "properties": {
-      "status": {
-        "status": "Status",
-        "pending": "Pending",
-        "inProgress": "In progress",
-        "completed": "Completed"
-      },
-      "priority": {
-        "priority": "Priority",
-        "low": "Low",
-        "medium": "Medium",
-        "high": "High"
-      },
-      "owner": "Owner"
+    "priority": {
+      "priority": "Priority",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
     },
-    "null": {
-      "all": "No user stories available.",
-      "pending": "No pending user stories.",
-      "inProgress": "No in-progress user stories.",
-      "completed": "No completed user stories."
+    "owner": "Owner"
+  },
+  "null": {
+    "all": "No user stories available.",
+    "pending": "No pending user stories.",
+    "inProgress": "No in-progress user stories.",
+    "completed": "No completed user stories."
+  },
+  "placeholders": {
+    "name": "My new user story",
+    "description": "This is a brief description of the user story."
+  },
+  "validations": {
+    "name": {
+      "required": "User story name is required."
     },
-    "placeholders": {
-      "name": "My new user story",
-      "description": "This is a brief description of the user story."
+    "priority": {
+      "required": "User story priority is required.",
+      "invalid": "Invalid priority."
     },
-    "validations": {
-      "name": {
-        "required": "User story name is required."
-      },
-      "priority": {
-        "required": "User story priority is required.",
-        "invalid": "Invalid priority."
-      },
-      "status": {
-        "required": "User story status is required.",
-        "invalid": "Invalid status."
-      },
-      "description": {
-        "required": "User story description is required."
-      }
+    "status": {
+      "required": "User story status is required.",
+      "invalid": "Invalid status."
     },
-    "toast": {
-      "create": {
-        "success": "User story has been created.",
-        "failed": "Failed to create user story."
-      },
-      "delete": {
-        "success": "User story has been deleted.",
-        "failed": "Failed to delete user story."
-      },
-      "update": {
-        "success": "User story has been edited.",
-        "failed": "Failed to edit user story."
-      }
+    "description": {
+      "required": "User story description is required."
+    }
+  },
+  "toast": {
+    "create": {
+      "success": "User story has been created.",
+      "failed": "Failed to create user story."
+    },
+    "delete": {
+      "success": "User story has been deleted.",
+      "failed": "Failed to delete user story."
+    },
+    "update": {
+      "success": "User story has been edited.",
+      "failed": "Failed to edit user story."
     }
   }
 }
