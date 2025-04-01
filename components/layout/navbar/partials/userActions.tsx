@@ -1,8 +1,8 @@
 import { LuCircleUser, LuLogIn, LuLogOut, LuUserPlus } from "react-icons/lu";
 import { routes } from "@/lib/routes/routes";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import ActionIcon from "@/components/ui/actionIcon";
 import User from "@/types/user";
+import ActionIcon from "@/components/shared/elements/actionIcon";
 
 interface UserActionsProps {
   user: User | null;

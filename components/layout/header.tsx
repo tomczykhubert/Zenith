@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { routes } from "@/lib/routes/routes";
 import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
-import LangSwitcher from "../ui/langSwitcher";
 import Navbar from "./navbar/navbar";
 import User from "@/types/user";
+import LangSwitcher from "../shared/elements/langSwitcher";
 
 export interface HeaderBaseProps {
   user: User | null;

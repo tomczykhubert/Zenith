@@ -1,14 +1,14 @@
 "use client";
-import CreateProjectForm from "@/components/blocks/project/forms/createProjectForm";
-import ProjectsGrid from "@/components/blocks/project/projectsGrid";
-import Title from "@/components/blocks/common/title";
-import ActionIcon from "@/components/ui/actionIcon";
-import FormModal from "@/components/ui/modals/formModal";
+import CreateProjectForm from "@/components/features/project/forms/createProjectForm";
+import ProjectsGrid from "@/components/features/project/projectsGrid";
+import Title from "@/components/shared/layout/title";
 import { useProjectsStore } from "@/providers/projectsProvider";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import Project from "@/types/project";
 import { useState } from "react";
 import { MdAddBusiness } from "react-icons/md";
+import FormModal from "@/components/shared/elements/modals/formModal";
+import ActionIcon from "@/components/shared/elements/actionIcon";
 
 export default function Projects() {
   const [isModalOpen, setIsModalOpen] = useState(false);

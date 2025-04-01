@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthState, AuthStore, createAuthStore } from "@/stores/authStore";
 import { useStore } from "zustand";
-import Spinner from "@/components/blocks/common/spinner";
+import Spinner from "@/components/shared/elements/spinner";
 import { apiRoutes } from "@/lib/routes/apiRoutes";
 import { AUTH_CONFIG } from "@/lib/auth/config";
 

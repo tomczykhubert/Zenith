@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { createUsersStore, UsersStore } from "@/stores/usersStore";
-import Spinner from "@/components/blocks/common/spinner";
+import Spinner from "@/components/shared/elements/spinner";
 import { ProviderProps } from "./base";
 import User from "@/types/user";
 import { apiRoutes } from "@/lib/routes/apiRoutes";

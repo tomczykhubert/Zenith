@@ -1,9 +1,7 @@
 "use client";
-import Title from "@/components/blocks/common/title";
-import CreateUserStoryForm from "@/components/blocks/userStory/forms/createUserStoryForm";
-import UserStoriesGrid from "@/components/blocks/userStory/userStoriesGrid";
-import ActionIcon from "@/components/ui/actionIcon";
-import FormModal from "@/components/ui/modals/formModal";
+import Title from "@/components/shared/layout/title";
+import CreateUserStoryForm from "@/components/features/userStory/forms/createUserStoryForm";
+import UserStoriesGrid from "@/components/features/userStory/userStoriesGrid";
 import { useAuthStore } from "@/providers/authProvider";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { useProjectsStore } from "@/providers/projectsProvider";
@@ -11,6 +9,8 @@ import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
 import UserStory from "@/types/userStory";
 import { useState } from "react";
 import { GiNotebook } from "react-icons/gi";
+import ActionIcon from "@/components/shared/elements/actionIcon";
+import FormModal from "@/components/shared/elements/modals/formModal";
 
 export default function UserStories() {
   const [isModalOpen, setIsModalOpen] = useState(false);

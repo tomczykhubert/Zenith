@@ -7,7 +7,7 @@ import {
   useEffect,
 } from "react";
 import { useParams } from "next/navigation";
-import Spinner from "@/components/blocks/common/spinner";
+import Spinner from "@/components/shared/elements/spinner";
 
 type RecursiveRecord = {
   [key: string]: RecursiveRecord | string;

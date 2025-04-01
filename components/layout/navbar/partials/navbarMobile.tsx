@@ -2,10 +2,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { LuMenu } from "react-icons/lu";
 import { NavbarBaseProps } from "../navbar";
-import ActionIcon from "@/components/ui/actionIcon";
 import UserActions from "./userActions";
 import Image from "next/image";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import ActionIcon from "@/components/shared/elements/actionIcon";
 
 type NavbarMobileProps = NavbarBaseProps;
 

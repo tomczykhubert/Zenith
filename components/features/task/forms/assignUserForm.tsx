@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/ui/forms/button";
+import { Button } from "@/components/shared/elements/forms/button";
 import {
   Form,
   FormControl,
@@ -10,10 +10,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/forms/form";
+} from "@/components/shared/elements/forms/form";
 import { useForm } from "react-hook-form";
 import Task from "@/types/task";
-import { Select } from "@/components/ui/forms/select";
+import { Select } from "@/components/shared/elements/forms/select";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { mapUsersToSelect } from "@/types/user";
 import { useTasksStore } from "@/providers/tasksProvider";

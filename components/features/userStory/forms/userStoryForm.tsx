@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/ui/forms/button";
+import { Button } from "@/components/shared/elements/forms/button";
 import {
   Form,
   FormControl,
@@ -10,15 +10,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/forms/form";
-import { Input } from "@/components/ui/forms/input";
-import { Textarea } from "@/components/ui/forms/textarea";
+} from "@/components/shared/elements/forms/form";
+import { Input } from "@/components/shared/elements/forms/input";
+import { Textarea } from "@/components/shared/elements/forms/textarea";
 import { useForm } from "react-hook-form";
 import {
   useUsersStoretorySelectPriorities,
   useUsersStoretorySelectStatuses,
 } from "@/types/userStory";
-import { Select } from "@/components/ui/forms/select";
+import { Select } from "@/components/shared/elements/forms/select";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { UserStoryPriority, UserStoryStatus } from "@prisma/client";
 

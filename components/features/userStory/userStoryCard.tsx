@@ -1,14 +1,14 @@
 import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
 import UpdateUserStoryForm from "./forms/updateUserStoryForm";
 import UserStory from "@/types/userStory";
-import ActionIcon from "@/components/ui/actionIcon";
+import ActionIcon from "@/components/shared/elements/actionIcon";
 import { FaTasks } from "react-icons/fa";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { getEnumTranslationKey } from "@/lib/utils";
 import { toast } from "react-toastify";
 import { useUsersStore } from "@/providers/usersProvider";
 import { routes } from "@/lib/routes/routes";
-import BaseCard from "../common/baseCard";
+import BaseCard from "../../shared/base/baseCard";
 
 export default function UserStoryCard(userStory: UserStory) {
   const { t } = useDictionary();

@@ -2,14 +2,14 @@ import { useProjectsStore } from "@/providers/projectsProvider";
 import { FaRegCheckSquare, FaCheckSquare } from "react-icons/fa";
 import { useState } from "react";
 import UpdateProjectForm from "./forms/updateProjectForm";
-import ConfirmModal from "@/components/ui/modals/confirmModal";
+import ConfirmModal from "@/components/shared/elements/modals/confirmModal";
 import Project from "@/types/project";
-import ActionIcon from "@/components/ui/actionIcon";
+import ActionIcon from "@/components/shared/elements/actionIcon";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { useAuthStore } from "@/providers/authProvider";
 import { useUsersStore } from "@/providers/usersProvider";
 import { toast } from "react-toastify";
-import BaseCard from "../common/baseCard";
+import BaseCard from "../../shared/base/baseCard";
 
 export default function ProjectCard(project: Project) {
   const { t } = useDictionary();

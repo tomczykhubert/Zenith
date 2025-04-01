@@ -1,8 +1,8 @@
 "use client";
 
 import { useSearchParams, useRouter, redirect } from "next/navigation";
-import { Input } from "@/components/ui/forms/input";
-import { Button } from "@/components/ui/forms/button";
+import { Input } from "@/components/shared/elements/forms/input";
+import { Button } from "@/components/shared/elements/forms/button";
 import {
   Form,
   FormControl,
@@ -10,7 +10,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/forms/form";
+} from "@/components/shared/elements/forms/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

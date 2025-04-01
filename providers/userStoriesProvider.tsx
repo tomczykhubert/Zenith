@@ -8,7 +8,7 @@ import {
   UserStoriesStore,
   createUserStoriesStore,
 } from "@/stores/userStoriesStore";
-import Spinner from "@/components/blocks/common/spinner";
+import Spinner from "@/components/shared/elements/spinner";
 import { ProviderProps } from "./base";
 import UserStory from "@/types/userStory";
 import { apiRoutes } from "@/lib/routes/apiRoutes";

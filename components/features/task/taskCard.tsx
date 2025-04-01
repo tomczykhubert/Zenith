@@ -1,10 +1,10 @@
 import { useTasksStore } from "@/providers/tasksProvider";
 import { useState } from "react";
-import FormModal from "@/components/ui/modals/formModal";
+import FormModal from "@/components/shared/elements/modals/formModal";
 import UpdateTaskForm from "./forms/updateTaskForm";
-import ConfirmModal from "@/components/ui/modals/confirmModal";
+import ConfirmModal from "@/components/shared/elements/modals/confirmModal";
 import Task from "@/types/task";
-import ActionIcon from "@/components/ui/actionIcon";
+import ActionIcon from "@/components/shared/elements/actionIcon";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { MdDone } from "react-icons/md";
 import { FaUserClock } from "react-icons/fa";
@@ -15,7 +15,7 @@ import { useUsersStore } from "@/providers/usersProvider";
 import { toast } from "react-toastify";
 import { useAuthStore } from "@/providers/authProvider";
 import { formatDate } from "@/lib/utils/dateFormat";
-import BaseCard from "../common/baseCard";
+import BaseCard from "../../shared/base/baseCard";
 
 export default function TaskCard(task: Task) {
   const { t } = useDictionary();

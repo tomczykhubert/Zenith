@@ -1,11 +1,11 @@
 import { formatDate } from "@/lib/utils/dateFormat";
-import ActionIcon from "@/components/ui/actionIcon";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ReactNode, useState } from "react";
 import { KanbanBase } from "@/types/kanbanBase";
-import FormModal from "@/components/ui/modals/formModal";
-import ConfirmModal from "@/components/ui/modals/confirmModal";
 import UpdateFormProps from "@/types/forms/updateFormProps";
+import ActionIcon from "../elements/actionIcon";
+import FormModal from "../elements/modals/formModal";
+import ConfirmModal from "../elements/modals/confirmModal";
 
 interface BaseCardProps<T extends KanbanBase> {
   item: T;

@@ -1,7 +1,7 @@
 "use client";
 
-import Header from "@/components/blocks/header";
-import Toast from "@/components/ui/toast";
+import Header from "@/components/layout/header";
+import Toast from "@/components/shared/elements/toast";
 import { AuthStoreProvider } from "@/providers/authProvider";
 import { DictionaryProvider } from "@/providers/dictionaryProvider";
 

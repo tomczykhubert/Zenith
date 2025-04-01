@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/forms/button";
 import {
   Form,
   FormControl,
@@ -8,8 +7,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/forms/form";
-import { Input } from "@/components/ui/forms/input";
+} from "@/components/shared/elements/forms/form";
+import { Input } from "@/components/shared/elements/forms/input";
+import { Button } from "@/components/shared/elements/forms/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

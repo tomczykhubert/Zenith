@@ -1,9 +1,7 @@
 "use client";
-import CreateTaskForm from "@/components/blocks/task/forms/createTaskForm";
-import TasksGrid from "@/components/blocks/task/tasksGrid";
-import Title from "@/components/blocks/common/title";
-import ActionIcon from "@/components/ui/actionIcon";
-import FormModal from "@/components/ui/modals/formModal";
+import CreateTaskForm from "@/components/features/task/forms/createTaskForm";
+import TasksGrid from "@/components/features/task/tasksGrid";
+import Title from "@/components/shared/layout/title";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { useTasksStore } from "@/providers/tasksProvider";
 import { routes } from "@/lib/routes/routes";
@@ -14,6 +12,8 @@ import Task from "@/types/task";
 import ID from "@/types/id";
 import UserStory from "@/types/userStory";
 import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
+import FormModal from "@/components/shared/elements/modals/formModal";
+import ActionIcon from "@/components/shared/elements/actionIcon";
 export default function Tasks() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { id } = useParams();

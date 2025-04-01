@@ -10,7 +10,7 @@ const SelectItem = React.forwardRef<
   return (
     <RadixSelect.Item
       className={cn(
-        "relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[35px] text-[13px] leading-none text-gray-800 data-[disabled]:pointer-events-none data-[highlighted]:bg-gray-700 data-[disabled]:text-gray-500 text-white data-[highlighted]:outline-none",
+        "relative flex h-[25px] select-none items-center rounded-[3px] pl-[25px] pr-[35px] text-[13px] leading-none data-[disabled]:pointer-events-none data-[highlighted]:bg-gray-700 data-[disabled]:text-gray-500 text-white data-[highlighted]:outline-none",
         className
       )}
       {...props}
