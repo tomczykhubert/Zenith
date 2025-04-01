@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import Image from "next/image";
 import { useUsersStore } from "@/providers/usersProvider";
 import { useAuthStore } from "@/providers/authProvider";
 import { toast } from "react-toastify";
@@ -68,19 +67,8 @@ export default function Profile() {
 
   return (
     <div className="max-w-[525px] mx-auto mt-5">
-      <h1 className="text-3xl mb-5 flex items-center space-x-2">
+      <h1 className="text-3xl mb-5">
         <span style={{ letterSpacing: "0.1px" }}>{t("user.profile")}</span>
-        {user.photoURL && (
-          <div>
-            <Image
-              width={75}
-              height={75}
-              src={user.photoURL}
-              alt={user.displayName || "Profile"}
-              className="rounded-full aspect-square object-cover"
-            />
-          </div>
-        )}
       </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

@@ -6,7 +6,7 @@ import User from "@/types/user";
 
 interface UserActionsProps {
   user: User | null;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const UserActions = ({ user, onClick }: UserActionsProps) => {

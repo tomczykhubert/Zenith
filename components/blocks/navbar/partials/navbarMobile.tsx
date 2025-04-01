@@ -4,6 +4,7 @@ import { LuMenu } from "react-icons/lu";
 import { NavbarBaseProps } from "../navbar";
 import ActionIcon from "@/components/ui/actionIcon";
 import UserActions from "./userActions";
+import Image from "next/image";
 
 type NavbarMobileProps = NavbarBaseProps;
 
@@ -35,6 +36,22 @@ const NavbarMobile = ({ links, user }: NavbarMobileProps) => {
           onClick={(e) => e.stopPropagation()}
         >
           <nav className="h-full flex flex-col p-6">
+            {user && (
+              <div className="flex items-center gap-3">
+                <p>Hello, {user.displayName || user.email}</p>
+                {user.photoURL && (
+                  <div>
+                    <Image
+                      width={50}
+                      height={50}
+                      src={user.photoURL}
+                      alt={user.displayName || user.email}
+                      className="rounded-full aspect-square object-cover"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
             <UserActions user={user} onClick={() => setIsOpen(false)} />
             <ul className="mt-5 space-y-6 flex-1">
               {links.map((link) => (

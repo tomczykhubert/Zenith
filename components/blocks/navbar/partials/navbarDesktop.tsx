@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { NavbarBaseProps } from "../navbar";
 import UserActions from "./userActions";
+import Image from "next/image";
 
 type NavbarDesktopProps = NavbarBaseProps;
 
@@ -21,7 +22,23 @@ const NavbarDesktop = ({ links, user }: NavbarDesktopProps) => {
           ))}
         </ul>
       </nav>
-      <div>
+      <div className="flex items-center gap-3">
+        {user && (
+          <>
+            <p>Hello, {user.displayName || user.email}</p>
+            {user.photoURL && (
+              <div>
+                <Image
+                  width={50}
+                  height={50}
+                  src={user.photoURL}
+                  alt={user.displayName || user.email}
+                  className="rounded-full aspect-square object-cover"
+                />
+              </div>
+            )}
+          </>
+        )}
         <UserActions user={user} />
       </div>
     </div>
