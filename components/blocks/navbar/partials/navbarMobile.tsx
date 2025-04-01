@@ -35,7 +35,7 @@ const NavbarMobile = ({ links, user }: NavbarMobileProps) => {
           onClick={(e) => e.stopPropagation()}
         >
           <nav className="h-full flex flex-col p-6">
-            <UserActions user={user} />
+            <UserActions user={user} onClick={() => setIsOpen(false)} />
             <ul className="mt-5 space-y-6 flex-1">
               {links.map((link) => (
                 <li key={link.href}>

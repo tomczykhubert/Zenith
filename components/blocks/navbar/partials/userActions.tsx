@@ -6,9 +6,10 @@ import User from "@/types/user";
 
 interface UserActionsProps {
   user: User | null;
+  onClick: () => void;
 }
 
-const UserActions = ({ user }: UserActionsProps) => {
+const UserActions = ({ user, onClick }: UserActionsProps) => {
   const { t } = useDictionary();
 
   return (
@@ -20,12 +21,14 @@ const UserActions = ({ user }: UserActionsProps) => {
             text={t("user.signIn")}
             Icon={LuLogIn}
             variant="slate"
+            onClick={onClick}
           />
           <ActionIcon
             href={routes.user.register}
             text={t("user.signUp")}
             Icon={LuUserPlus}
             variant="blue"
+            onClick={onClick}
           />
         </>
       ) : (
@@ -34,12 +37,14 @@ const UserActions = ({ user }: UserActionsProps) => {
             href={routes.user.profile}
             text={t("user.profile")}
             Icon={LuCircleUser}
+            onClick={onClick}
           />
           <ActionIcon
             href={routes.user.signOut}
             text={t("user.signOut")}
             Icon={LuLogOut}
             variant="blue"
+            onClick={onClick}
           />
         </>
       )}

@@ -62,7 +62,7 @@ export default function ActionIcon({
 
   if (href) {
     return (
-      <Link href={localizedHref} {...commonProps}>
+      <Link href={localizedHref} {...commonProps} onClick={onClick}>
         {content}
       </Link>
     );
