@@ -3,8 +3,8 @@ import { getProject, updateProject, deleteProject } from "@/prisma/projects";
 import ID from "@/types/id";
 
 export async function GET(req: Request, { params }: { params: { id: ID } }) {
-  const { id } = await params;
   try {
+    const { id } = await params;
     const project = await getProject(id);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
@@ -19,8 +19,8 @@ export async function GET(req: Request, { params }: { params: { id: ID } }) {
 }
 
 export async function PUT(req: Request, { params }: { params: { id: ID } }) {
-  const { id } = await params;
   try {
+    const { id } = await params;
     const data = await req.json();
     const updateData = {
       ...data,
@@ -37,8 +37,8 @@ export async function PUT(req: Request, { params }: { params: { id: ID } }) {
 }
 
 export async function DELETE(req: Request, { params }: { params: { id: ID } }) {
-  const { id } = await params;
   try {
+    const { id } = await params;
     await deleteProject(id);
     return NextResponse.json({ message: "Project deleted successfully" });
   } catch (error) {

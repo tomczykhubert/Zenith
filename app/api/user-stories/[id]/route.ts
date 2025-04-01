@@ -8,7 +8,8 @@ import ID from "@/types/id";
 
 export async function GET({ params }: { params: { id: ID } }) {
   try {
-    const userStory = await getUserStory(params.id);
+    const { id } = await params;
+    const userStory = await getUserStory(id);
     if (!userStory) {
       return NextResponse.json(
         { error: "User story not found" },
@@ -29,12 +30,13 @@ export async function PUT(
   { params }: { params: { id: ID } }
 ) {
   try {
+    const { id } = await params;
     const data = await request.json();
     const updateData = {
       ...data,
       updatedAt: new Date(),
     };
-    const userStory = await updateUserStory(params.id, updateData);
+    const userStory = await updateUserStory(id, updateData);
     return NextResponse.json(userStory);
   } catch (error) {
     return NextResponse.json(
@@ -49,7 +51,8 @@ export async function DELETE(
   { params }: { params: { id: ID } }
 ) {
   try {
-    await deleteUserStory(params.id);
+    const { id } = await params;
+    await deleteUserStory(id);
     return NextResponse.json({ message: "User story deleted successfully" });
   } catch (error) {
     return NextResponse.json(

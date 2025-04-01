@@ -4,7 +4,8 @@ import ID from "@/types/id";
 
 export async function GET({ params }: { params: { id: ID } }) {
   try {
-    const task = await getTask(params.id);
+    const { id } = await params;
+    const task = await getTask(id);
     if (!task) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
     }
@@ -22,12 +23,13 @@ export async function PUT(
   { params }: { params: { id: ID } }
 ) {
   try {
+    const { id } = await params;
     const data = await request.json();
     const updateData = {
       ...data,
       updatedAt: new Date(),
     };
-    const task = await updateTask(params.id, updateData);
+    const task = await updateTask(id, updateData);
     return NextResponse.json(task);
   } catch (error) {
     return NextResponse.json(
@@ -42,7 +44,8 @@ export async function DELETE(
   { params }: { params: { id: ID } }
 ) {
   try {
-    await deleteTask(params.id);
+    const { id } = await params;
+    await deleteTask(id);
     return NextResponse.json({ message: "Task deleted successfully" });
   } catch (error) {
     return NextResponse.json(
