@@ -1,7 +1,7 @@
 "use client";
 import CreateProjectForm from "@/components/blocks/project/forms/createProjectForm";
 import ProjectsGrid from "@/components/blocks/project/projectsGrid";
-import Title from "@/components/blocks/title";
+import Title from "@/components/blocks/common/title";
 import ActionIcon from "@/components/ui/actionIcon";
 import FormModal from "@/components/ui/modals/formModal";
 import { useProjectsStore } from "@/providers/projectsProvider";

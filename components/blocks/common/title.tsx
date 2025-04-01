@@ -1,5 +1,5 @@
 import { FaArrowLeft } from "react-icons/fa";
-import ActionIcon from "../ui/actionIcon";
+import ActionIcon from "../../ui/actionIcon";
 import { useDictionary } from "@/providers/dictionaryProvider";
 interface TitleProps {
   title: string;

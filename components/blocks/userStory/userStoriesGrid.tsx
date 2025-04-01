@@ -1,6 +1,6 @@
 import UserStory from "@/types/userStory";
 import UserStoryCard from "./userStoryCard";
-import GridColumn from "../gridColumn";
+import GridColumn from "../common/gridColumn";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { UserStoryStatus } from "@prisma/client";
 

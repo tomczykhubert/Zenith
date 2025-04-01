@@ -1,7 +1,7 @@
 "use client";
 import CreateTaskForm from "@/components/blocks/task/forms/createTaskForm";
 import TasksGrid from "@/components/blocks/task/tasksGrid";
-import Title from "@/components/blocks/title";
+import Title from "@/components/blocks/common/title";
 import ActionIcon from "@/components/ui/actionIcon";
 import FormModal from "@/components/ui/modals/formModal";
 import { useDictionary } from "@/providers/dictionaryProvider";

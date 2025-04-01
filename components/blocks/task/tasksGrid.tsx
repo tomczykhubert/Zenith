@@ -1,6 +1,6 @@
 import Task from "@/types/task";
 import TaskCard from "./taskCard";
-import GridColumn from "../gridColumn";
+import GridColumn from "../common/gridColumn";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { TaskStatus } from "@prisma/client";
 

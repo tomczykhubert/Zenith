@@ -8,7 +8,7 @@ import {
   useCallback,
   useRef,
 } from "react";
-import Spinner from "@/components/blocks/spinner";
+import Spinner from "@/components/blocks/common/spinner";
 
 interface LoadingContextType {
   isLoading: boolean;

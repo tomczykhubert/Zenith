@@ -6,15 +6,13 @@ import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
 import UserStory from "@/types/userStory";
 import { toast } from "react-toastify";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import UpdateFormProps from "@/types/forms/updateFormProps";
 
-interface UpdateUserStoryFormProps {
-  onClose: () => void;
-  userStory: UserStory;
-}
+type UpdateUserStoryFormProps = UpdateFormProps<UserStory>;
 
 export default function UpdateUserStoryForm({
-  onClose,
-  userStory,
+  onSubmit,
+  item: userStory,
 }: UpdateUserStoryFormProps) {
   const updateUserStory = useUsersStoretoriesStore(
     (state) => state.updateUserStory
@@ -34,7 +32,7 @@ export default function UpdateUserStoryForm({
     } catch {
       toast.error(t("userStory.toast.update.success"));
     }
-    onClose();
+    onSubmit();
   };
 
   return (

@@ -1,5 +1,5 @@
 "use client";
-import Title from "@/components/blocks/title";
+import Title from "@/components/blocks/common/title";
 import CreateUserStoryForm from "@/components/blocks/userStory/forms/createUserStoryForm";
 import UserStoriesGrid from "@/components/blocks/userStory/userStoriesGrid";
 import ActionIcon from "@/components/ui/actionIcon";

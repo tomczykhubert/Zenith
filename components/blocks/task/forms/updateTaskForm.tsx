@@ -6,13 +6,14 @@ import { useTasksStore } from "@/providers/tasksProvider";
 import Task from "@/types/task";
 import { toast } from "react-toastify";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import UpdateFormProps from "@/types/forms/updateFormProps";
 
-interface UpdateTaskFormProps {
-  onClose: () => void;
-  task: Task;
-}
+type UpdateTaskFormProps = UpdateFormProps<Task>;
 
-export default function UpdateTaskForm({ onClose, task }: UpdateTaskFormProps) {
+export default function UpdateTaskForm({
+  onSubmit,
+  item: task,
+}: UpdateTaskFormProps) {
   const { t } = useDictionary();
   const updateTask = useTasksStore((state) => state.updateTask);
   const handleUpdate = async (values: z.infer<typeof formSchema>) => {
@@ -28,7 +29,7 @@ export default function UpdateTaskForm({ onClose, task }: UpdateTaskFormProps) {
     } catch {
       toast.error(t("task.toast.update.failed"));
     }
-    onClose();
+    onSubmit();
   };
 
   return (

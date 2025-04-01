@@ -8,7 +8,7 @@ import {
   ProjectsState,
   ProjectsStore,
 } from "@/stores/projectsStore";
-import Spinner from "@/components/blocks/spinner";
+import Spinner from "@/components/blocks/common/spinner";
 import { ProviderProps } from "./base";
 import Project from "@/types/project";
 import { apiRoutes } from "@/lib/routes/apiRoutes";

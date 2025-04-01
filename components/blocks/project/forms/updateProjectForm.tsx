@@ -6,15 +6,13 @@ import { ProjectForm, formSchema } from "./projectForm";
 import Project from "@/types/project";
 import { toast } from "react-toastify";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import UpdateFormProps from "@/types/forms/updateFormProps";
 
-interface UpdateProjectFormProps {
-  project: Project;
-  onClose: () => void;
-}
+type UpdateProjectFormProps = UpdateFormProps<Project>;
 
 export default function UpdateProjectForm({
-  project,
-  onClose,
+  onSubmit,
+  item: project,
 }: UpdateProjectFormProps) {
   const { t } = useDictionary();
   const updateProject = useProjectsStore((state) => state.updateProject);
@@ -30,7 +28,7 @@ export default function UpdateProjectForm({
     } catch {
       toast.error(t("project.toast.update.failed"));
     }
-    onClose();
+    onSubmit();
   };
 
   return (

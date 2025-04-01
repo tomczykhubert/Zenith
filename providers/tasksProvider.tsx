@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useStore } from "zustand";
 
 import { createTasksStore, TasksStore, TasksState } from "@/stores/tasksStore";
-import Spinner from "@/components/blocks/spinner";
+import Spinner from "@/components/blocks/common/spinner";
 import { ProviderProps } from "./base";
 import Task from "@/types/task";
 import { apiRoutes } from "@/lib/routes/apiRoutes";
