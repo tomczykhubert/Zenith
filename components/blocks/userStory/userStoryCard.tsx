@@ -11,6 +11,7 @@ import { getEnumTranslationKey } from "@/lib/utils";
 import { toast } from "react-toastify";
 import { useUsersStore } from "@/providers/usersProvider";
 import { routes } from "@/lib/routes/routes";
+import BaseCard from "../baseCard";
 
 export default function UserStoryCard(userStory: UserStory) {
   const deleteUserStory = useUsersStoretoriesStore(
@@ -35,15 +36,12 @@ export default function UserStoryCard(userStory: UserStory) {
 
   return (
     <>
-      <div
-        className="bg-slate-700 border border-slate-700 shadow-md rounded-md p-4 min-h-[200px] drop-shadow-3xl
-      "
-      >
-        <div className="flex justify-between items-center mb-3">
-          <h2 className="text-xl font-bold text-foreground">
+      <BaseCard>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3  ">
+          <h2 className="text-xl font-bold text-foreground max-w-full order-2 sm:order-1">
             {userStory.name}
           </h2>
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2 order-1 sm:order-2">
             <ActionIcon
               variant="lime"
               href={routes.userStories.tasks.list(userStory.id)}
@@ -65,15 +63,6 @@ export default function UserStoryCard(userStory: UserStory) {
           </div>
         </div>
         <p className="text-muted-foreground mb-3">{userStory.description}</p>
-        {/* <p className="text-muted-foreground mb-3">
-          <strong>{t("userStory.properties.status.status")}:</strong>{" "}
-          {t(
-            getEnumTranslationKey(
-              userStory.status,
-              "userStory.properties.status"
-            )
-          )}
-        </p> */}
         <p className="text-muted-foreground mb-3">
           <strong>{t("userStory.properties.priority.priority")}:</strong>{" "}
           {t(
@@ -97,7 +86,7 @@ export default function UserStoryCard(userStory: UserStory) {
             userStory.updatedAt ? userStory.updatedAt : "now"
           ).toLocaleString()}
         </p>
-      </div>
+      </BaseCard>
       <ConfirmModal
         header={t("userStory.actions.delete")}
         message={t("userStory.actions.deleteConfirm")}

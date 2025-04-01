@@ -15,6 +15,7 @@ import { TaskStatus, UserRole } from "@prisma/client";
 import { useUsersStore } from "@/providers/usersProvider";
 import { toast } from "react-toastify";
 import { useAuthStore } from "@/providers/authProvider";
+import BaseCard from "../baseCard";
 
 export default function TaskCard(task: Task) {
   const { t } = useDictionary();
@@ -59,12 +60,12 @@ export default function TaskCard(task: Task) {
 
   return (
     <>
-      <div className="bg-slate-700 border border-slate-700 shadow-md rounded-md p-4 min-h-[200px]">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
-          <h2 className="text-xl font-bold text-foreground break-words max-w-full">
+      <BaseCard>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3 ">
+          <h2 className="text-xl font-bold text-foreground max-w-full order-2 sm:order-1">
             {task.name}
           </h2>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 order-1 sm:order-2">
             {task.status === TaskStatus.PENDING ? (
               <ActionIcon
                 onClick={() => setIsAssignUserModalOpen(true)}
@@ -98,51 +99,43 @@ export default function TaskCard(task: Task) {
           </div>
         </div>
         <div className="space-y-2">
-          <p className="text-muted-foreground break-words">
-            {task.description}
+          <p className="text-muted-foreground ">{task.description}</p>
+          <p className="text-muted-foreground">
+            <strong>{t("task.properties.priority.priority")}:</strong>{" "}
+            {t(
+              getEnumTranslationKey(task.priority, "task.properties.priority")
+            )}
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <p className="text-muted-foreground">
-              <strong>{t("task.properties.priority.priority")}:</strong>{" "}
-              {t(
-                getEnumTranslationKey(task.priority, "task.properties.priority")
-              )}
-            </p>
-            <p className="text-muted-foreground">
-              <strong>
-                {t("task.properties.estimatedTime")} ({t("common.hours")}):
-              </strong>{" "}
-              {task.estimatedTime}
-            </p>
-            <p className="text-muted-foreground">
-              <strong>{t("task.properties.assignedUser")}:</strong>{" "}
-              {assignedUser ? assignedUser.displayName : "N/A"}
-            </p>
-            <p className="text-muted-foreground">
-              <strong>{t("task.properties.startedAt")}:</strong>{" "}
-              {task.startedAt
-                ? new Date(task.startedAt).toLocaleString()
-                : "N/A"}
-            </p>
-            <p className="text-muted-foreground">
-              <strong>{t("task.properties.completedAt")}:</strong>{" "}
-              {task.completedAt
-                ? new Date(task.completedAt).toLocaleString()
-                : "N/A"}
-            </p>
-            <p className="text-muted-foreground">
-              <strong>{t("common.properties.createdAt")}:</strong>{" "}
-              {new Date(task.createdAt).toLocaleString()}
-            </p>
-            <p className="text-muted-foreground">
-              <strong>{t("common.properties.updatedAt")}:</strong>{" "}
-              {task.updatedAt
-                ? new Date(task.updatedAt).toLocaleString()
-                : "N/A"}
-            </p>
-          </div>
+          <p className="text-muted-foreground">
+            <strong>
+              {t("task.properties.estimatedTime")} ({t("common.hours")}):
+            </strong>{" "}
+            {task.estimatedTime}
+          </p>
+          <p className="text-muted-foreground">
+            <strong>{t("task.properties.assignedUser")}:</strong>{" "}
+            {assignedUser ? assignedUser.displayName : "N/A"}
+          </p>
+          <p className="text-muted-foreground">
+            <strong>{t("task.properties.startedAt")}:</strong>{" "}
+            {task.startedAt ? new Date(task.startedAt).toLocaleString() : "N/A"}
+          </p>
+          <p className="text-muted-foreground">
+            <strong>{t("task.properties.completedAt")}:</strong>{" "}
+            {task.completedAt
+              ? new Date(task.completedAt).toLocaleString()
+              : "N/A"}
+          </p>
+          <p className="text-muted-foreground">
+            <strong>{t("common.properties.createdAt")}:</strong>{" "}
+            {new Date(task.createdAt).toLocaleString()}
+          </p>
+          <p className="text-muted-foreground">
+            <strong>{t("common.properties.updatedAt")}:</strong>{" "}
+            {task.updatedAt ? new Date(task.updatedAt).toLocaleString() : "N/A"}
+          </p>
         </div>
-      </div>
+      </BaseCard>
       <ConfirmModal
         header={t("task.actions.delete")}
         message={t("task.actions.deleteConfirm")}

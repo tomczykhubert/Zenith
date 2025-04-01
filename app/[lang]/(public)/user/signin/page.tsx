@@ -47,17 +47,17 @@ export default function SignInForm() {
     },
   });
 
-  const returnUrl = params.get("returnUrl");
+  const callbackUrl = params.get("callbackUrl");
   const home = useLocalizedRoute(routes.home);
 
   if (user) {
-    redirect(returnUrl || home);
+    redirect(callbackUrl || home);
   }
 
   const onSubmit = async (data: SignInFormData) => {
     try {
       await login(data.email, data.password);
-      router.push(returnUrl || home);
+      router.push(callbackUrl || home);
       toast.success(t("user.toast.signIn.success"));
     } catch {
       toast.error(t("user.toast.signIn.failed"));

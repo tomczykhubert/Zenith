@@ -15,6 +15,7 @@ import { useDictionary } from "@/providers/dictionaryProvider";
 import { useAuthStore } from "@/providers/authProvider";
 import { useUsersStore } from "@/providers/usersProvider";
 import { toast } from "react-toastify";
+import BaseCard from "../baseCard";
 
 export default function ProjectCard(project: Project) {
   const { t } = useDictionary();
@@ -74,10 +75,12 @@ export default function ProjectCard(project: Project) {
   };
   return (
     <div>
-      <div className="bg-slate-700 border border-slate-700 shadow-md rounded-md p-4 min-h-[200px]">
-        <div className="flex justify-between items-center mb-3">
-          <h2 className="text-xl font-bold text-foreground">{project.name}</h2>
-          <div className="flex space-x-2">
+      <BaseCard>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
+          <h2 className="text-xl font-bold text-foreground max-w-full order-2 sm:order-1">
+            {project.name}
+          </h2>
+          <div className="flex flex-wrap gap-2 order-1 sm:order-2">
             {user.activeProjectId == project.id ? (
               <ActionIcon
                 variant="lime"
@@ -128,13 +131,8 @@ export default function ProjectCard(project: Project) {
             />
           </div>
         </div>
-        <p
-          className="text-muted-foreground
-"
-        >
-          {project.description}
-        </p>
-      </div>
+        <p className="text-muted-foreground">{project.description}</p>
+      </BaseCard>
       <ConfirmModal
         header={t(confirmModal.header)}
         message={t(confirmModal.message)}
