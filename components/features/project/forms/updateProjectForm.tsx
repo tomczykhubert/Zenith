@@ -6,7 +6,7 @@ import { ProjectForm, formSchema } from "./projectForm";
 import Project from "@/types/project";
 import { toast } from "react-toastify";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import UpdateFormProps from "@/types/forms/updateFormProps";
+import UpdateFormProps from "@/types/props/updateFormProps";
 
 type UpdateProjectFormProps = UpdateFormProps<Project>;
 

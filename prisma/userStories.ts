@@ -1,35 +1,25 @@
-import prisma from "@/lib/prisma";
-import { UserStory } from "@prisma/client";
-import { Order, Specification } from "./base";
+import prisma from "@/lib/prisma/prismaSingleton";
+import { UserStory as PrismaUserStory } from "@prisma/client";
+import { Specification } from "../lib/prisma/specification";
 import ID from "@/types/id";
+import UserStory from "@/types/userStory";
 
 export async function createUserStory(
   userStory: UserStory
 ): Promise<UserStory> {
   const createdUserStory = await prisma.userStory.create({
-    data: userStory,
+    data: userStory as PrismaUserStory,
   });
-  return createdUserStory;
+  return createdUserStory as UserStory;
 }
 
-export async function getUserStories(): Promise<UserStory[]> {
-  const userStories = await prisma.userStory.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  return userStories;
-}
-
-export async function getUserStoriesBySpecification(
-  specification: Specification<UserStory>,
-  order: Order<UserStory>,
-  includeRelations: boolean = false
+export async function getUserStories(
+  specification?: Specification<UserStory>
 ): Promise<UserStory[]> {
   const userStories = await prisma.userStory.findMany({
-    orderBy: order,
-    where: specification,
-    include: includeRelations
+    where: specification?.where,
+    orderBy: specification?.orderBy ?? { createdAt: "desc" },
+    include: specification?.includeRelations
       ? {
           project: true,
           owner: true,
@@ -37,7 +27,14 @@ export async function getUserStoriesBySpecification(
         }
       : undefined,
   });
-  return userStories;
+  return userStories as UserStory[];
+}
+
+export async function getUserStory(id: ID): Promise<UserStory> {
+  const userStory = await prisma.userStory.findUnique({
+    where: { id },
+  });
+  return userStory as UserStory;
 }
 
 export async function updateUserStory(
@@ -48,7 +45,7 @@ export async function updateUserStory(
     where: { id },
     data,
   });
-  return updatedUserStory;
+  return updatedUserStory as UserStory;
 }
 
 export async function deleteUserStory(id: ID): Promise<void> {

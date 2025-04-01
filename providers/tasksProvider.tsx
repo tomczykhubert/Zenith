@@ -5,9 +5,10 @@ import { useStore } from "zustand";
 
 import { createTasksStore, TasksStore, TasksState } from "@/stores/tasksStore";
 import Spinner from "@/components/shared/elements/spinner";
-import { ProviderProps } from "./base";
+import { ProviderProps } from "../types/props/providerProps";
 import Task from "@/types/task";
 import { apiRoutes } from "@/lib/routes/apiRoutes";
+import generateFetchUrl from "@/lib/utils/generateFetchUrl";
 
 export type TasksStoreApi = ReturnType<typeof createTasksStore>;
 
@@ -18,7 +19,6 @@ export const TasksStoreContext = createContext<TasksStoreApi | undefined>(
 export const TasksStoreProvider = ({
   children,
   specification,
-  order,
 }: ProviderProps<Task>) => {
   const [initialState, setInitialState] = useState<TasksState>({
     tasks: [],
@@ -28,18 +28,7 @@ export const TasksStoreProvider = ({
   useEffect(() => {
     const fetchInitialState = async () => {
       try {
-        const params = new URLSearchParams();
-        if (specification) {
-          params.append("specification", JSON.stringify(specification));
-        }
-        if (order) {
-          params.append("order", JSON.stringify(order));
-        }
-
-        const queryString = params.toString();
-        const url = `${apiRoutes.tasks.base}${
-          queryString ? `?${queryString}` : ""
-        }`;
+        const url = generateFetchUrl<Task>(apiRoutes.tasks.base, specification);
 
         const response = await fetch(url);
         if (!response.ok) {
@@ -56,7 +45,7 @@ export const TasksStoreProvider = ({
     };
 
     fetchInitialState();
-  }, [specification, order]);
+  }, [specification]);
 
   if (isLoading) {
     return <Spinner />;

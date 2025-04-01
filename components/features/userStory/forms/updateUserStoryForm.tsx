@@ -6,7 +6,7 @@ import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
 import UserStory from "@/types/userStory";
 import { toast } from "react-toastify";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import UpdateFormProps from "@/types/forms/updateFormProps";
+import UpdateFormProps from "@/types/props/updateFormProps";
 
 type UpdateUserStoryFormProps = UpdateFormProps<UserStory>;
 

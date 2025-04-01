@@ -1,29 +1,14 @@
 import { NextResponse } from "next/server";
-import { Project } from "@prisma/client";
-import {
-  getProjectsBySpecification,
-  createProject,
-  getProjects,
-} from "@/prisma/projects";
-import { Order, Specification } from "@/prisma/base";
+import { getProjects, createProject } from "@/prisma/projects";
+import { searchParamsToSpecification } from "@/lib/prisma/specification";
+import Project from "@/types/project";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const specification = searchParams.get("specification")
-      ? (JSON.parse(
-          searchParams.get("specification") as string
-        ) as Specification<Project>)
-      : null;
-    const order = searchParams.get("order")
-      ? (JSON.parse(searchParams.get("order") as string) as Order<Project>)
-      : null;
-    if (!specification || !order) {
-      const tasks = await getProjects();
-      return NextResponse.json(tasks);
-    }
+    const specification = searchParamsToSpecification(searchParams);
 
-    const projects = await getProjectsBySpecification(specification, order);
+    const projects = await getProjects(specification);
     return NextResponse.json(projects);
   } catch (error) {
     return NextResponse.json(

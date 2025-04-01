@@ -1,20 +1,13 @@
 import { NextResponse } from "next/server";
-import {
-  getUsersBySpecification,
-  updateUser,
-  deleteUser,
-} from "@/prisma/users";
+import { getUser, updateUser, deleteUser } from "@/prisma/users";
 import ID from "@/types/id";
 
 export async function GET({ params }: { params: { id: ID } }) {
   try {
-    const users = await getUsersBySpecification({ id: params.id }, {}, true);
-    const user = users[0];
-
+    const user = await getUser(params.id);
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
-
     return NextResponse.json(user);
   } catch (error) {
     return NextResponse.json(

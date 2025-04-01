@@ -4,7 +4,7 @@ import UserStory from "@/types/userStory";
 import ActionIcon from "@/components/shared/elements/actionIcon";
 import { FaTasks } from "react-icons/fa";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import { getEnumTranslationKey } from "@/lib/utils";
+import { getEnumTranslationKey } from "@/lib/utils/enums";
 import { toast } from "react-toastify";
 import { useUsersStore } from "@/providers/usersProvider";
 import { routes } from "@/lib/routes/routes";

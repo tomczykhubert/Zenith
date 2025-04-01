@@ -1,15 +1,11 @@
 import { NextResponse } from "next/server";
-import {
-  getProjectWithRelations,
-  updateProject,
-  deleteProject,
-} from "@/prisma/projects";
+import { getProject, updateProject, deleteProject } from "@/prisma/projects";
 import ID from "@/types/id";
 
 export async function GET(req: Request, { params }: { params: { id: ID } }) {
   const { id } = await params;
   try {
-    const project = await getProjectWithRelations(id);
+    const project = await getProject(id);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }

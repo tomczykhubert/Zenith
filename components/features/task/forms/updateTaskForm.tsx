@@ -6,7 +6,7 @@ import { useTasksStore } from "@/providers/tasksProvider";
 import Task from "@/types/task";
 import { toast } from "react-toastify";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import UpdateFormProps from "@/types/forms/updateFormProps";
+import UpdateFormProps from "@/types/props/updateFormProps";
 
 type UpdateTaskFormProps = UpdateFormProps<Task>;
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as RadixSelect from "@radix-ui/react-select";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindClassMerge";
 import { SelectItem } from "./selectItem";
 import { useDictionary } from "@/providers/dictionaryProvider";
 

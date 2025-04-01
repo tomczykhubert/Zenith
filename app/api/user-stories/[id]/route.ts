@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import {
-  getUserStoriesBySpecification,
+  getUserStory,
   updateUserStory,
   deleteUserStory,
 } from "@/prisma/userStories";
@@ -8,20 +8,13 @@ import ID from "@/types/id";
 
 export async function GET({ params }: { params: { id: ID } }) {
   try {
-    const userStories = await getUserStoriesBySpecification(
-      { id: params.id },
-      {},
-      true
-    );
-    const userStory = userStories[0];
-
+    const userStory = await getUserStory(params.id);
     if (!userStory) {
       return NextResponse.json(
         { error: "User story not found" },
         { status: 404 }
       );
     }
-
     return NextResponse.json(userStory);
   } catch (error) {
     return NextResponse.json(

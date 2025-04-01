@@ -9,7 +9,7 @@ import { useDictionary } from "@/providers/dictionaryProvider";
 import { MdDone } from "react-icons/md";
 import { FaUserClock } from "react-icons/fa";
 import AssignUserForm from "./forms/assignUserForm";
-import { getEnumTranslationKey } from "@/lib/utils";
+import { getEnumTranslationKey } from "@/lib/utils/enums";
 import { TaskStatus, UserRole } from "@prisma/client";
 import { useUsersStore } from "@/providers/usersProvider";
 import { toast } from "react-toastify";

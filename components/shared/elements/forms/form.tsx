@@ -12,7 +12,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindClassMerge";
 import { Label } from "@/components/shared/elements/forms/label";
 import { useDictionary } from "@/providers/dictionaryProvider";
 

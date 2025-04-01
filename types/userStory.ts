@@ -1,4 +1,4 @@
-import { useMapEnumToSelect } from "@/lib/utils";
+import { useMapEnumToSelect } from "@/lib/utils/enums";
 import { UserStoryPriority, UserStoryStatus } from "@prisma/client";
 import { KanbanBase } from "./kanbanBase";
 import ID from "./id";

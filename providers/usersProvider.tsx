@@ -4,9 +4,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { createUsersStore, UsersStore } from "@/stores/usersStore";
 import Spinner from "@/components/shared/elements/spinner";
-import { ProviderProps } from "./base";
+import { ProviderProps } from "../types/props/providerProps";
 import User from "@/types/user";
 import { apiRoutes } from "@/lib/routes/apiRoutes";
+import generateFetchUrl from "@/lib/utils/generateFetchUrl";
 
 export type UsersStoreApi = ReturnType<typeof createUsersStore>;
 
@@ -17,7 +18,6 @@ export const UsersStoreContext = createContext<UsersStoreApi | undefined>(
 export const UsersProvider = ({
   children,
   specification,
-  order,
 }: ProviderProps<User>) => {
   const [initialState, setInitialState] = useState<{ users: User[] }>({
     users: [],
@@ -27,18 +27,7 @@ export const UsersProvider = ({
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const params = new URLSearchParams();
-        if (specification) {
-          params.append("specification", JSON.stringify(specification));
-        }
-        if (order) {
-          params.append("order", JSON.stringify(order));
-        }
-
-        const queryString = params.toString();
-        const url = `${apiRoutes.users.base}${
-          queryString ? `?${queryString}` : ""
-        }`;
+        const url = generateFetchUrl<User>(apiRoutes.users.base, specification);
 
         const response = await fetch(url);
         if (!response.ok) {
@@ -55,7 +44,7 @@ export const UsersProvider = ({
     };
 
     fetchUsers();
-  }, [specification, order]);
+  }, [specification]);
 
   if (isLoading) {
     return <Spinner />;

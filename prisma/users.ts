@@ -1,40 +1,37 @@
-import prisma from "@/lib/prisma";
-import { User } from "@prisma/client";
-import { Order, Specification } from "./base";
+import prisma from "@/lib/prisma/prismaSingleton";
+import { User as PrismaUser } from "@prisma/client";
+import { Specification } from "../lib/prisma/specification";
 import ID from "@/types/id";
+import User from "@/types/user";
 
 export async function createUser(user: User): Promise<User> {
   const createdUser = await prisma.user.create({
-    data: user,
+    data: user as PrismaUser,
   });
-  return createdUser;
+  return createdUser as User;
 }
 
-export async function getUsers(): Promise<User[]> {
-  const users = await prisma.user.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  return users;
-}
-
-export async function getUsersBySpecification(
-  specification: Specification<User>,
-  order: Order<User>,
-  includeRelations: boolean = false
+export async function getUsers(
+  specification?: Specification<User>
 ): Promise<User[]> {
   const users = await prisma.user.findMany({
-    orderBy: order,
-    where: specification,
-    include: includeRelations
+    where: specification?.where,
+    orderBy: specification?.orderBy ?? { createdAt: "desc" },
+    include: specification?.includeRelations
       ? {
           tasks: true,
           userStories: true,
         }
       : undefined,
   });
-  return users;
+  return users as User[];
+}
+
+export async function getUser(id: ID): Promise<User> {
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+  return user as User;
 }
 
 export async function updateUser(id: ID, data: Partial<User>): Promise<User> {
@@ -42,7 +39,7 @@ export async function updateUser(id: ID, data: Partial<User>): Promise<User> {
     where: { id },
     data,
   });
-  return updatedUser;
+  return updatedUser as User;
 }
 
 export async function deleteUser(id: ID): Promise<void> {

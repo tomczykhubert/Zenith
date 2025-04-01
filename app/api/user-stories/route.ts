@@ -1,32 +1,14 @@
 import { NextResponse } from "next/server";
-import {
-  getUserStories,
-  createUserStory,
-  getUserStoriesBySpecification,
-} from "@/prisma/userStories";
-import { UserStory } from "@prisma/client";
-import { Order, Specification } from "@/prisma/base";
+import { getUserStories, createUserStory } from "@/prisma/userStories";
+import { searchParamsToSpecification } from "@/lib/prisma/specification";
+import UserStory from "@/types/userStory";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const specification = searchParams.get("specification")
-      ? (JSON.parse(
-          searchParams.get("specification") as string
-        ) as Specification<UserStory>)
-      : null;
-    const order = searchParams.get("order")
-      ? (JSON.parse(searchParams.get("order") as string) as Order<UserStory>)
-      : null;
-    if (!specification || !order) {
-      const userStories = await getUserStories();
-      return NextResponse.json(userStories);
-    }
+    const specification = searchParamsToSpecification(searchParams);
 
-    const userStories = await getUserStoriesBySpecification(
-      specification,
-      order
-    );
+    const userStories = await getUserStories(specification);
     return NextResponse.json(userStories);
   } catch (error) {
     return NextResponse.json(

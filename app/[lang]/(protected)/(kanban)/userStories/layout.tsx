@@ -1,13 +1,14 @@
 "use client";
 import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { routes } from "@/lib/routes/routes";
-import { Direction } from "@/prisma/base";
+import { Direction, Specification } from "@/lib/prisma/specification";
 import { useAuthStore } from "@/providers/authProvider";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { UserStoriesStoreProvider } from "@/providers/userStoriesProvider";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import UserStory from "@/types/userStory";
 
 export default function UserStoriesLayout({
   children,
@@ -27,14 +28,17 @@ export default function UserStoriesLayout({
 
   if (!user?.activeProjectId) return null;
 
-  const specification = {
-    projectId: user.activeProjectId,
+  const specification: Specification<UserStory> = {
+    where: {
+      projectId: user.activeProjectId,
+    },
+    orderBy: {
+      createdAt: Direction.DESC,
+    },
   };
-  const order = {
-    createdAt: Direction.DESC,
-  };
+
   return (
-    <UserStoriesStoreProvider specification={specification} order={order}>
+    <UserStoriesStoreProvider specification={specification}>
       {children}
     </UserStoriesStoreProvider>
   );

@@ -1,8 +1,9 @@
 "use client";
 
-import { Direction } from "@/prisma/base";
+import { Direction, Specification } from "@/lib/prisma/specification";
 import { TasksStoreProvider } from "@/providers/tasksProvider";
 import ID from "@/types/id";
+import Task from "@/types/task";
 import { useParams } from "next/navigation";
 
 export default function TasksLayout({
@@ -12,16 +13,13 @@ export default function TasksLayout({
 }>) {
   const { id } = useParams();
 
-  const specification = {
-    userStoryId: id as ID,
+  const specification: Specification<Task> = {
+    where: {
+      userStoryId: id as ID,
+    },
   };
-
-  const order = {
-    createdAt: Direction.DESC,
-  };
-
   return (
-    <TasksStoreProvider specification={specification} order={order}>
+    <TasksStoreProvider specification={specification}>
       {children}
     </TasksStoreProvider>
   );

@@ -1,20 +1,13 @@
 import { NextResponse } from "next/server";
-import {
-  getTasksBySpecification,
-  updateTask,
-  deleteTask,
-} from "@/prisma/tasks";
+import { getTask, updateTask, deleteTask } from "@/prisma/tasks";
 import ID from "@/types/id";
 
 export async function GET({ params }: { params: { id: ID } }) {
   try {
-    const tasks = await getTasksBySpecification({ id: params.id }, {}, true);
-    const task = tasks[0];
-
+    const task = await getTask(params.id);
     if (!task) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
     }
-
     return NextResponse.json(task);
   } catch (error) {
     return NextResponse.json(

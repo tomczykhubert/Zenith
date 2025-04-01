@@ -1,39 +1,29 @@
-import prisma from "@/lib/prisma";
-import { Project } from "@prisma/client";
-import { Order, Specification } from "./base";
+import prisma from "@/lib/prisma/prismaSingleton";
+import { Specification } from "../lib/prisma/specification";
 import ID from "@/types/id";
+import Project from "@/types/project";
+import { Project as PrismaProject } from "@prisma/client";
 
 export async function createProject(project: Project): Promise<Project> {
   const createdProject = await prisma.project.create({
-    data: project,
+    data: project as PrismaProject,
   });
-  return createdProject;
+  return createdProject as Project;
 }
 
-export async function getProjects(): Promise<Project[]> {
-  const projects = await prisma.project.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  return projects;
-}
-
-export async function getProjectsBySpecification(
-  specification: Specification<Project>,
-  order: Order<Project>,
-  includeRelations: boolean = false
+export async function getProjects(
+  specification?: Specification<Project>
 ): Promise<Project[]> {
   const projects = await prisma.project.findMany({
-    where: specification,
-    orderBy: order,
-    include: includeRelations
+    where: specification?.where,
+    orderBy: specification?.orderBy ?? { createdAt: "desc" },
+    include: specification?.includeRelations
       ? {
           userStories: true,
         }
       : undefined,
   });
-  return projects;
+  return projects as Project[];
 }
 
 export async function updateProject(
@@ -46,7 +36,7 @@ export async function updateProject(
     },
     data,
   });
-  return updatedProject;
+  return updatedProject as Project;
 }
 
 export async function deleteProject(id: ID): Promise<void> {
@@ -57,14 +47,11 @@ export async function deleteProject(id: ID): Promise<void> {
   });
 }
 
-export async function getProjectWithRelations(id: ID) {
+export async function getProject(id: ID): Promise<Project> {
   const project = await prisma.project.findUnique({
     where: {
       id,
     },
-    include: {
-      userStories: true,
-    },
   });
-  return project;
+  return project as Project;
 }

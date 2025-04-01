@@ -9,9 +9,10 @@ import {
   ProjectsStore,
 } from "@/stores/projectsStore";
 import Spinner from "@/components/shared/elements/spinner";
-import { ProviderProps } from "./base";
+import { ProviderProps } from "../types/props/providerProps";
 import Project from "@/types/project";
 import { apiRoutes } from "@/lib/routes/apiRoutes";
+import generateFetchUrl from "@/lib/utils/generateFetchUrl";
 
 export type ProjectsStoreApi = ReturnType<typeof createProjectsStore>;
 
@@ -22,7 +23,6 @@ export const ProjectsStoreContext = createContext<ProjectsStoreApi | undefined>(
 export const ProjectsStoreProvider = ({
   children,
   specification,
-  order,
 }: ProviderProps<Project>) => {
   const [initialState, setInitialState] = useState<ProjectsState>({
     projects: [],
@@ -32,18 +32,10 @@ export const ProjectsStoreProvider = ({
   useEffect(() => {
     const fetchInitialState = async () => {
       try {
-        const params = new URLSearchParams();
-        if (specification) {
-          params.append("specification", JSON.stringify(specification));
-        }
-        if (order) {
-          params.append("order", JSON.stringify(order));
-        }
-
-        const queryString = params.toString();
-        const url = `${apiRoutes.projects.base}${
-          queryString ? `?${queryString}` : ""
-        }`;
+        const url = generateFetchUrl<Project>(
+          apiRoutes.projects.base,
+          specification
+        );
 
         const response = await fetch(url);
         if (!response.ok) {
@@ -60,7 +52,7 @@ export const ProjectsStoreProvider = ({
     };
 
     fetchInitialState();
-  }, [specification, order]);
+  }, [specification]);
 
   if (isLoading) {
     return <Spinner />;

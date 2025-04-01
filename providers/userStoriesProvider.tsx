@@ -9,9 +9,10 @@ import {
   createUserStoriesStore,
 } from "@/stores/userStoriesStore";
 import Spinner from "@/components/shared/elements/spinner";
-import { ProviderProps } from "./base";
+import { ProviderProps } from "../types/props/providerProps";
 import UserStory from "@/types/userStory";
 import { apiRoutes } from "@/lib/routes/apiRoutes";
+import generateFetchUrl from "@/lib/utils/generateFetchUrl";
 
 export type UserStoriesStoreApi = ReturnType<typeof createUserStoriesStore>;
 
@@ -22,7 +23,6 @@ export const UserStoriesStoreContext = createContext<
 export const UserStoriesStoreProvider = ({
   children,
   specification,
-  order,
 }: ProviderProps<UserStory>) => {
   const [initialState, setInitialState] = useState<UserStoriesState>({
     userStories: [],
@@ -32,18 +32,10 @@ export const UserStoriesStoreProvider = ({
   useEffect(() => {
     const fetchInitialState = async () => {
       try {
-        const params = new URLSearchParams();
-        if (specification) {
-          params.append("specification", JSON.stringify(specification));
-        }
-        if (order) {
-          params.append("order", JSON.stringify(order));
-        }
-
-        const queryString = params.toString();
-        const url = `${apiRoutes.userStories.base}${
-          queryString ? `?${queryString}` : ""
-        }`;
+        const url = generateFetchUrl<UserStory>(
+          apiRoutes.userStories.base,
+          specification
+        );
 
         const response = await fetch(url);
         if (!response.ok) {
@@ -60,7 +52,7 @@ export const UserStoriesStoreProvider = ({
     };
 
     fetchInitialState();
-  }, [specification, order]);
+  }, [specification]);
 
   if (isLoading) {
     return <Spinner />;

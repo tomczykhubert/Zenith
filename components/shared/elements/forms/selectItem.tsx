@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as RadixSelect from "@radix-ui/react-select";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/tailwindClassMerge";
 import { FaCheck } from "react-icons/fa";
 
 const SelectItem = React.forwardRef<

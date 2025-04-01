@@ -2,7 +2,7 @@ import { formatDate } from "@/lib/utils/dateFormat";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ReactNode, useState } from "react";
 import { KanbanBase } from "@/types/kanbanBase";
-import UpdateFormProps from "@/types/forms/updateFormProps";
+import UpdateFormProps from "@/types/props/updateFormProps";
 import ActionIcon from "../elements/actionIcon";
 import FormModal from "../elements/modals/formModal";
 import ConfirmModal from "../elements/modals/confirmModal";
