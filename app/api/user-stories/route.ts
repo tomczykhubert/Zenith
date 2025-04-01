@@ -45,9 +45,7 @@ export async function POST(request: Request) {
       createdAt: now,
       updatedAt: now,
     } as UserStory;
-    console.log(userStoryData);
     const userStory = await createUserStory(userStoryData);
-    console.log(userStory);
     return NextResponse.json(userStory);
   } catch (error) {
     return NextResponse.json(

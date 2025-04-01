@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export async function POST() {
   try {
-    console.log("Clearing cookies...");
     await clearAuthCookies();
     return NextResponse.json({ message: "Logged out successfully" });
   } catch (error) {

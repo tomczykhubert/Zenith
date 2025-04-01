@@ -42,7 +42,6 @@ export async function POST(req: Request) {
       createdAt: now,
       updatedAt: now,
     } as Project;
-    console.log(projectData);
     const project = await createProject(projectData);
     return NextResponse.json(project);
   } catch (error) {

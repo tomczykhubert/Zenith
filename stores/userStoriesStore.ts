@@ -26,13 +26,11 @@ export const createUserStoriesStore = (
   return createStore<UserStoriesState & UserStoriesActions>((set, get) => ({
     ...initState,
     addUserStory: async (userStory: Partial<UserStory>) => {
-      console.log(userStory);
       const response = await fetch(apiRoutes.userStories.base, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userStory),
       });
-      console.log(response);
       if (!response.ok) throw new Error("Failed to create user story");
       const newUserStory = await response.json();
       set((state) => ({

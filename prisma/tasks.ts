@@ -34,7 +34,6 @@ export async function getTasksBySpecification(
         }
       : undefined,
   });
-  console.log(tasks);
   return tasks;
 }
 

@@ -47,7 +47,6 @@ export const createProjectsStore = (
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedProject),
       });
-      console.log(updatedProject);
       if (!response.ok) throw new Error("Failed to update project");
       const updated = await response.json();
       set((state) => ({
