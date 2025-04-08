@@ -12,7 +12,7 @@ export default function UserStoriesGrid({
   const { t } = useDictionary();
 
   if (userStories.length === 0) {
-    return <p className="text-center mt-5">{t("userStory.null.all")}</p>;
+    return <p className="text-center">{t("userStory.null.all")}</p>;
   }
 
   const pendingStories = userStories.filter(

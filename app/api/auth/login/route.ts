@@ -40,7 +40,10 @@ export async function POST(req: Request) {
 
     const response = await setAuthCookies(token, refreshToken);
 
-    return NextResponse.json(user as Omit<User, "password">, {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _password, ...result } = user;
+
+    return NextResponse.json(user as User, {
       headers: response.headers,
     });
   } catch (error) {

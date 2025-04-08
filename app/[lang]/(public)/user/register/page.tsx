@@ -8,9 +8,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/shared/elements/forms/form";
-import { Input } from "@/components/shared/elements/forms/input";
-import { Button } from "@/components/shared/elements/forms/button";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -19,7 +19,8 @@ import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { useAuthStore } from "@/providers/authProvider";
 import { UserRole } from "@prisma/client";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+import PageBreadcrumb from "@/components/shared/layout/pageBreadcrumb";
 
 const formSchema = z
   .object({
@@ -70,67 +71,75 @@ export default function RegisterForm() {
     }
   };
 
+  const breadcrumbItems = [
+    {
+      label: t("user.signUp"),
+    },
+  ];
   return (
-    <div className="mt-5 max-w-[525px] mx-auto">
-      <h1 className="text-3xl mb-5">{t("user.createAccount")}</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("user.email")}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder={t("user.emailPlaceholder")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("user.password")}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("user.passwordPlaceholder")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("user.confirmPassword")}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("user.confirmPasswordPlaceholder")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="w-full">
-            {t("user.signUp")}
-          </Button>
-        </form>
-      </Form>
-    </div>
+    <>
+      <PageBreadcrumb items={breadcrumbItems} />
+      <div className="mt-5 max-w-[525px] mx-auto">
+        <h1 className="text-3xl mb-5">{t("user.createAccount")}</h1>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("user.email")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder={t("user.emailPlaceholder")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("user.password")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder={t("user.passwordPlaceholder")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("user.confirmPassword")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder={t("user.confirmPasswordPlaceholder")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full">
+              {t("user.signUp")}
+            </Button>
+          </form>
+        </Form>
+      </div>
+    </>
   );
 }

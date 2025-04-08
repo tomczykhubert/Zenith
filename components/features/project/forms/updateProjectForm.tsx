@@ -4,14 +4,15 @@ import { useProjectsStore } from "@/providers/projectsProvider";
 import { z } from "zod";
 import { ProjectForm, formSchema } from "./projectForm";
 import Project from "@/types/project";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import UpdateFormProps from "@/types/props/updateFormProps";
+import ActionButton from "@/components/shared/elements/actionButton";
+import { LuPencil } from "react-icons/lu";
 
 type UpdateProjectFormProps = UpdateFormProps<Project>;
 
 export default function UpdateProjectForm({
-  onSubmit,
   item: project,
 }: UpdateProjectFormProps) {
   const { t } = useDictionary();
@@ -28,7 +29,6 @@ export default function UpdateProjectForm({
     } catch {
       toast.error(t("project.toast.update.failed"));
     }
-    onSubmit();
   };
 
   return (
@@ -38,6 +38,16 @@ export default function UpdateProjectForm({
         description: project.description,
       }}
       onSubmit={handleUpdate}
+      trigger={
+        <ActionButton
+          variant="secondary"
+          size="icon"
+          tooltip={t("project.actions.edit")}
+        >
+          <LuPencil />
+        </ActionButton>
+      }
+      title={t("project.actions.edit")}
     />
   );
 }

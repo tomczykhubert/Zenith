@@ -10,14 +10,14 @@ export const routes = {
     verify: "/user/verify",
   },
   projects: {
-    list: "/projects",
+    index: "/projects",
     create: "/projects/create",
   },
   userStories: {
-    list: `/userStories`,
+    index: `/userStories`,
     create: `/userStories/create`,
     tasks: {
-      list: (userStoryId: ID) => `/userStories/${userStoryId}/tasks`,
+      index: (userStoryId: ID) => `/userStories/${userStoryId}/tasks`,
       create: (userStoryId: ID) => `/userStories/${userStoryId}/tasks/create`,
     },
   },

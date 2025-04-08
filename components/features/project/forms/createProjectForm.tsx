@@ -3,14 +3,12 @@
 import { useProjectsStore } from "@/providers/projectsProvider";
 import { z } from "zod";
 import { formSchema, ProjectForm } from "./projectForm";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import { MdOutlineDashboardCustomize } from "react-icons/md";
+import ActionButton from "@/components/shared/elements/actionButton";
 
-interface CreateProjectFormProps {
-  onClose: () => void;
-}
-
-export default function CreateProjectForm({ onClose }: CreateProjectFormProps) {
+export default function CreateProjectForm() {
   const { t } = useDictionary();
   const addProject = useProjectsStore((state) => state.addProject);
   const handleCreate = async (values: z.infer<typeof formSchema>) => {
@@ -23,13 +21,17 @@ export default function CreateProjectForm({ onClose }: CreateProjectFormProps) {
     } catch {
       toast.error(t("project.toast.create.failed"));
     }
-
-    onClose();
   };
 
   return (
-    <>
-      <ProjectForm onSubmit={handleCreate} />
-    </>
+    <ProjectForm
+      onSubmit={handleCreate}
+      trigger={
+        <ActionButton tooltip={t("project.actions.create")} size="icon">
+          <MdOutlineDashboardCustomize />
+        </ActionButton>
+      }
+      title={t("project.actions.create")}
+    />
   );
 }

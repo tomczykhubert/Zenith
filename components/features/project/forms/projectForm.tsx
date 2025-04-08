@@ -2,7 +2,14 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/shared/elements/forms/button";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -10,11 +17,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/shared/elements/forms/form";
-import { Input } from "@/components/shared/elements/forms/input";
-import { Textarea } from "@/components/shared/elements/forms/textarea";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import { DialogDescription } from "@radix-ui/react-dialog";
+import { useState } from "react";
+import Project from "@/types/project";
 
 const formSchema = z.object({
   name: z.coerce.string().nonempty({
@@ -28,61 +38,90 @@ const formSchema = z.object({
 interface ProjectFormProps {
   initialValues?: Partial<z.infer<typeof formSchema>>;
   onSubmit: (values: z.infer<typeof formSchema>) => void;
+  title: string;
+  trigger: React.ReactElement;
+  project?: Partial<Project>;
 }
 
 function ProjectForm({
   initialValues = { name: "", description: "" },
   onSubmit,
+  title,
+  trigger,
 }: ProjectFormProps) {
+  const [open, setOpen] = useState(false);
+
   const { t } = useDictionary();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialValues,
   });
 
+  const handleOpenChange = (newOpen: boolean) => {
+    if (newOpen) {
+      form.reset(initialValues);
+    }
+    setOpen(newOpen);
+  };
+
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    await onSubmit(values);
+    setOpen(false);
+  };
+
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="mb-4">
-                <FormLabel>{t("common.properties.name")}</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder={t("project.placeholders.name")}
-                    type="text"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="mb-4">
-                <FormLabel>{t("common.properties.description")}</FormLabel>
-                <FormControl>
-                  <Textarea
-                    rows={10}
-                    className="resize-none"
-                    placeholder={t("project.placeholders.description")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">{t("common.submit")}</Button>
-        </form>
-      </Form>
-    </>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        <DialogDescription></DialogDescription>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("common.properties.name")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={t("project.placeholders.name")}
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("common.properties.description")}</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      rows={10}
+                      className="resize-none"
+                      placeholder={t("project.placeholders.description")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">{t("common.submit")}</Button>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 }
 

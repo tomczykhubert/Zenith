@@ -7,7 +7,7 @@ import { useDictionary } from "@/providers/dictionaryProvider";
 import { UserStoriesStoreProvider } from "@/providers/userStoriesProvider";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import UserStory from "@/types/userStory";
 
 export default function UserStoriesLayout({
@@ -16,7 +16,7 @@ export default function UserStoriesLayout({
   children: React.ReactNode;
 }>) {
   const user = useAuthStore((state) => state.user);
-  const projectsRoute = useLocalizedRoute(routes.projects.list);
+  const projectsRoute = useLocalizedRoute(routes.projects.index);
   const { t } = useDictionary();
 
   useEffect(() => {

@@ -5,35 +5,30 @@ import { z } from "zod";
 import { formSchema, UserStoryForm } from "./userStoryForm";
 import { UserStoryPriority, UserStoryStatus } from "@prisma/client";
 import ID from "@/types/id";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import ActionButton from "@/components/shared/elements/actionButton";
+import { LuNotebookPen } from "react-icons/lu";
 
 interface CreateUserStoryFormProps {
   ownerId: ID;
   projectId: ID;
-  onClose: () => void;
 }
 
 export default function CreateUserStoryForm({
   ownerId,
   projectId,
-  onClose,
 }: CreateUserStoryFormProps) {
-  const addUserStory = useUsersStoretoriesStore((state) => state.addUserStory);
   const { t } = useDictionary();
+  const addUserStory = useUsersStoretoriesStore((state) => state.addUserStory);
 
   const handleCreate = async (values: z.infer<typeof formSchema>) => {
-    const name = values.name;
-    const description = values.description;
-    const priority = values.priority;
-    const status = values.status;
-
     try {
       await addUserStory({
-        name,
-        description,
-        priority,
-        status,
+        name: values.name,
+        description: values.description,
+        priority: values.priority,
+        status: values.status,
         projectId,
         ownerId,
       });
@@ -41,19 +36,23 @@ export default function CreateUserStoryForm({
     } catch {
       toast.error(t("userStory.toast.create.failed"));
     }
-    onClose();
   };
+
   return (
-    <>
-      <UserStoryForm
-        initialValues={{
-          name: "",
-          description: "",
-          priority: UserStoryPriority.LOW,
-          status: UserStoryStatus.PENDING,
-        }}
-        onSubmit={handleCreate}
-      />
-    </>
+    <UserStoryForm
+      initialValues={{
+        name: "",
+        description: "",
+        priority: UserStoryPriority.LOW,
+        status: UserStoryStatus.PENDING,
+      }}
+      onSubmit={handleCreate}
+      trigger={
+        <ActionButton tooltip={t("userStory.actions.create")} size="icon">
+          <LuNotebookPen />
+        </ActionButton>
+      }
+      title={t("userStory.actions.create")}
+    />
   );
 }

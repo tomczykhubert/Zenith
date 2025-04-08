@@ -1,6 +1,6 @@
 "use client";
 
-import { Direction, Specification } from "@/lib/prisma/specification";
+import { Specification } from "@/lib/prisma/specification";
 import { TasksStoreProvider } from "@/providers/tasksProvider";
 import ID from "@/types/id";
 import Task from "@/types/task";

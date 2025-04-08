@@ -1,14 +1,14 @@
 import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
 import UpdateUserStoryForm from "./forms/updateUserStoryForm";
 import UserStory from "@/types/userStory";
-import ActionIcon from "@/components/shared/elements/actionIcon";
-import { FaTasks } from "react-icons/fa";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { getEnumTranslationKey } from "@/lib/utils/enums";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useUsersStore } from "@/providers/usersProvider";
 import { routes } from "@/lib/routes/routes";
 import BaseCard from "../../shared/base/baseCard";
+import ActionButton from "@/components/shared/elements/actionButton";
+import { LuClipboardList } from "react-icons/lu";
 
 export default function UserStoryCard(userStory: UserStory) {
   const { t } = useDictionary();
@@ -27,17 +27,18 @@ export default function UserStoryCard(userStory: UserStory) {
   };
 
   const additionalActions = (
-    <ActionIcon
-      variant="lime"
-      href={routes.userStories.tasks.list(userStory.id)}
-      Icon={FaTasks}
-      text={t("task.tasks")}
-    />
+    <ActionButton
+      variant="default"
+      href={routes.userStories.tasks.index(userStory.id)}
+      tooltip={t("task.tasks")}
+    >
+      <LuClipboardList />
+    </ActionButton>
   );
 
   const additionalProperties = (
     <>
-      <p className="text-muted-foreground">
+      <p>
         <strong>{t("userStory.properties.priority.priority")}:</strong>{" "}
         {t(
           getEnumTranslationKey(
@@ -46,7 +47,7 @@ export default function UserStoryCard(userStory: UserStory) {
           )
         )}
       </p>
-      <p className="text-muted-foreground">
+      <p>
         <strong>{t("userStory.properties.owner")}:</strong>{" "}
         {owner ? owner.displayName || owner.email : "N/A"}
       </p>

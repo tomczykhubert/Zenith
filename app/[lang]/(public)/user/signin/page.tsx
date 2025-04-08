@@ -1,8 +1,8 @@
 "use client";
 
 import { useSearchParams, useRouter, redirect } from "next/navigation";
-import { Input } from "@/components/shared/elements/forms/input";
-import { Button } from "@/components/shared/elements/forms/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,7 +10,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/shared/elements/forms/form";
+} from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -18,7 +18,8 @@ import { routes } from "@/lib/routes/routes";
 import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { useAuthStore } from "@/providers/authProvider";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+import PageBreadcrumb from "@/components/shared/layout/pageBreadcrumb";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -64,50 +65,59 @@ export default function SignInForm() {
     }
   };
 
+  const breadcrumbItems = [
+    {
+      label: t("user.signIn"),
+    },
+  ];
+
   return (
-    <div className="mt-5 max-w-[525px] mx-auto">
-      <h1 className="text-3xl mb-5">{t("user.signIn")}</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("user.email")}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder={t("user.emailPlaceholder")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("user.password")}</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder={t("user.passwordPlaceholder")}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="w-full">
-            {t("user.signIn")}
-          </Button>
-        </form>
-      </Form>
-    </div>
+    <>
+      <PageBreadcrumb items={breadcrumbItems} />
+      <div className="mt-5 max-w-[525px] mx-auto">
+        <h1 className="text-3xl mb-5">{t("user.signIn")}</h1>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("user.email")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder={t("user.emailPlaceholder")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("user.password")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder={t("user.passwordPlaceholder")}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full">
+              {t("user.signIn")}
+            </Button>
+          </form>
+        </Form>
+      </div>
+    </>
   );
 }

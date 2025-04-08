@@ -1,15 +1,14 @@
 import { useProjectsStore } from "@/providers/projectsProvider";
 import { FaRegCheckSquare, FaCheckSquare } from "react-icons/fa";
-import { useState } from "react";
 import UpdateProjectForm from "./forms/updateProjectForm";
 import ConfirmModal from "@/components/shared/elements/modals/confirmModal";
 import Project from "@/types/project";
-import ActionIcon from "@/components/shared/elements/actionIcon";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { useAuthStore } from "@/providers/authProvider";
 import { useUsersStore } from "@/providers/usersProvider";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import BaseCard from "../../shared/base/baseCard";
+import ActionButton from "@/components/shared/elements/actionButton";
 
 export default function ProjectCard(project: Project) {
   const { t } = useDictionary();
@@ -17,12 +16,6 @@ export default function ProjectCard(project: Project) {
   const user = useAuthStore((state) => state.user!);
   const updateUser = useUsersStore((state) => state.updateUser);
   const updateAuthUser = useAuthStore((state) => state.updateCurrentUser);
-  const [confirmModal, setConfirmModal] = useState({
-    open: false,
-    header: "",
-    message: "",
-    action: () => {},
-  });
 
   const handleDelete = async () => {
     try {
@@ -31,7 +24,6 @@ export default function ProjectCard(project: Project) {
     } catch {
       toast.error(t("project.toast.delete.failed"));
     }
-    setConfirmModal({ ...confirmModal, open: false });
   };
 
   const handleSetActiveProject = async () => {
@@ -46,7 +38,6 @@ export default function ProjectCard(project: Project) {
     } catch {
       toast.error(t("project.toast.setActive.failed"));
     }
-    setConfirmModal({ ...confirmModal, open: false });
   };
 
   const handleUnsetActiveProject = async () => {
@@ -61,50 +52,41 @@ export default function ProjectCard(project: Project) {
     } catch {
       toast.error(t("project.toast.unsetActive.failed"));
     }
-    setConfirmModal({ ...confirmModal, open: false });
   };
   const additionalActions = (
     <>
       {user.activeProjectId == project.id ? (
-        <ActionIcon
-          variant="lime"
-          Icon={FaCheckSquare}
-          onClick={() =>
-            setConfirmModal({
-              header: "project.actions.unsetActive",
-              message: "project.actions.unsetActiveConfirm",
-              open: true,
-              action: handleUnsetActiveProject,
-            })
+        <ConfirmModal
+          header={t("project.actions.unsetActive")}
+          message={t("project.actions.unsetActiveConfirm")}
+          onConfirm={handleUnsetActiveProject}
+          trigger={
+            <ActionButton
+              variant="default"
+              size="icon"
+              tooltip={t("project.actions.unsetActive")}
+            >
+              <FaCheckSquare />
+            </ActionButton>
           }
-          text={t("project.actions.unsetActive")}
         />
       ) : (
-        <ActionIcon
-          variant="lime"
-          Icon={FaRegCheckSquare}
-          onClick={() =>
-            setConfirmModal({
-              header: "project.actions.setActive",
-              message: "project.actions.setActiveConfirm",
-              open: true,
-              action: handleSetActiveProject,
-            })
+        <ConfirmModal
+          header={t("project.actions.setActive")}
+          message={t("project.actions.setActiveConfirm")}
+          onConfirm={handleSetActiveProject}
+          trigger={
+            <ActionButton
+              variant="default"
+              size="icon"
+              tooltip={t("project.actions.setActive")}
+            >
+              <FaRegCheckSquare />
+            </ActionButton>
           }
-          text={t("project.actions.setActive")}
         />
       )}
     </>
-  );
-
-  const additionalModals = (
-    <ConfirmModal
-      header={t(confirmModal.header)}
-      message={t(confirmModal.message)}
-      isOpen={confirmModal.open}
-      onClose={() => setConfirmModal({ ...confirmModal, open: false })}
-      onConfirm={confirmModal.action}
-    />
   );
 
   return (
@@ -113,7 +95,6 @@ export default function ProjectCard(project: Project) {
       onDelete={handleDelete}
       t={t}
       additionalActions={additionalActions}
-      additionalModals={additionalModals}
       UpdateFormComponent={UpdateProjectForm}
       translations={{
         edit: "project.actions.edit",

@@ -7,16 +7,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/shared/elements/forms/form";
-import { Input } from "@/components/shared/elements/forms/input";
-import { Button } from "@/components/shared/elements/forms/button";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { useUsersStore } from "@/providers/usersProvider";
 import { useAuthStore } from "@/providers/authProvider";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+import PageBreadcrumb from "@/components/shared/layout/pageBreadcrumb";
 
 const formSchema = z.object({
   displayName: z.string().min(2, {
@@ -65,50 +66,57 @@ export default function Profile() {
     return <div className="text-center mt-5">{t("user.notFound")}</div>;
   }
 
+  const breadcrumbItems = [
+    {
+      label: t("user.profile"),
+    },
+  ];
+
   return (
-    <div className="max-w-[525px] mx-auto mt-5">
-      <h1 className="text-3xl mb-5">
-        <span style={{ letterSpacing: "0.1px" }}>{t("user.profile")}</span>
-      </h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="displayName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("user.displayName")}</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder={t("user.displayNamePlaceholder")}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <>
+      <PageBreadcrumb items={breadcrumbItems} />
+      <div className="max-w-[525px] mx-auto mt-5">
+        <h1 className="text-3xl mb-5">{t("user.profile")}</h1>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="displayName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("user.displayName")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder={t("user.displayNamePlaceholder")}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="photoURL"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("user.photoURL")}</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder={t("user.photoURLPlaceholder")}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="photoURL"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("user.photoURL")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder={t("user.photoURLPlaceholder")}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <Button type="submit">{t("common.submit")}</Button>
-        </form>
-      </Form>
-    </div>
+            <Button type="submit">{t("common.submit")}</Button>
+          </form>
+        </Form>
+      </div>
+    </>
   );
 }

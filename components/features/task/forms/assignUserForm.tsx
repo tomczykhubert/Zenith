@@ -2,7 +2,14 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/shared/elements/forms/button";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -10,39 +17,51 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/shared/elements/forms/form";
+} from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import Task from "@/types/task";
-import { Select } from "@/components/shared/elements/forms/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import { mapUsersToSelect } from "@/types/user";
-import { useTasksStore } from "@/providers/tasksProvider";
-import { TaskStatus } from "@prisma/client";
 import { useUsersStore } from "@/providers/usersProvider";
+import { useTasksStore } from "@/providers/tasksProvider";
+import Task from "@/types/task";
+import { toast } from "sonner";
 import ID from "@/types/id";
-import { toast } from "react-toastify";
+import ActionButton from "@/components/shared/elements/actionButton";
+import { FaUserClock } from "react-icons/fa";
+import { useState } from "react";
+import { TaskStatus } from "@prisma/client";
 
 const formSchema = z.object({
-  assignedUserId: z.string().uuid({
-    message: "task.validations.userId.required",
+  userId: z.string().nonempty({
+    message: "task.validations.assignedUser.required",
   }),
 });
 
 interface AssignUserFormProps {
   task: Task;
-  onClose: () => void;
 }
 
-export default function AssignUserForm({ task, onClose }: AssignUserFormProps) {
+export default function AssignUserForm({ task }: AssignUserFormProps) {
+  const [open, setOpen] = useState(false);
   const { t } = useDictionary();
+  const users = useUsersStore((state) => state.users);
   const updateTask = useTasksStore((state) => state.updateTask);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { assignedUserId: task.assignedUserId as ID },
+    defaultValues: {
+      userId: task.assignedUserId || "",
+    },
   });
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    const assignedUserId = data.assignedUserId as ID;
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    const assignedUserId = values.userId as ID;
     try {
       await updateTask({
         ...task,
@@ -53,43 +72,67 @@ export default function AssignUserForm({ task, onClose }: AssignUserFormProps) {
             : task.status,
         startedAt: task.startedAt ?? new Date(),
       });
-      toast.success(t("task.toast.assignUser.success"));
+      toast.success(t("task.toast.assign.success"));
+      setOpen(false);
     } catch {
-      toast.error(t("task.toast.assignUser.failed"));
+      toast.error(t("task.toast.assign.failed"));
     }
-    onClose();
   };
 
-  const users = useUsersStore((state) => state.users);
-  const usersOptions = mapUsersToSelect(users);
+  const handleOpenChange = (newOpen: boolean) => {
+    if (newOpen) {
+      form.reset();
+    }
+    setOpen(newOpen);
+  };
 
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="assignedUserId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("user.user")}</FormLabel>
-                <FormControl>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <ActionButton variant="default" tooltip={t("task.actions.assignUser")}>
+          <FaUserClock />
+        </ActionButton>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t("task.actions.assignUser")}</DialogTitle>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
+            <FormField
+              control={form.control}
+              name="userId"
+              render={({ field }) => (
+                <FormItem>
                   <Select
-                    {...field}
-                    options={usersOptions}
-                    selected={field.value}
                     onValueChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">{t("common.submit")}</Button>
-        </form>
-      </Form>
-    </>
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={t("task.placeholders.user")}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {users.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          {user.displayName || user.email}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="mt-4">
+              {t("common.submit")}
+            </Button>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 }
-
-export { AssignUserForm };

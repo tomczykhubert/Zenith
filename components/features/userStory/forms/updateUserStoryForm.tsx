@@ -4,14 +4,15 @@ import { z } from "zod";
 import { formSchema, UserStoryForm } from "./userStoryForm";
 import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
 import UserStory from "@/types/userStory";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import UpdateFormProps from "@/types/props/updateFormProps";
+import ActionButton from "@/components/shared/elements/actionButton";
+import { LuPencil } from "react-icons/lu";
 
 type UpdateUserStoryFormProps = UpdateFormProps<UserStory>;
 
 export default function UpdateUserStoryForm({
-  onSubmit,
   item: userStory,
 }: UpdateUserStoryFormProps) {
   const updateUserStory = useUsersStoretoriesStore(
@@ -32,12 +33,24 @@ export default function UpdateUserStoryForm({
     } catch {
       toast.error(t("userStory.toast.update.success"));
     }
-    onSubmit();
   };
 
   return (
     <>
-      <UserStoryForm initialValues={userStory} onSubmit={handleUpdate} />
+      <UserStoryForm
+        initialValues={userStory}
+        onSubmit={handleUpdate}
+        trigger={
+          <ActionButton
+            variant="secondary"
+            size="icon"
+            tooltip={t("project.actions.edit")}
+          >
+            <LuPencil />
+          </ActionButton>
+        }
+        title={t("userStory.actions.edit")}
+      />
     </>
   );
 }

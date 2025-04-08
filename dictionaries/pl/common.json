@@ -1,7 +1,8 @@
 {
   "no": "Nie",
   "yes": "Tak",
-  "home": "Witaj w Zenith - aplikacji do zarządzania projektami.",
+  "home": "Strona główna",
+  "homeMessage": "Witaj w Zenith - aplikacji do zarządzania projektami.",
   "back": "Powrót",
   "submit": "Zatwierdź",
   "hours": "godziny",
@@ -13,5 +14,13 @@
   },
   "select": "Kliknij aby wybrać",
   "changeLanguage": "Zmień język",
-  "hello": "Witaj"
+  "hello": "Witaj",
+  "application": "Aplikacja",
+  "language": "Język",
+  "theme": {
+    "theme": "Motyw",
+    "dark": "Ciemny",
+    "light": "Jasny",
+    "system": "Systemowy"
+  }
 }

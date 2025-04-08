@@ -37,7 +37,8 @@
   "placeholders": {
     "name": "Moje nowe zadanie",
     "description": "To jest krótki opis zadania.",
-    "estimatedTime": "Wprowadź szacowany czas w godzinach"
+    "estimatedTime": "Wprowadź szacowany czas w godzinach",
+    "user": "Wybierz użytkownika"
   },
   "validations": {
     "name": {

@@ -7,9 +7,5 @@ export default function ProtectedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <UsersProvider>
-      <div className="mx-5 mt-5 mb-5">{children}</div>
-    </UsersProvider>
-  );
+  return <UsersProvider>{children}</UsersProvider>;
 }

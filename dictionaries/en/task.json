@@ -37,7 +37,8 @@
   "placeholders": {
     "name": "My new task",
     "description": "This is a brief description of the task.",
-    "estimatedTime": "Enter estimated time in hours"
+    "estimatedTime": "Enter estimated time in hours",
+    "user": "Select user"
   },
   "validations": {
     "name": {

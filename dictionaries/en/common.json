@@ -1,7 +1,8 @@
 {
   "no": "No",
   "yes": "Yes",
-  "home": "Welcome to Zenith - project managment application.",
+  "home": "Home",
+  "homeMessage": "Welcome to Zenith - project managment application.",
   "back": "Back",
   "submit": "Submit",
   "hours": "hours",
@@ -13,5 +14,13 @@
   },
   "select": "Click to select",
   "changeLanguage": "Change language",
-  "hello": "Hello"
+  "hello": "Hello",
+  "application": "Application",
+  "language": "Language",
+  "theme": {
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  }
 }

@@ -8,7 +8,7 @@ export default function TasksGrid({ tasks }: { tasks: Task[] }) {
   const { t } = useDictionary();
 
   if (tasks.length === 0) {
-    return <p className="text-center mt-5">{t("task.null.all")}</p>;
+    return <p className="text-center">{t("task.null.all")}</p>;
   }
 
   const pendingTasks =

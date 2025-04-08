@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { routes } from "@/lib/routes/routes";
 import { useAuthStore } from "@/providers/authProvider";
 import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useDictionary } from "@/providers/dictionaryProvider";
 export default function SignOut() {
   const router = useRouter();
