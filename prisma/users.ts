@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma/prismaSingleton";
+import { prisma } from "@/lib/prisma/prismaSingleton";
 import { User as PrismaUser } from "@prisma/client";
 import { Specification } from "../lib/prisma/specification";
 import ID from "@/types/id";

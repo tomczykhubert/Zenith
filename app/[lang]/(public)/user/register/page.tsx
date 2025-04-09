@@ -67,7 +67,7 @@ export default function RegisterForm() {
       router.push(redirect);
       toast.success(t("user.toast.signUp.success"));
     } catch {
-      toast.error(t("user.toast.signUp.failed"));
+      toast.error(t("user.toast.signUp.error"));
     }
   };
 

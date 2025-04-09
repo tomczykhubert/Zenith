@@ -1,8 +1,8 @@
-import prisma from "@/lib/prisma/prismaSingleton";
 import { UserStory as PrismaUserStory } from "@prisma/client";
 import { Specification } from "../lib/prisma/specification";
 import ID from "@/types/id";
 import UserStory from "@/types/userStory";
+import { prisma } from "@/lib/prisma/prismaSingleton";
 
 export async function createUserStory(
   userStory: UserStory

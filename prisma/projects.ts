@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma/prismaSingleton";
+import { prisma } from "@/lib/prisma/prismaSingleton";
 import { Specification } from "../lib/prisma/specification";
 import ID from "@/types/id";
 import Project from "@/types/project";

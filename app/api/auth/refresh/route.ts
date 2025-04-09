@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sign, verify } from "jsonwebtoken";
-import prisma from "@/lib/prisma/prismaSingleton";
+import { prisma } from "@/lib/prisma/prismaSingleton";
 import { cookies } from "next/headers";
 import { setAuthCookies } from "@/lib/auth/utils";
 import ID from "@/types/id";

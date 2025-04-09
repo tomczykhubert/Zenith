@@ -1,5 +1,5 @@
 import { compare } from "bcrypt";
-import prisma from "@/lib/prisma/prismaSingleton";
+import { prisma } from "@/lib/prisma/prismaSingleton";
 import { NextResponse } from "next/server";
 import { sign } from "jsonwebtoken";
 import User from "@/types/user";

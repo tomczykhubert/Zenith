@@ -26,7 +26,7 @@ export function specificationToSearchParams<T extends Base>(
 ): URLSearchParams {
   const params = new URLSearchParams();
   if (specification?.where) {
-    params.append("specification", JSON.stringify(specification.where));
+    params.append("where", JSON.stringify(specification.where));
   }
   if (specification?.orderBy) {
     params.append("order", JSON.stringify(specification.orderBy));
