@@ -8,10 +8,14 @@ import {
 } from "@/components/ui/sidebar";
 import { routes } from "@/lib/routes/routes";
 import { useDictionary } from "@/providers/dictionaryProvider";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { FaHome } from "react-icons/fa";
 import { LuLayoutDashboard, LuNotebook } from "react-icons/lu";
 
 export function Navigation() {
+  const { lang } = useParams();
+  console.log(lang);
   const { t } = useDictionary();
   const items = [
     {
@@ -38,10 +42,10 @@ export function Navigation() {
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
-                <a href={item.href}>
+                <Link href={item.href} locale={lang as string}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

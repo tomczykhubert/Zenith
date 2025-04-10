@@ -36,35 +36,74 @@ enum UserStoryStatus {
   IN_PROGRESS
   COMPLETED
 }
-
 model User {
-  id            String        @id @default(uuid())
-  email         String       @unique
-  password      String
-  displayName   String?
-  role          UserRole
-  photoURL      String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime?
-  tasks         Task[]
-  userStories   UserStory[]
-  refreshTokens RefreshToken[]
-  activeProject Project?      @relation(fields: [activeProjectId], references: [id])
-  activeProjectId String?
+  id               String    @id @default(cuid())
+  name             String
+  email            String
+  emailVerified    Boolean   @default(false)
+  image            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  twoFactorEnabled Boolean   @default(false)
+  Session          Session[]
+  Account          Account[]
+  tasks            Task[]
+  userStories      UserStory[]
+  activeProject    Project?  @relation(fields: [activeProjectId], references: [id])
+  activeProjectId  String?
+  role             UserRole
+  @@unique([email])
+  @@map("user")
 }
 
-model RefreshToken {
-  id        String   @id @default(uuid())
-  token     String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
+model Session {
+  id        String   @id @default(cuid())
   expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
-  updatedAt DateTime?
+  updatedAt DateTime @updatedAt
+
+  @@map("session")
+}
+
+model Account {
+  id           String    @id @default(cuid())
+  accountId    String
+  providerId   String
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+  expiresAt    DateTime?
+  password     String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+
+  @@map("verification")
 }
 
 model Project {
-  id          String      @id @default(uuid())
+  id          String      @id @default(cuid())
   name        String
   description String
   createdAt   DateTime    @default(now())
@@ -74,7 +113,7 @@ model Project {
 }
 
 model Task {
-  id            String      @id @default(uuid())
+  id            String      @id @default(cuid())
   name          String
   description   String
   priority      TaskPriority
@@ -91,7 +130,7 @@ model Task {
 }
 
 model UserStory {
-  id          String           @id @default(uuid())
+  id          String           @id @default(cuid())
   name        String
   description String
   priority    UserStoryPriority

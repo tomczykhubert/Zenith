@@ -1,13 +1,6 @@
 import ID from "@/types/id";
 
 export const apiRoutes = {
-  auth: {
-    login: "/api/auth/login",
-    register: "/api/auth/register",
-    logout: "/api/auth/logout",
-    refresh: "/api/auth/refresh",
-    me: "/api/auth/me",
-  },
   projects: {
     base: "/api/projects",
     byId: (id: ID) => `/api/projects/${id}`,
@@ -23,5 +16,14 @@ export const apiRoutes = {
   users: {
     base: "/api/users",
     byId: (id: ID) => `/api/users/${id}`,
+  },
+  auth: {
+    signIn: {
+      email: "/api/auth/sign-in/email",
+    },
+    signUp: {
+      email: "/api/auth/sign-up/email",
+    },
+    getSession: "/api/auth/get-session",
   },
 };

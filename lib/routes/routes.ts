@@ -3,11 +3,11 @@ import ID from "@/types/id";
 export const routes = {
   home: "/",
   user: {
-    signIn: "/user/signin",
-    register: "/user/register",
     profile: "/user/profile",
-    signOut: "/user/signout",
-    verify: "/user/verify",
+  },
+  auth: {
+    signIn: "/auth/signIn",
+    signUp: "/auth/signUp",
   },
   projects: {
     index: "/projects",
