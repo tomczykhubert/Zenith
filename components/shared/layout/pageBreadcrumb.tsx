@@ -1,7 +1,6 @@
 "use client";
 
 import { routes } from "@/lib/routes/routes";
-import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
@@ -39,7 +38,7 @@ export default function PageBreadcrumb({
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href={useLocalizedRoute(routes.home)}>
+                <BreadcrumbLink href={routes.home}>
                   {t("common.home")}
                 </BreadcrumbLink>
               </BreadcrumbItem>

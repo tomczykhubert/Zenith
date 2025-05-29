@@ -4,18 +4,17 @@ import UpdateProjectForm from "./forms/updateProjectForm";
 import ConfirmModal from "@/components/shared/elements/modals/confirmModal";
 import Project from "@/types/project";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import { useAuthStore } from "@/providers/authProvider";
-import { useUsersStore } from "@/providers/usersProvider";
 import { toast } from "sonner";
 import BaseCard from "../../shared/base/baseCard";
 import ActionButton from "@/components/shared/elements/actionButton";
+import { useSession, updateUser } from "@/lib/auth/authClient";
+import Spinner from "@/components/shared/elements/spinner";
 
 export default function ProjectCard(project: Project) {
   const { t } = useDictionary();
   const deleteProject = useProjectsStore((state) => state.deleteProject);
-  const user = useAuthStore((state) => state.user!);
-  const updateUser = useUsersStore((state) => state.updateUser);
-  const updateAuthUser = useAuthStore((state) => state.updateCurrentUser);
+  const { data, isPending } = useSession();
+  const user = data?.user;
 
   const handleDelete = async () => {
     try {
@@ -27,13 +26,13 @@ export default function ProjectCard(project: Project) {
   };
 
   const handleSetActiveProject = async () => {
-    const updatedUser = {
-      ...user,
-      activeProjectId: project.id,
-    };
     try {
-      await updateUser(updatedUser);
-      updateAuthUser(updatedUser);
+      const { error } = await updateUser({
+        activeProjectId: project.id,
+      });
+      if (error) {
+        throw error;
+      }
       toast.success(t("project.toast.setActive.success"));
     } catch {
       toast.error(t("project.toast.setActive.failed"));
@@ -41,13 +40,13 @@ export default function ProjectCard(project: Project) {
   };
 
   const handleUnsetActiveProject = async () => {
-    const updatedUser = {
-      ...user,
-      activeProjectId: null,
-    };
     try {
-      await updateUser(updatedUser);
-      updateAuthUser(updatedUser);
+      const { error } = await updateUser({
+        activeProjectId: null,
+      });
+      if (error) {
+        throw error;
+      }
       toast.success(t("project.toast.unsetActive.success"));
     } catch {
       toast.error(t("project.toast.unsetActive.failed"));
@@ -55,7 +54,7 @@ export default function ProjectCard(project: Project) {
   };
   const additionalActions = (
     <>
-      {user.activeProjectId == project.id ? (
+      {user?.activeProjectId == project.id ? (
         <ConfirmModal
           header={t("project.actions.unsetActive")}
           message={t("project.actions.unsetActiveConfirm")}
@@ -88,7 +87,7 @@ export default function ProjectCard(project: Project) {
       )}
     </>
   );
-
+  if (isPending) return <Spinner />;
   return (
     <BaseCard<Project>
       item={project}

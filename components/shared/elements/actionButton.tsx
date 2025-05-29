@@ -11,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useParams } from "next/navigation";
 
 interface ButtonProps
   extends React.ComponentProps<"button">,
@@ -27,9 +28,16 @@ const ActionButton: React.FC<ButtonProps> = ({
   href,
   ...buttonProps
 }) => {
+  const { lang } = useParams();
   const buttonContent = (
     <ButtonPrimitive asChild={!!href} {...buttonProps}>
-      {href ? <Link href={href}>{children}</Link> : children}
+      {href ? (
+        <Link locale={lang as string} href={href}>
+          {children}
+        </Link>
+      ) : (
+        children
+      )}
     </ButtonPrimitive>
   );
 

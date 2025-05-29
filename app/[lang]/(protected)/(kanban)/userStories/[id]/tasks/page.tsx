@@ -14,8 +14,9 @@ import ActionButton from "@/components/shared/elements/actionButton";
 import PageBreadcrumb from "@/components/shared/layout/pageBreadcrumb";
 import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { useProjectsStore } from "@/providers/projectsProvider";
-import { useAuthStore } from "@/providers/authProvider";
 import { LuClipboardPen } from "react-icons/lu";
+import { useSession } from "@/lib/auth/authClient";
+import Spinner from "@/components/shared/elements/spinner";
 
 export default function Tasks() {
   const { id } = useParams();
@@ -24,7 +25,8 @@ export default function Tasks() {
     state.getUserStoryById(id as ID)
   );
   const tasks: Task[] | null = useTasksStore((state) => state.tasks);
-  const user = useAuthStore((state) => state.user);
+  const { data, isPending } = useSession();
+  const user = data?.user;
   const activeProject = useProjectsStore((state) =>
     state.getProjectById(user!.activeProjectId!)
   );
@@ -52,7 +54,7 @@ export default function Tasks() {
   if (!userStory) {
     return <p className="text-center mt-5">{t("userStory.notFound")}</p>;
   }
-
+  if (isPending) return <Spinner />;
   return (
     <>
       <PageBreadcrumb items={breadcrumbItems}>

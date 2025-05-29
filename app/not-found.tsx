@@ -8,7 +8,7 @@ export async function generateMetadata() {
   };
 }
 
-export default function NotFound() {
+export default async function NotFound() {
   return (
     <div className="flex items-center justify-center h-screen w-full">
       <div className="text-center">

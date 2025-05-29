@@ -1,30 +1,34 @@
 "use client";
-import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { routes } from "@/lib/routes/routes";
 import { Direction, Specification } from "@/lib/prisma/specification";
-import { useAuthStore } from "@/providers/authProvider";
 import { useDictionary } from "@/providers/dictionaryProvider";
 import { UserStoriesStoreProvider } from "@/providers/userStoriesProvider";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import UserStory from "@/types/userStory";
+import { useSession } from "@/lib/auth/authClient";
+import Spinner from "@/components/shared/elements/spinner";
 
 export default function UserStoriesLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = useAuthStore((state) => state.user);
-  const projectsRoute = useLocalizedRoute(routes.projects.index);
+  const { data, isPending } = useSession();
+  const user = data?.user;
   const { t } = useDictionary();
 
   useEffect(() => {
     if (!user?.activeProjectId) {
       toast.error(t("project.toast.needToSelectActiveProject"));
-      redirect(projectsRoute);
+      redirect(routes.projects.index);
     }
-  }, [user?.activeProjectId, projectsRoute, t]);
+  }, [user?.activeProjectId, t]);
+
+  if (isPending) {
+    return <Spinner />;
+  }
 
   if (!user?.activeProjectId) return null;
 

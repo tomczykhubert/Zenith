@@ -1,5 +1,3 @@
-import { UUID } from "crypto";
-
-type ID = UUID;
+type ID = string;
 
 export default ID;

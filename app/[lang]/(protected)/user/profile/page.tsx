@@ -14,19 +14,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useDictionary } from "@/providers/dictionaryProvider";
-import { useUsersStore } from "@/providers/usersProvider";
-import { useAuthStore } from "@/providers/authProvider";
 import { toast } from "sonner";
 import PageBreadcrumb from "@/components/shared/layout/pageBreadcrumb";
+import { useSession, updateUser } from "@/lib/auth/authClient";
+import Spinner from "@/components/shared/elements/spinner";
 
 const formSchema = z.object({
-  displayName: z.string().min(2, {
-    message: "user.validations.displayName.minLength",
+  name: z.string().min(2, {
+    message: "user.validations.name.minLength",
   }),
-  photoURL: z
+  image: z
     .string()
     .url({
-      message: "user.validations.photoURL.invalidUrl",
+      message: "user.validations.image.invalidUrl",
     })
     .optional(),
 });
@@ -35,36 +35,30 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function Profile() {
   const { t } = useDictionary();
-  const user = useAuthStore((state) => state.user);
-  const updateUser = useUsersStore((state) => state.updateUser);
-  const updateCurrentUser = useAuthStore((state) => state.updateCurrentUser);
+  const { data, isPending } = useSession();
+  const user = data?.user;
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      displayName: user?.displayName || "",
-      photoURL: user?.photoURL || "",
+      name: user?.name || "",
+      image: user?.image || "",
     },
   });
-
   const onSubmit = async (data: FormData) => {
     try {
       const updatedUser = {
         ...user!,
-        displayName: data.displayName,
-        photoURL: data.photoURL || null,
+        name: data.name,
+        image: data.image || null,
       };
 
       await updateUser(updatedUser);
-      updateCurrentUser(updatedUser);
+
       toast.success(t("user.toast.profileUpdate.success"));
     } catch {
       toast.error(t("user.toast.profileUpdate.failed"));
     }
   };
-
-  if (!user) {
-    return <div className="text-center mt-5">{t("user.notFound")}</div>;
-  }
 
   const breadcrumbItems = [
     {
@@ -72,6 +66,7 @@ export default function Profile() {
     },
   ];
 
+  if (isPending) return <Spinner />;
   return (
     <>
       <PageBreadcrumb items={breadcrumbItems} />
@@ -81,15 +76,12 @@ export default function Profile() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="displayName"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("user.displayName")}</FormLabel>
+                  <FormLabel>{t("user.name")}</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder={t("user.displayNamePlaceholder")}
-                    />
+                    <Input {...field} placeholder={t("user.namePlaceholder")} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,14 +90,14 @@ export default function Profile() {
 
             <FormField
               control={form.control}
-              name="photoURL"
+              name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("user.photoURL")}</FormLabel>
+                  <FormLabel>{t("user.image")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder={t("user.photoURLPlaceholder")}
+                      placeholder={t("user.imagePlaceholder")}
                     />
                   </FormControl>
                   <FormMessage />
