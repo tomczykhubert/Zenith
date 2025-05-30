@@ -6,14 +6,16 @@ import { useDictionary } from "@/providers/dictionaryProvider";
 import { MdDone } from "react-icons/md";
 import AssignUserForm from "./forms/assignUserForm";
 import { getEnumTranslationKey } from "@/lib/utils/enums";
-import { TaskStatus } from "@prisma/client";
+import { TaskStatus, UserRole } from "@prisma/client";
 import { useUsersStore } from "@/providers/usersProvider";
 import { toast } from "sonner";
 import { formatDate } from "@/lib/utils/dateFormat";
 import BaseCard from "../../shared/base/baseCard";
 import ActionButton from "@/components/shared/elements/actionButton";
+import { useSession } from "@/lib/auth/authClient";
 
 export default function TaskCard(task: Task) {
+  const { data } = useSession();
   const { t } = useDictionary();
   const deleteTask = useTasksStore((state) => state.deleteTask);
   const updateTask = useTasksStore((state) => state.updateTask);
@@ -44,7 +46,7 @@ export default function TaskCard(task: Task) {
     }
   };
 
-  const additionalActions = (
+  const additionalActions = data!.user.role !== UserRole.GUEST && (
     <>
       {task.status === TaskStatus.PENDING && <AssignUserForm task={task} />}
       {task.status === TaskStatus.IN_PROGRESS && (
@@ -80,7 +82,7 @@ export default function TaskCard(task: Task) {
       </p>
       <p>
         <strong>{t("task.properties.assignedUser")}:</strong>{" "}
-        {assignedUser ? assignedUser.displayName : "N/A"}
+        {assignedUser ? assignedUser.name : "N/A"}
       </p>
       <p>
         <strong>{t("task.properties.startedAt")}:</strong>{" "}

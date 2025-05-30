@@ -15,7 +15,6 @@ import { LuLayoutDashboard, LuNotebook } from "react-icons/lu";
 
 export function Navigation() {
   const { lang } = useParams();
-  console.log(lang);
   const { t } = useDictionary();
   const items = [
     {

@@ -124,7 +124,7 @@ export function UserActions() {
               }}
             >
               <LuLogOut />
-              <span>Logout</span>
+              <span>{t("user.signOut")}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

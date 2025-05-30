@@ -9,15 +9,26 @@
   "password": "Hasło",
   "emailPlaceholder": "Wprowadź swój email",
   "passwordPlaceholder": "Wprowadź swoje hasło",
-  "displayName": "Nazwa wyświetlana",
-  "photoURL": "URL zdjęcia profilowego",
+  "name": "Nazwa wyświetlana",
+  "image": "URL zdjęcia profilowego",
   "confirmPassword": "Potwierdź hasło",
-  "displayNamePlaceholder": "Wprowadź swoją nazwę wyświetlaną",
-  "photoURLPlaceholder": "Wprowadź URL do swojego zdjęcia profilowego",
+  "namePlaceholder": "Wprowadź swoję imię i nazwisko",
+  "imagePlaceholder": "Wprowadź URL do swojego zdjęcia profilowego",
   "confirmPasswordPlaceholder": "Potwierdź swoje hasło",
   "notFound": "Nie znaleziono użytkownika",
-  "profileUpdated": "Profil został zaktualizowany pomyślnie",
   "createAccount": "Utwórz konto",
+  "noAccountYet": "Nie masz jeszcze konta?",
+  "alreadyHaveAccount": "Masz już konto?",
+  "googleSignIn": "Zaloguj się przez Google",
+  "signUpDescription": "Utwórz nowe konto",
+  "fullName": "Imię i nazwisko",
+  "role": "Rola",
+  "roles": {
+    "admin": "Administrator",
+    "devops": "DevOps",
+    "developer": "Developer",
+    "guest": "Gość"
+  },
   "validations": {
     "email": {
       "required": "Email nie może być pusty!"
@@ -29,10 +40,10 @@
     "confirmPassword": {
       "required": "Potwierdzenie hasła nie może być puste!"
     },
-    "displayName": {
+    "name": {
       "minLength": "Nazwa wyświetlana musi mieć co najmniej 2 znaki."
     },
-    "photoURL": {
+    "image": {
       "invalidUrl": "Proszę podać prawidłowy URL dla zdjęcia profilowego."
     }
   },

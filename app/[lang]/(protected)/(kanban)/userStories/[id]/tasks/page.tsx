@@ -12,7 +12,6 @@ import UserStory from "@/types/userStory";
 import { useUsersStoretoriesStore } from "@/providers/userStoriesProvider";
 import ActionButton from "@/components/shared/elements/actionButton";
 import PageBreadcrumb from "@/components/shared/layout/pageBreadcrumb";
-import { useLocalizedRoute } from "@/lib/routes/localizedRoute";
 import { useProjectsStore } from "@/providers/projectsProvider";
 import { LuClipboardPen } from "react-icons/lu";
 import { useSession } from "@/lib/auth/authClient";
@@ -34,14 +33,14 @@ export default function Tasks() {
   const breadcrumbItems = [
     {
       label: t("project.projects"),
-      href: useLocalizedRoute(routes.projects.index),
+      href: routes.projects.index,
     },
     {
       label: activeProject!.name,
     },
     {
       label: t("userStory.userStories"),
-      href: useLocalizedRoute(routes.userStories.index),
+      href: routes.userStories.index,
     },
     {
       label: userStory!.name,

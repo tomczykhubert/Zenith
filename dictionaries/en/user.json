@@ -9,15 +9,26 @@
   "password": "Password",
   "emailPlaceholder": "Enter your email",
   "passwordPlaceholder": "Enter your password",
-  "displayName": "Display Name",
-  "photoURL": "Profile Image URL",
+  "name": "Display Name",
+  "image": "Profile Image URL",
   "confirmPassword": "Confirm Password",
-  "displayNamePlaceholder": "Enter your display name",
-  "photoURLPlaceholder": "Enter URL to your profile image",
+  "namePlaceholder": "Enter your full name",
+  "imagePlaceholder": "Enter URL to your profile image",
   "confirmPasswordPlaceholder": "Confirm your password",
   "notFound": "User not found",
-  "profileUpdated": "Profile updated successfully",
   "createAccount": "Create an account",
+  "noAccountYet": "Don't have an account yet?",
+  "alreadyHaveAccount": "Already have an account?",
+  "googleSignIn": "Sign in with Google",
+  "signUpDescription": "Create an new account",
+  "fullName": "Full name",
+  "role": "Role",
+  "roles": {
+    "admin": "Admin",
+    "devops": "DevOps",
+    "developer": "Developer",
+    "guest": "Guest"
+  },
   "validations": {
     "email": {
       "required": "Email cannot be empty!"
@@ -29,10 +40,10 @@
     "confirmPassword": {
       "required": "Confirm Password cannot be empty!"
     },
-    "displayName": {
+    "name": {
       "minLength": "Display name must be at least 2 characters."
     },
-    "photoURL": {
+    "image": {
       "invalidUrl": "Please enter a valid URL for the profile image."
     }
   },

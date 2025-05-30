@@ -39,8 +39,8 @@ export const createUsersStore = (initState: UsersState = defaultInitState) => {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          displayName: user.displayName,
-          photoURL: user.photoURL,
+          name: user.name,
+          image: user.image,
           activeProjectId: user.activeProjectId,
         }),
       });

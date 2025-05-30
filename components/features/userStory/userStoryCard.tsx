@@ -49,7 +49,7 @@ export default function UserStoryCard(userStory: UserStory) {
       </p>
       <p>
         <strong>{t("userStory.properties.owner")}:</strong>{" "}
-        {owner ? owner.displayName || owner.email : "N/A"}
+        {owner ? owner.name || owner.email : "N/A"}
       </p>
     </>
   );

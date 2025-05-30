@@ -24,6 +24,8 @@ import { signIn } from "@/lib/auth/authClient";
 import { useRouter } from "next/navigation";
 import SignInSchema from "@/helpers/zod/signInSchema";
 import { routes } from "@/lib/routes/routes";
+import { FaGoogle } from "react-icons/fa";
+import { useDictionary } from "@/providers/dictionaryProvider";
 
 const SignIn = () => {
   const router = useRouter();
@@ -43,6 +45,7 @@ const SignIn = () => {
       password: "",
     },
   });
+  const { t } = useDictionary();
 
   const onSubmit = async (values: z.infer<typeof SignInSchema>) => {
     try {
@@ -69,18 +72,23 @@ const SignIn = () => {
         }
       );
     } catch (error) {
-      console.log(error);
       setError("Something went wrong");
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    await signIn.social({
+      provider: "google",
+      callbackURL: routes.home,
+    });
+  };
+
   return (
     <CardWrapper
-      cardTitle="Sign In"
-      cardDescription="Enter your email below to login to your account"
-      cardFooterDescription="Don't have an account?"
+      cardTitle={t("user.signIn")}
+      cardFooterDescription={t("user.noAccountYet")}
       cardFooterLink="/auth/signUp"
-      cardFooterLinkTitle="Sign up"
+      cardFooterLinkTitle={t("user.signUp")}
     >
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -89,7 +97,7 @@ const SignIn = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t("user.email")}</FormLabel>
                 <FormControl>
                   <Input
                     disabled={loading}
@@ -107,7 +115,7 @@ const SignIn = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t("user.password")}</FormLabel>
                 <FormControl>
                   <Input
                     disabled={loading}
@@ -123,10 +131,20 @@ const SignIn = () => {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button disabled={loading} type="submit" className="w-full">
-            Login
+            {t("user.signIn")}
           </Button>
         </form>
       </Form>
+      <Button
+        onClick={handleGoogleSignIn}
+        className="w-full mt-4"
+        variant={"secondary"}
+      >
+        <div className="flex items-center justify-center gap-2">
+          <FaGoogle />
+          <span>{t("user.googleSignIn")}</span>
+        </div>
+      </Button>
     </CardWrapper>
   );
 };

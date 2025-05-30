@@ -25,6 +25,7 @@ import { signUp } from "@/lib/auth/authClient";
 import { useRouter } from "next/navigation";
 import { UserRole } from "@prisma/client";
 import { routes } from "@/lib/routes/routes";
+import { useDictionary } from "@/providers/dictionaryProvider";
 
 const SignUp = () => {
   const router = useRouter();
@@ -79,13 +80,15 @@ const SignUp = () => {
     }
   };
 
+  const { t } = useDictionary();
+
   return (
     <CardWrapper
-      cardTitle="Sign Up"
-      cardDescription="Create an new account"
+      cardTitle={t("user.signUp")}
+      cardDescription={t("user.signUpDescription")}
       cardFooterLink={routes.auth.signIn}
-      cardFooterDescription="Already have an account?"
-      cardFooterLinkTitle="Login"
+      cardFooterDescription={t("user.alreadyHaveAccount")}
+      cardFooterLinkTitle={t("user.signIn")}
     >
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -94,7 +97,7 @@ const SignUp = () => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{t("user.fullName")}</FormLabel>
                 <FormControl>
                   <Input
                     disabled={loading}
@@ -112,7 +115,7 @@ const SignUp = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t("user.email")}</FormLabel>
                 <FormControl>
                   <Input
                     disabled={loading}
@@ -130,7 +133,7 @@ const SignUp = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t("user.password")}</FormLabel>
                 <FormControl>
                   <Input
                     disabled={loading}
@@ -146,7 +149,7 @@ const SignUp = () => {
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button disabled={loading} type="submit" className="w-full">
-            Submit
+            {t("user.signUp")}
           </Button>
         </form>
       </Form>

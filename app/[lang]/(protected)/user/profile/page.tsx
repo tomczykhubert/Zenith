@@ -36,27 +36,31 @@ type FormData = z.infer<typeof formSchema>;
 export default function Profile() {
   const { t } = useDictionary();
   const { data, isPending } = useSession();
-  const user = data?.user;
+  const user = data!.user;
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: user?.name || "",
-      image: user?.image || "",
+      name: user.name || "",
+      image: user.image || "",
     },
   });
   const onSubmit = async (data: FormData) => {
+    const { email, ...userWithoutEmail } = user;
     try {
       const updatedUser = {
-        ...user!,
+        ...userWithoutEmail,
         name: data.name,
         image: data.image || null,
       };
 
-      await updateUser(updatedUser);
+      const { error } = await updateUser(updatedUser);
+      if (error) {
+        throw error;
+      }
 
       toast.success(t("user.toast.profileUpdate.success"));
     } catch {
-      toast.error(t("user.toast.profileUpdate.failed"));
+      toast.error(t("user.toast.profileUpdate.error"));
     }
   };
 
@@ -70,6 +74,7 @@ export default function Profile() {
   return (
     <>
       <PageBreadcrumb items={breadcrumbItems} />
+
       <div className="max-w-[525px] mx-auto mt-5">
         <h1 className="text-3xl mb-5">{t("user.profile")}</h1>
         <Form {...form}>
@@ -104,7 +109,9 @@ export default function Profile() {
                 </FormItem>
               )}
             />
-
+            <p className="text-sm text-muted-foreground">
+              {t("user.role")}: {t("user.roles." + user?.role.toLowerCase())}
+            </p>
             <Button type="submit">{t("common.submit")}</Button>
           </form>
         </Form>

@@ -12,6 +12,8 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { LuTrash2 } from "react-icons/lu";
+import { useSession } from "@/lib/auth/authClient";
+import { UserRole } from "@prisma/client";
 
 interface BaseCardProps<T extends KanbanBase> {
   item: T;
@@ -36,29 +38,36 @@ export default function BaseCard<T extends KanbanBase>({
   UpdateFormComponent,
   translations,
 }: BaseCardProps<T>) {
+  const { data } = useSession();
   return (
     <Card>
       <CardHeader>
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <CardTitle className="break-all">{item.name}</CardTitle>
-          <div className="flex flex-wrap gap-2 order-1 sm:order-2">
-            {additionalActions}
-            <UpdateFormComponent item={item} />
-            <ConfirmModal
-              header={t(translations.delete)}
-              message={t(translations.deleteConfirm)}
-              onConfirm={onDelete}
-              trigger={
-                <ActionButton
-                  variant="destructive"
-                  size="icon"
-                  tooltip={t(translations.delete)}
-                >
-                  <LuTrash2 />
-                </ActionButton>
-              }
-            />
-          </div>
+          {
+            <div className="flex flex-wrap gap-2 order-1 sm:order-2">
+              {additionalActions}
+              {data!.user.role !== UserRole.GUEST && (
+                <>
+                  <UpdateFormComponent item={item} />
+                  <ConfirmModal
+                    header={t(translations.delete)}
+                    message={t(translations.deleteConfirm)}
+                    onConfirm={onDelete}
+                    trigger={
+                      <ActionButton
+                        variant="destructive"
+                        size="icon"
+                        tooltip={t(translations.delete)}
+                      >
+                        <LuTrash2 />
+                      </ActionButton>
+                    }
+                  />
+                </>
+              )}
+            </div>
+          }
         </div>
       </CardHeader>
 

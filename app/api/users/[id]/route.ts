@@ -26,8 +26,8 @@ export async function PUT(
     const { id } = await params;
     const data = await request.json();
     const updateData = {
-      displayName: data.displayName,
-      photoURL: data.photoURL,
+      name: data.name,
+      image: data.image,
       activeProjectId: data.activeProjectId,
       updatedAt: new Date(),
     };

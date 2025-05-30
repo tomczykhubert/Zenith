@@ -117,7 +117,7 @@ export default function AssignUserForm({ task }: AssignUserFormProps) {
                     <SelectContent>
                       {users.map((user) => (
                         <SelectItem key={user.id} value={user.id}>
-                          {user.displayName || user.email}
+                          {user.name || user.email}
                         </SelectItem>
                       ))}
                     </SelectContent>
