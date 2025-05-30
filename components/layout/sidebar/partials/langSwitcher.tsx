@@ -26,6 +26,8 @@ export default function LangSwitcher() {
   const currentLang = params.lang as string;
 
   const switchLanguage = (lang: string) => {
+    document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000`;
+
     const newPath =
       pathname === `/${currentLang}`
         ? `/${lang}`
